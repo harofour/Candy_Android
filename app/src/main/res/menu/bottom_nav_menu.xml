@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/item_home"
+        android:title="@string/bottom_nav_item_name_1"
+        android:icon="@drawable/bottom_nav_icon_home"
+        android:enabled="true"/>
+
+    <item android:id="@+id/item_challenge"
+        android:title="@string/bottom_nav_item_name_2"
+        android:icon="@drawable/bottom_nav_icon_challenge"
+        android:enabled="true"/>
+
+    <item android:id="@+id/item_candy"
+        android:title="@string/bottom_nav_item_name_3"
+        android:icon="@drawable/bottom_nav_icon_candy"
+        android:enabled="true"/>
+
+    <item android:id="@+id/item_myPage"
+        android:title="@string/bottom_nav_item_name_4"
+        android:icon="@drawable/bottom_nav_icon_parents"
+        android:enabled="true"/>
+</menu>

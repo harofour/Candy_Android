@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="#FF6BEB"
+        android:state_checked="true"/>
+    <!-- 하단바 메뉴에서 선택 되었을 때 해당 색상으로 변경 -->
+
+    <item android:color="#8F8F8F"
+        android:state_checked="false"/>
+    <!-- 하단바 메뉴에서 선택x 상태인 경우 해당 색상으로 변경 -->
+
+</selector>
