@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".SignUpActivity">
+    <include
+        layout="@layout/view_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/signupContainer"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintWidth_percent="0.8"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/emailET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="이메일 주소"
+                android:textColor="@color/black"
+                android:backgroundTint="#FDB1D8"
+                android:textColorHint="#999999"
+                android:drawableStart="@drawable/ic_baseline_email_24"
+                android:drawablePadding="10dp"
+
+                app:layout_constraintWidth_percent="0.65"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                android:id="@+id/doubleCheckBtn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/rect_stroke_pink"
+                android:text="중복 확인"
+                android:gravity="center"
+                android:textColor="@color/text_pink"
+                android:textStyle="bold"
+
+                app:layout_constraintWidth_percent="0.3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/pwdET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="비밀번호"
+            android:textColor="@color/black"
+            android:backgroundTint="#FDB1D8"
+            android:textColorHint="#999999"
+            android:drawableStart="@drawable/ic_baseline_lock_24"
+            android:drawablePadding="10dp"
+
+            android:layout_marginTop="20dp"/>
+        <EditText
+            android:id="@+id/pwdCheckET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="비밀번호 확인"
+            android:textColor="@color/black"
+            android:backgroundTint="#FDB1D8"
+            android:textColorHint="#999999"
+            android:drawableStart="@drawable/ic_baseline_lock_24"
+            android:drawablePadding="10dp"
+
+            android:layout_marginTop="20dp"/>
+        <EditText
+            android:id="@+id/nameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이름"
+            android:textColor="@color/black"
+            android:backgroundTint="#FDB1D8"
+            android:textColorHint="#999999"
+            android:drawableStart="@drawable/ic_baseline_person_24"
+            android:drawablePadding="10dp"
+
+            android:layout_marginTop="20dp"/>
+        <EditText
+            android:id="@+id/phoneET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="핸드폰 번호"
+            android:textColor="@color/black"
+            android:backgroundTint="#FDB1D8"
+            android:textColorHint="#999999"
+            android:drawableStart="@drawable/ic_baseline_phone_24"
+            android:drawablePadding="10dp"
+
+            android:layout_marginTop="20dp"/>
+        <EditText
+            android:id="@+id/birthET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="생년월일 (990210)"
+            android:textColor="@color/black"
+            android:backgroundTint="#FDB1D8"
+            android:textColorHint="#999999"
+            android:drawableStart="@drawable/ic_baseline_cake_24"
+            android:drawablePadding="10dp"
+
+            android:layout_marginTop="20dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/signupBtn"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/rect_gradient"
+        android:text="회원가입"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:gravity="center"
+
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintVertical_bias="0.9"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
