@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Candy</string>
+
+    <string name="bottom_nav_item_name_1">홈</string>
+    <string name="bottom_nav_item_name_2">챌린지</string>
+    <string name="bottom_nav_item_name_3">캔디 관리</string>
+    <string name="bottom_nav_item_name_4">마이페이지</string>
+
+    <string name="myCandy">나의 캔디 :</string>
+    <string name="category">카테고리</string>
+    <string name="myChallenge">진행 중인 챌린지</string>
+
 </resources>
