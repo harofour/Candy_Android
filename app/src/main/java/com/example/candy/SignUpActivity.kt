@@ -22,12 +22,7 @@ class SignUpActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             title = "회원가입"
         }
-        binding.signupBtn.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
 
-            finish()
-        }
         setListeners()
     }
 
