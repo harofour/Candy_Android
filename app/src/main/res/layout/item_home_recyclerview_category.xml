@@ -30,15 +30,33 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.7"/>
 
-        <TextView
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/reycler_category_guideline_vertical_15"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@id/reycler_category_guideline_horizontal_30"
-            app:layout_constraintBottom_toBottomOf="@id/reycler_category_guideline_horizontal_70"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.15"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/reycler_category_guideline_vertical_85"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85"/>
+
+        <TextView
+            android:id="@+id/tv_category_name"
+            style="@style/tv_recycler_category_style"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:text="ALL"
-            style="@style/tv_recycler_category_style"/>
+            app:layout_constraintBottom_toBottomOf="@id/reycler_category_guideline_horizontal_70"
+            app:layout_constraintBottom_toTopOf="@id/reycler_category_guideline_horizontal_70"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toRightOf="@id/reycler_category_guideline_vertical_15"
+            app:layout_constraintRight_toLeftOf="@id/reycler_category_guideline_vertical_85"
+            app:layout_constraintTop_toTopOf="@id/reycler_category_guideline_horizontal_30"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

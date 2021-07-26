@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.example.candy.candy.CandyFragment
 import com.example.candy.challenge.ChallengeFragment
@@ -11,12 +12,15 @@ import com.example.candy.databinding.ActivityMainBinding
 import com.example.candy.databinding.FragmentHomeBinding
 import com.example.candy.home.HomeFragment
 import com.example.candy.myPage.MyPageFragment
+import com.example.candy.viewModel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
 
     private var mainBinding: ActivityMainBinding? = null
+
+    private val mainViewModel: MainViewModel by viewModels()
 
     private lateinit var  homeFrgment : HomeFragment
     private lateinit var  challengeFragment : ChallengeFragment
@@ -80,11 +84,4 @@ class MainActivity : AppCompatActivity() {
         true
     }
 
-   /* private fun replaceFragment(fragment: Fragment){
-        supportFragmentManager.beginTransaction()
-                .apply {
-                    replace(R.id.framelayout_main, fragment)
-                    commit()
-                }
-    }*/
 }

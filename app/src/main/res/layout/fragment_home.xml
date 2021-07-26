@@ -278,7 +278,8 @@
         app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_25"
         app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_35"
         app:layout_constraintLeft_toRightOf="@id/guideline_vertical_7"
-        app:layout_constraintRight_toLeftOf="@id/guideline_vertical_96"
+        app:layout_constraintRight_toLeftOf="@id/guideline_vertical_98"
+
         />
     <!-- end-->
 
@@ -304,7 +305,7 @@
         style="@style/tv_main_style_1"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/main_recyclerview_myChallenge"
+        android:id="@+id/home_recyclerview_challenge_ongoing"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

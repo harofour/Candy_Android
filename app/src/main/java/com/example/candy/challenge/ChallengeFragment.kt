@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.candy.databinding.FragmentChallengeBinding
 import com.example.candy.databinding.FragmentHomeBinding
 import com.example.candy.home.HomeFragment
+import com.example.candy.viewModel.MainViewModel
 
 class ChallengeFragment : Fragment() {
 
     private var challengeBinding : FragmentChallengeBinding? = null   // onDestory 에서 완벽한 제거를 위해 null 허용
 
-    //private val mypageBinding get() = _mypageBinding!! // 매번 null 체크를 할 필요 없이 편의성을 위해 바인딩 변수 재선언
+    private val mainViewModel : MainViewModel by activityViewModels()    // 프래그먼트 간에 뷰 모델 공유하기 위해 액티비티의 뷰모델 인스턴스 사용
 
     companion object {
         const val TAG : String = "로그"
