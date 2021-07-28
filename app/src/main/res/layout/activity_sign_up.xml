@@ -14,9 +14,10 @@
         android:id="@+id/signupContainer"
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
 
         app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.6"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +42,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
             <TextView
-                android:id="@+id/doubleCheckBtn"
+                android:id="@+id/emailDoubleCheckBtn"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/rect_stroke_pink"
@@ -55,6 +56,59 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <EditText
+                android:id="@+id/emailAuthET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#FDB1D8"
+                android:drawableStart="@drawable/ic_baseline_smartphone_24"
+                android:drawablePadding="10dp"
+                android:hint="인증번호"
+                android:textColor="@color/black"
+                android:textColorHint="#999999"
+
+                app:layout_constraintWidth_percent="0.45"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/sendEmailAuthBtn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/rect_stroke_pink"
+                android:gravity="center"
+                android:text="인증번호 전송"
+                android:textColor="@color/text_pink"
+                android:textStyle="bold"
+
+                app:layout_constraintWidth_percent="0.3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/checkEmailAuthBtn"
+                app:layout_constraintStart_toEndOf="@+id/emailAuthET"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/checkEmailAuthBtn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/rect_stroke_pink"
+                android:gravity="center"
+                android:text="확인"
+                android:textColor="@color/text_pink"
+                android:textStyle="bold"
+
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <EditText
             android:id="@+id/pwdET"
