@@ -1,13 +1,21 @@
-package com.example.candy
+package com.example.candy.Activitiy
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.example.candy.R
+import com.example.candy.Util
+import com.example.candy.data.Join
 import com.example.candy.databinding.ActivitySignUpBinding
+import com.example.candy.retrofit.RetrofitAPI
+import com.example.candy.retrofit.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Response
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -34,17 +42,63 @@ class SignUpActivity : AppCompatActivity() {
 
         setListeners()
 
+        //for test
+        binding.emailET.setText("test1@naver.com")
+        binding.nameET.setText("20010101")
+        binding.pwdET.setText("1234")
+//        binding.parentPwdET.setText("12345")
+        binding.birthET.setText("20000101")
+        binding.phoneET.setText("010-1234-4321")
     }
 
     private fun setListeners(){
         with(binding){
             // 회원가입 버튼. MainActivity로 이동.
             signupBtn.setOnClickListener {
+                val api = RetrofitClient.getClient().create(RetrofitAPI::class.java)
+                val email = binding.emailET.text
+                val pwd = binding.pwdET.text
+                val parentPwd = "12345"//binding.parentPwdET.text
+                val name = binding.nameET.text
+                val phone = binding.phoneET.text
+                val birth = binding.birthET.text
+
+                val map = HashMap<String, Any>()
+                map["email"] = email
+                map["password"] = pwd
+                map["parent_password"] = parentPwd
+                map["name"] = name
+                map["phone"] = phone
+                map["birth"] = birth
+
+
+                CoroutineScope(Dispatchers.IO).launch{
+                    val response = api.signUp(map).enqueue(
+                        object: retrofit2.Callback<Join> {
+                            override fun onResponse(call: Call<Join>, response: Response<Join>) {
+                                Log.d("Body:: ",response.body()!!.toString())
+                                Log.d("Response:: ",response.body()!!.response.toString())
+                                Log.d("User:: ",response.body()!!.response.user.toString())
+                            }
+
+                            override fun onFailure(call: Call<Join>, t: Throwable) {
+                                Log.d("test  Failure:: ","Failed API call with call")
+                            }
+                        }
+                    )
+                    withContext(Dispatchers.Main){
+                        // UI
+                    }
+                }
+
+
+
+
                 //  Activity Stack 초기화 후 MainActivity 로 이동
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
+//                val intent = Intent(applicationContext, MainActivity::class.java)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                startActivity(intent)
             }
             // 이메일 중복 확인 버튼.
             emailDoubleCheckBtn.setOnClickListener {

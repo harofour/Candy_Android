@@ -1,9 +1,10 @@
-package com.example.candy
+package com.example.candy.Activitiy
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.candy.databinding.ActivityLogInBinding
+import kotlinx.coroutines.*
 
 
 class LogInActivity : AppCompatActivity() {
@@ -22,9 +23,10 @@ class LogInActivity : AppCompatActivity() {
     private fun setListeners(){
         with(binding){
             loginBtn.setOnClickListener {
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
-                finish()
+
+//                val intent = Intent(applicationContext, MainActivity::class.java)
+//                startActivity(intent)
+//                finish()
             }
             findIdBtn.setOnClickListener {
                 val intent = Intent(applicationContext, FindIdActivity::class.java)

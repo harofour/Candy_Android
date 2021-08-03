@@ -1,13 +1,14 @@
-package com.example.candy
+package com.example.candy.Activitiy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import com.example.candy.R
 
-class FindPasswordActivity : AppCompatActivity() {
+class FindIdActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_find_password)
+        setContentView(R.layout.activity_find_id)
         setSupportActionBar(findViewById(R.id.toolbar))
 
 
@@ -15,7 +16,7 @@ class FindPasswordActivity : AppCompatActivity() {
             setDisplayShowCustomEnabled(true)
             setDisplayShowTitleEnabled(true)
             setDisplayHomeAsUpEnabled(true)
-            title = "비밀번호 찾기"
+            title = "아이디 찾기"
         }
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

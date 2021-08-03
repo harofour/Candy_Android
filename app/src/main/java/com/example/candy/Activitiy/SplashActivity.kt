@@ -1,11 +1,11 @@
-package com.example.candy
+package com.example.candy.Activitiy
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import com.example.candy.databinding.ActivityLogInBinding
+import com.example.candy.R
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

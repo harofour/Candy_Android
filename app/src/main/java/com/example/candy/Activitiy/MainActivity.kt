@@ -1,15 +1,14 @@
-package com.example.candy
+package com.example.candy.Activitiy
 
 import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.fragment.app.Fragment
+import com.example.candy.R
 import com.example.candy.candy.CandyFragment
 import com.example.candy.challenge.ChallengeFragment
 import com.example.candy.databinding.ActivityMainBinding
-import com.example.candy.databinding.FragmentHomeBinding
 import com.example.candy.home.HomeFragment
 import com.example.candy.myPage.MyPageFragment
 import com.example.candy.viewModel.MainViewModel
