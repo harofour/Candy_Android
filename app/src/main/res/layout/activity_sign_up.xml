@@ -7,6 +7,7 @@
     android:background="@color/background"
     tools:context=".Activitiy.SignUpActivity">
     <include
+        android:id="@+id/toolbar"
         layout="@layout/view_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -14,15 +15,14 @@
         android:id="@+id/signupContainer"
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
 
         app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintHeight_percent="0.6"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/signupBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                 android:layout_height="0dp"
                 android:background="@drawable/rect_stroke_pink"
                 android:gravity="center"
-                android:text="인증번호 전송"
+                android:text="인증메일 전송"
                 android:textColor="@color/text_pink"
                 android:textStyle="bold"
 
@@ -127,6 +127,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="비밀번호 확인"
+            android:textColor="@color/black"
+            android:backgroundTint="#FDB1D8"
+            android:textColorHint="#999999"
+            android:drawableStart="@drawable/ic_baseline_lock_24"
+            android:drawablePadding="10dp"
+
+            android:layout_marginTop="20dp"/>
+        <EditText
+            android:id="@+id/parentPwdET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="2차 비밀번호"
+            android:textColor="@color/black"
+            android:backgroundTint="#FDB1D8"
+            android:textColorHint="#999999"
+            android:drawableStart="@drawable/ic_baseline_person_24"
+            android:drawablePadding="10dp"
+
+            android:layout_marginTop="20dp"/>
+        <EditText
+            android:id="@+id/parentPwdCheckET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="2차 비밀번호 확인"
             android:textColor="@color/black"
             android:backgroundTint="#FDB1D8"
             android:textColorHint="#999999"
@@ -185,7 +209,7 @@
 
         app:layout_constraintWidth_percent="0.8"
         app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signupContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
