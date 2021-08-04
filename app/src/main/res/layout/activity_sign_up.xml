@@ -142,7 +142,7 @@
             android:textColor="@color/black"
             android:backgroundTint="#FDB1D8"
             android:textColorHint="#999999"
-            android:drawableStart="@drawable/ic_baseline_person_24"
+            android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawablePadding="10dp"
 
             android:layout_marginTop="20dp"/>
