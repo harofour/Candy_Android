@@ -8,16 +8,20 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.candy.R
 import com.example.candy.Util
 import com.example.candy.data.ApiResponse
+import com.example.candy.data.SignUpData
 import com.example.candy.data.User
 import com.example.candy.databinding.ActivitySignUpBinding
 import com.example.candy.retrofit.RetrofitAPI
 import com.example.candy.retrofit.RetrofitClient
+import com.google.gson.Gson
+import com.google.gson.TypeAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Response
+import java.io.IOException
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -48,9 +52,9 @@ class SignUpActivity : AppCompatActivity() {
         //for test
         binding.emailET.setText("test1@naver.com")
         binding.nameET.setText("20010101")
-        binding.pwdET.setText("1234")
-//        binding.parentPwdET.setText("12345")
-        binding.birthET.setText("20000101")
+        binding.pwdET.setText("12341234")
+//        binding.parentPwdET.setText("12345123")
+        binding.birthET.setText("2000-01-01")
         binding.phoneET.setText("010-1234-4321")
     }
 
@@ -61,7 +65,7 @@ class SignUpActivity : AppCompatActivity() {
                 val api = RetrofitClient.getClient().create(RetrofitAPI::class.java)
                 val email = binding.emailET.text
                 val pwd = binding.pwdET.text
-                val parentPwd = "12345"//binding.parentPwdET.text
+                val parentPwd = "12345123"//binding.parentPwdET.text
                 val name = binding.nameET.text
                 val phone = binding.phoneET.text
                 val birth = binding.birthET.text
@@ -74,35 +78,43 @@ class SignUpActivity : AppCompatActivity() {
                 map["phone"] = phone
                 map["birth"] = birth
 
+                val signUpData = SignUpData(email.toString(), true, pwd.toString(), parentPwd, name.toString(), phone.toString(), birth.toString())
+
                 var userInfo: User?
 
 
                 CoroutineScope(Dispatchers.IO).launch{
-                    val response = api.signUp(map).enqueue(
-                        object: retrofit2.Callback<ApiResponse> {
-                            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
-                                Log.d("Body:: ",response.body()!!.toString())
-                                Log.d("Response:: ",response.body()!!.response.toString())
-                                Log.d("User:: ",response.body()!!.response.user.toString())
-                                userInfo = response.body()!!.response.user
+                    val response = api.signUp(signUpData).enqueue(object : retrofit2.Callback<ApiResponse> {
+                            override fun onResponse(
+                                call: Call<ApiResponse>,
+                                response: Response<ApiResponse>
+                            ) {
 
-                                if(response.body()!!.success){
+                                if (response.body()!!.success) {
+
+                                    Log.d("Body:: ", response.body()!!.toString())
+                                    Log.d("Response:: ", response.body()!!.response.toString())
+                                    Log.d("User:: ", response.body()!!.response.user.toString())
+                                    userInfo = response.body()!!.response.user
+
                                     //  Activity Stack 초기화 후 MainActivity 로 이동
-                                    val intent = Intent(applicationContext, MainActivity::class.java)
+                                    val intent = Intent(
+                                        applicationContext,
+                                        MainActivity::class.java
+                                    )
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    intent.putExtra("userInfo",userInfo)
+                                    intent.putExtra("userInfo", userInfo)
                                     startActivity(intent)
                                     finish()
-                                }
-                                else{
-                                    Log.d("Failure:: ","Sign up failed")
+                                } else {
+                                    Log.d("Failure:: ", "Sign up failed")
                                     Util().toast(applicationContext, "Sign up failed")
                                 }
                             }
 
                             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                                Log.d("Failure:: ","Failed API call with call")
+                                Log.d("Failure:: ", "Failed API call with call")
                                 Util().toast(applicationContext, "Failed API call with call")
                             }
                         }
@@ -147,7 +159,7 @@ class SignUpActivity : AppCompatActivity() {
                         isEmailAuthChecked = true
                     }else{
                         Util().toast(applicationContext, "다시 한번 확인해 주세요")
-                        println("${emailAuthET.text}  $gmailCode" )
+                        println("${emailAuthET.text}  $gmailCode")
                     }
                 }
             }

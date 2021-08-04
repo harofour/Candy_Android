@@ -65,6 +65,7 @@ dependencies {
     def retrofit_ver = "2.9.0"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_ver"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_ver"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 
 
 }
