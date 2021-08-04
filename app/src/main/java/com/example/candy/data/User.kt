@@ -1,10 +1,12 @@
 package com.example.candy.data
 
+import java.io.Serializable
+
 data class User(
-    val authority: Any,
-    val birth: String,
     val email: String,
+    val name: String,
     val id: Int,
+    val birth: String,
     val loginCount: Int,
-    val name: String
-)
+    val authority: Any
+):Serializable

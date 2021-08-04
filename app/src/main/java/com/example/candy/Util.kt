@@ -31,6 +31,7 @@ class Util {
         }
         return code
     }
+
     fun toast(context: Context, text: String){
         CoroutineScope(Dispatchers.Main).launch{
             Toast.makeText(context, text, Toast.LENGTH_SHORT).show()

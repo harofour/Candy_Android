@@ -1,7 +1,10 @@
 package com.example.candy.data
 
-data class Join(
+import java.io.Serializable
+
+data class ApiResponse(
     val error: Any,
     val response: Response,
     val success: Boolean
 )
+

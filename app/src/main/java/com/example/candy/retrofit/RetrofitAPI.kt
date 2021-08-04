@@ -1,7 +1,6 @@
 package com.example.candy.retrofit
 
-import com.example.candy.data.Join
-import com.example.candy.data.User
+import com.example.candy.data.ApiResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -14,12 +13,12 @@ interface RetrofitAPI {
     @POST("/user/join")
     fun signUp(
         @Body map: HashMap<String,Any>
-//        @Body email: String,
-//        @Body password: String,
-//        @Body parent_password: String,
-//        @Body name: String,
-//        @Body phone: String,
-//        @Body birth: Any
-    ): Call<Join>
+    ): Call<ApiResponse>
+
+
+    @POST("/auth/authenticate")
+    fun logIn(
+        @Body map: HashMap<String,Any>
+    ): Call<ApiResponse>
 
 }

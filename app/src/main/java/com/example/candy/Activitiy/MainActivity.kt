@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import com.example.candy.R
 import com.example.candy.candy.CandyFragment
 import com.example.candy.challenge.ChallengeFragment
+import com.example.candy.data.User
 import com.example.candy.databinding.ActivityMainBinding
 import com.example.candy.home.HomeFragment
 import com.example.candy.myPage.MyPageFragment
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var  candyFragment : CandyFragment
     private lateinit var  myPageFragment : MyPageFragment
 
+    private lateinit var userInfo: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +43,8 @@ class MainActivity : AppCompatActivity() {
         homeFrgment = HomeFragment.newInstance()
         supportFragmentManager.beginTransaction().add(R.id.framelayout_main, homeFrgment).commit()
 
-
-
-
-
-
+        // 회원가입 후 유저 정보 저장
+        userInfo = intent.getSerializableExtra("userInfo") as User
     }
 
     // 바텀네비게이션 아이템 클릭 리스너 설정

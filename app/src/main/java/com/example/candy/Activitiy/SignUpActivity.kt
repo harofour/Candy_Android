@@ -1,12 +1,14 @@
 package com.example.candy.Activitiy
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.candy.R
 import com.example.candy.Util
-import com.example.candy.data.Join
+import com.example.candy.data.ApiResponse
+import com.example.candy.data.User
 import com.example.candy.databinding.ActivitySignUpBinding
 import com.example.candy.retrofit.RetrofitAPI
 import com.example.candy.retrofit.RetrofitClient
@@ -19,6 +21,7 @@ import retrofit2.Response
 
 
 class SignUpActivity : AppCompatActivity() {
+    private val Tag = "SignUpActivity"
     private var mBinding: ActivitySignUpBinding? = null
     private val binding get() = mBinding!!
     private lateinit var gmailCode: String
@@ -71,18 +74,36 @@ class SignUpActivity : AppCompatActivity() {
                 map["phone"] = phone
                 map["birth"] = birth
 
+                var userInfo: User?
+
 
                 CoroutineScope(Dispatchers.IO).launch{
                     val response = api.signUp(map).enqueue(
-                        object: retrofit2.Callback<Join> {
-                            override fun onResponse(call: Call<Join>, response: Response<Join>) {
+                        object: retrofit2.Callback<ApiResponse> {
+                            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                                 Log.d("Body:: ",response.body()!!.toString())
                                 Log.d("Response:: ",response.body()!!.response.toString())
                                 Log.d("User:: ",response.body()!!.response.user.toString())
+                                userInfo = response.body()!!.response.user
+
+                                if(response.body()!!.success){
+                                    //  Activity Stack 초기화 후 MainActivity 로 이동
+                                    val intent = Intent(applicationContext, MainActivity::class.java)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    intent.putExtra("userInfo",userInfo)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                else{
+                                    Log.d("Failure:: ","Sign up failed")
+                                    Util().toast(applicationContext, "Sign up failed")
+                                }
                             }
 
-                            override fun onFailure(call: Call<Join>, t: Throwable) {
-                                Log.d("test  Failure:: ","Failed API call with call")
+                            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                                Log.d("Failure:: ","Failed API call with call")
+                                Util().toast(applicationContext, "Failed API call with call")
                             }
                         }
                     )
@@ -90,15 +111,6 @@ class SignUpActivity : AppCompatActivity() {
                         // UI
                     }
                 }
-
-
-
-
-                //  Activity Stack 초기화 후 MainActivity 로 이동
-//                val intent = Intent(applicationContext, MainActivity::class.java)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                startActivity(intent)
             }
             // 이메일 중복 확인 버튼.
             emailDoubleCheckBtn.setOnClickListener {
