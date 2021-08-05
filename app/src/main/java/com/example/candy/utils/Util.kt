@@ -1,7 +1,8 @@
-package com.example.candy
+package com.example.candy.utils
 
 import android.content.Context
 import android.widget.Toast
+import com.example.candy.GMailSender
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -9,7 +10,6 @@ import javax.mail.MessagingException
 import javax.mail.SendFailedException
 
 class Util {
-
     fun sendMail(context: Context, email: String): String?{
         val gMailSender = GMailSender("candyauth@gmail.com", "candy123!")
         val code = gMailSender.emailCode

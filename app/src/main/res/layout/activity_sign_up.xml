@@ -60,7 +60,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="10dp">
 
             <EditText
                 android:id="@+id/emailAuthET"
@@ -121,7 +121,7 @@
             android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawablePadding="10dp"
 
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
         <EditText
             android:id="@+id/pwdCheckET"
             android:layout_width="match_parent"
@@ -133,7 +133,7 @@
             android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawablePadding="10dp"
 
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
         <EditText
             android:id="@+id/parentPwdET"
             android:layout_width="match_parent"
@@ -145,7 +145,7 @@
             android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawablePadding="10dp"
 
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
         <EditText
             android:id="@+id/parentPwdCheckET"
             android:layout_width="match_parent"
@@ -157,7 +157,7 @@
             android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawablePadding="10dp"
 
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
         <EditText
             android:id="@+id/nameET"
             android:layout_width="match_parent"
@@ -169,7 +169,7 @@
             android:drawableStart="@drawable/ic_baseline_person_24"
             android:drawablePadding="10dp"
 
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
         <EditText
             android:id="@+id/phoneET"
             android:layout_width="match_parent"
@@ -181,7 +181,7 @@
             android:drawableStart="@drawable/ic_baseline_phone_24"
             android:drawablePadding="10dp"
 
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
         <EditText
             android:id="@+id/birthET"
             android:layout_width="match_parent"
@@ -193,7 +193,7 @@
             android:drawableStart="@drawable/ic_baseline_cake_24"
             android:drawablePadding="10dp"
 
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
