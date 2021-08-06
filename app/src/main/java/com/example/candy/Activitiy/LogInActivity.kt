@@ -50,55 +50,66 @@ class LogInActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             loginBtn.setOnClickListener {
-                val email = binding.emailET.text.toString()
-                val pwd = binding.pwdET.text.toString()
 
-                var userInfo: User
-
-                if(email.length in 4..50){
-
-                }
-
-                val reqData = HashMap<String,Any>()
-                reqData.put("email",email)
-                reqData.put("password",pwd)
-
-                CoroutineScope(Dispatchers.IO).launch{
-                    RetrofitManager.instance.logIn(reqData) { responseState, responseBody ->
-                        when (responseState){
-                            RESPONSE_STATE.SUCCESS -> {
-                                Log.d(Tag, "api 호출 성공: $responseBody")
-
-                                // String to Gson
-                                val result = Gson().fromJson(responseBody, ApiResponse::class.java)
-
-                                // 받은 User 객체 저장
-                                userInfo = result.response.user
-
-                                // 아이디 비밀번호 저장
-                                with(binding){
-                                    if(rememberIdPwdCheckBox.isChecked){
-
-                                    }
-                                }
-
-                                //  Activity Stack 초기화 후 MainActivity 로 이동
-                                val intent = Intent(
-                                    applicationContext,
-                                    MainActivity::class.java
-                                )
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                intent.putExtra("userInfo", userInfo)
-                                startActivity(intent)
-                                finish()
-                            }
-                            RESPONSE_STATE.FAILURE -> {
-                                Log.d(Tag, "api 호출 실패: $responseBody")
-                            }
-                        }
-                    }
-                }
+                //  Activity Stack 초기화 후 MainActivity 로 이동
+                val intent = Intent(
+                    applicationContext,
+                    MainActivity::class.java
+                )
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("userInfo", User("1","1",1,"1",1,"1"))
+                startActivity(intent)
+                finish()
+//                val email = binding.emailET.text.toString()
+//                val pwd = binding.pwdET.text.toString()
+//
+//                var userInfo: User
+//
+//                if(email.length in 4..50){
+//
+//                }
+//
+//                val reqData = HashMap<String,Any>()
+//                reqData.put("email",email)
+//                reqData.put("password",pwd)
+//
+//                CoroutineScope(Dispatchers.IO).launch{
+//                    RetrofitManager.instance.logIn(reqData) { responseState, responseBody ->
+//                        when (responseState){
+//                            RESPONSE_STATE.SUCCESS -> {
+//                                Log.d(Tag, "api 호출 성공: $responseBody")
+//
+//                                // String to Gson
+//                                val result = Gson().fromJson(responseBody, ApiResponse::class.java)
+//
+//                                // 받은 User 객체 저장
+//                                userInfo = result.response.user
+//
+//                                // 아이디 비밀번호 저장
+//                                with(binding){
+//                                    if(rememberIdPwdCheckBox.isChecked){
+//
+//                                    }
+//                                }
+//
+//                                //  Activity Stack 초기화 후 MainActivity 로 이동
+//                                val intent = Intent(
+//                                    applicationContext,
+//                                    MainActivity::class.java
+//                                )
+//                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                                intent.putExtra("userInfo", userInfo)
+//                                startActivity(intent)
+//                                finish()
+//                            }
+//                            RESPONSE_STATE.FAILURE -> {
+//                                Log.d(Tag, "api 호출 실패: $responseBody")
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
     }
