@@ -14,9 +14,6 @@ import java.lang.Exception
 object RetrofitClient {
     private var Tag = "RetrofitClient"
     private var retrofitClient: Retrofit? = null
-    private const val baseUrl: String = "http://221.159.102.58"
-
-
 
     fun getClient(url: String): Retrofit {
         Log.d(Tag,"getClient() called")

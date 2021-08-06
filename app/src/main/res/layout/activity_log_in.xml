@@ -8,10 +8,10 @@
     tools:context=".Activitiy.LogInActivity">
 
     <ImageView
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/logo_login"
-
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,10 +26,10 @@
 
         app:layout_constraintWidth_percent="0.8"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/LogInUtilContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo"
         >
         <EditText
             android:id="@+id/emailET"
@@ -45,7 +45,8 @@
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/pwdET"/>
         <EditText
             android:id="@+id/pwdET"
             android:layout_width="match_parent"
@@ -58,11 +59,21 @@
             android:drawableStart="@drawable/ic_baseline_lock_24"
             android:drawablePadding="10dp"
 
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/loginBtn"
+            app:layout_constraintBottom_toTopOf="@+id/rememberIdPwdCheckBox"
             app:layout_constraintTop_toBottomOf="@+id/emailET"/>
+
+        <CheckBox
+            android:id="@+id/rememberIdPwdCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아이디/비밀번호 저장"
+
+            app:layout_constraintBottom_toTopOf="@+id/loginBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pwdET"/>
 
         <TextView
             android:id="@+id/loginBtn"
@@ -73,17 +84,18 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="10dp"
 
             app:layout_constraintWidth_percent="0.8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pwdET"/>
+            app:layout_constraintTop_toBottomOf="@+id/rememberIdPwdCheckBox"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/LogInUtilContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintVertical_bias="0.9"

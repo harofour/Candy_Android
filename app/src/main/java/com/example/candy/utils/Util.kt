@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import javax.mail.MessagingException
 import javax.mail.SendFailedException
 
-class Util {
+object Util {
     fun sendMail(context: Context, email: String): String?{
         val gMailSender = GMailSender("candyauth@gmail.com", "candy123!")
         val code = gMailSender.emailCode

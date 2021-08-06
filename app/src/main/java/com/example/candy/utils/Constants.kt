@@ -17,5 +17,4 @@ enum class RESPONSE_STATE{
 
 object API {
     const val BASE_URL: String = "http://221.159.102.58/"
-
 }

@@ -6,9 +6,8 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.candy.R
-import com.example.candy.utils.Util
 import com.example.candy.data.ApiResponse
-import com.example.candy.data.SignUpData
+import com.example.candy.utils.Util
 import com.example.candy.data.User
 import com.example.candy.databinding.ActivitySignUpBinding
 import com.example.candy.retrofit.IRetrofit
@@ -16,12 +15,11 @@ import com.example.candy.retrofit.RetrofitClient
 import com.example.candy.retrofit.RetrofitManager
 import com.example.candy.utils.API.BASE_URL
 import com.example.candy.utils.RESPONSE_STATE
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Response
+import org.json.JSONObject
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -84,84 +82,70 @@ class SignUpActivity : AppCompatActivity() {
 
 //                if(email.length !in 4..50){
 //                    Log.d(Tag, "id 길이가 범위를 벗어남.")
-//                    Util().toast(applicationContext, "아이디는 4~50자사이로 입력해 주세요")
+//                    Util.toast(applicationContext, "아이디는 4~50자사이로 입력해 주세요")
 //                }else if(pwd.length !in 8..20){
 //                    Log.d(Tag, "password 길이가 범위를 벗어남.")
-//                    Util().toast(applicationContext, "비밀번호를 8~20자사이로 입력해 주세요")
+//                    Util.toast(applicationContext, "비밀번호를 8~20자사이로 입력해 주세요")
 //                }else if(parentPwd.length !in 8..20) {
 //                    Log.d(Tag, "parent password 길이가 범위를 벗어남")
-//                    Util().toast(applicationContext, "2차 비밀번호는 8~20자 사이로 입력해 주세요")
+//                    Util.toast(applicationContext, "2차 비밀번호는 8~20자 사이로 입력해 주세요")
 //                }else if(pwd != pwdCheck) {
 //                    Log.d(Tag, "parent 가 다름")
-//                    Util().toast(applicationContext, "비밀번호가 다릅니다.")
+//                    Util.toast(applicationContext, "비밀번호가 다릅니다.")
 //                }else if(parentPwd != parentPwdCheck) {
 //                    Log.d(Tag, "parent password 가 다름")
-//                    Util().toast(applicationContext, "2차 비밀번호가 다릅니다")
+//                    Util.toast(applicationContext, "2차 비밀번호가 다릅니다")
 //                }else{
                 if(true){
                     // 서버에 전송할 데이터
-                    val signUpData = SignUpData(email.toString(), true, pwd.toString(), parentPwd.toString(), name.toString(), phone.toString(), birth.toString())
+                    val reqData = HashMap<String,Any>()
+                    reqData.put("email",email)
+                    reqData.put("emailCheck",true)
+                    reqData.put("password", pwd)
+                    reqData.put("parent_password", parentPwd)
+                    reqData.put("name", name)
+                    reqData.put("phone", phone)
+                    reqData.put("birth", birth)
+
                     var userInfo: User?     // 서버로부터 받아온 유저 정보
 
-                    // 서버 통신
-                    CoroutineScope(Dispatchers.IO).launch{
-                        RetrofitManager.instance.signUp(signUpData){
-                                responseState, responseBody ->
-                            when (responseState){
-                                RESPONSE_STATE.SUCCESS -> {
-                                    Log.d(Tag, "api 호출 성공: $responseBody")
-                                }
-                                RESPONSE_STATE.FAILURE -> {
-                                    Log.d(Tag, "api 호출 실패: $responseBody")
+
+                    if(isEmailDoubleChecked && isEmailAuthChecked){
+                        if(isEmailAuthChecked){
+                            // 서버 통신
+                            CoroutineScope(Dispatchers.IO).launch{
+                                RetrofitManager.instance.signUp(reqData){ responseState, responseBody ->
+                                    when (responseState) {
+                                        RESPONSE_STATE.SUCCESS -> {
+                                            Log.d(Tag, "api 호출 성공: $responseBody")
+
+                                            // String to Gson
+                                            val result = Gson().fromJson(responseBody, ApiResponse::class.java)
+
+                                            // 받은 User 객체 저장
+                                            userInfo = result.response.user
+
+                                            val intent = Intent(
+                                                applicationContext,
+                                                MainActivity::class.java
+                                            )
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                            intent.putExtra("userInfo", userInfo)
+                                            startActivity(intent)
+                                            finish()
+                                        }
+                                        RESPONSE_STATE.FAILURE -> {
+                                            Log.d(Tag, "api 호출 실패: $responseBody")
+                                        }
+                                    }
                                 }
                             }
+                        }else{
+                            Util.toast(applicationContext, "이메일을 인증해 주세요")
                         }
-//                        val response = api.signUp(signUpData).enqueue(object : retrofit2.Callback<ApiResponse> {
-//                            override fun onResponse(
-//                                call: Call<ApiResponse>,
-//                                response: Response<ApiResponse>
-//                            ) {
-//                                // 통신 확인 과정 수정 필요
-//                                if (response.body()!!.success) {
-//                                    Log.d("Body:: ", response.body()!!.toString())
-//                                    Log.d("Response:: ", response.body()!!.response.toString())
-//                                    Log.d("User:: ", response.body()!!.response.user.toString())
-//                                    userInfo = response.body()!!.response.user
-//
-//                                    //  Activity Stack 초기화 후 MainActivity 로 이동
-//
-//                                    if(isEmailDoubleChecked && isEmailAuthChecked){
-//                                        if(isEmailAuthChecked){
-//                                            val intent = Intent(
-//                                                applicationContext,
-//                                                MainActivity::class.java
-//                                            )
-//                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                                            intent.putExtra("userInfo", userInfo)
-//                                            startActivity(intent)
-//                                            finish()
-//                                        }else{
-//                                            Util().toast(applicationContext, "이메일을 인증해 주세요")
-//                                        }
-//                                    }else{
-//                                        Util().toast(applicationContext, "이메일 중복을 확인해 주세요")
-//                                    }
-//                                } else {
-//                                    Log.d("Failure:: ", "Sign up failed")
-//                                    Util().toast(applicationContext, "Sign up failed")
-//                                }
-//                            }
-//
-//                            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-//                                Log.d("Failure:: ", "Failed API call with call")
-//                                Util().toast(applicationContext, "Failed API call with call")
-//                            }
-//                        }
-//                        )
-//                        withContext(Dispatchers.Main){
-//                            // UI
-//                        }
+                    }else{
+                        Util.toast(applicationContext, "이메일 중복을 확인해 주세요")
                     }
                 }
 
@@ -171,11 +155,11 @@ class SignUpActivity : AppCompatActivity() {
                 if(true){   // 중복 확인 성공
                     sendEmailAuthBtn.linksClickable
                     isEmailDoubleChecked = true
-                    Util().toast(applicationContext, "사용 가능한 이메일 입니다")
+                    Util.toast(applicationContext, "사용 가능한 이메일 입니다")
                     emailDoubleCheckBtn.isClickable = false
                 }else {
                     isEmailDoubleChecked = false
-                    Util().toast(applicationContext, "사용 중인 이메일 입니다.")
+                    Util.toast(applicationContext, "사용 중인 이메일 입니다.")
                 }
             }
             // 인증번호 전송 버튼.
@@ -184,7 +168,7 @@ class SignUpActivity : AppCompatActivity() {
                 if(!isEmailAuthSended){
                     if(isEmailDoubleChecked){
                         CoroutineScope(Dispatchers.IO).launch {
-                            Util().sendMail(applicationContext, emailET.text.toString())?.let{
+                            Util.sendMail(applicationContext, emailET.text.toString())?.let{
                                 gmailCode = it
                                 isEmailAuthSended = true
                             }
@@ -192,10 +176,10 @@ class SignUpActivity : AppCompatActivity() {
                         sendEmailAuthBtn.isClickable = false
 
                     }else{
-                        Util().toast(applicationContext, "이메일 중복을 확인해 주세요")
+                        Util.toast(applicationContext, "이메일 중복을 확인해 주세요")
                     }
                 }else{
-                    Util().toast(applicationContext, "인증 메일이 이미 전송되었습니다")
+                    Util.toast(applicationContext, "인증 메일이 이미 전송되었습니다")
                 }
             }
             // 인증번호 확인 버튼.
@@ -203,10 +187,10 @@ class SignUpActivity : AppCompatActivity() {
                 if(gmailCode == emailAuthET.text.toString()){
                     sendEmailAuthBtn.linksClickable
                     isEmailAuthChecked = true
-                    Util().toast(applicationContext, "이메일 인증이 완료되었습니다")
+                    Util.toast(applicationContext, "이메일 인증이 완료되었습니다")
                     checkEmailAuthBtn.isClickable = false
                 }else {
-                    Util().toast(applicationContext, "잘못된 인증 코드 입니다.")
+                    Util.toast(applicationContext, "잘못된 인증 코드 입니다.")
                     println("${emailAuthET.text} != $gmailCode")
                 }
             }
