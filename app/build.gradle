@@ -64,5 +64,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_ver"
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 
+    // UI - Circular TextView
+    implementation 'com.libRG:customtextview:2.2'
+
 
 }

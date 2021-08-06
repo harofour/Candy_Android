@@ -9,6 +9,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.candy.adapter.HomeCategoryRecyclerAdapter
 import com.example.candy.adapter.HomeChallengeOngoingRecyclerAdapter
+import com.example.candy.adapter.HorizontalItemDecorator
+import com.example.candy.adapter.VerticalItemDecorator
 import com.example.candy.data.DataHomeChallengeOngoing
 import com.example.candy.databinding.FragmentHomeBinding
 import com.example.candy.databinding.FragmentMypageBinding
@@ -52,6 +54,7 @@ class HomeFragment : Fragment() {
 
         homeBinding!!.homeRecyclerviewCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         homeBinding!!.homeRecyclerviewCategory.adapter = HomeCategoryRecyclerAdapter(categoryList)
+        homeBinding!!.homeRecyclerviewCategory.addItemDecoration(HorizontalItemDecorator(20))
 
 
         // 진행 중 챌린지 recycler   //테스트용 데이터
@@ -73,11 +76,12 @@ class HomeFragment : Fragment() {
         challengeOngoingList.add(DataHomeChallengeOngoing("영어", "5형식", "5형식 동사에 대한 이해",
                 8, 90))
 
-        challengeOngoingList.add(DataHomeChallengeOngoing("영어", "5형식", "5형식 동사에 대한 이해",
+        challengeOngoingList.add(DataHomeChallengeOngoing("한국사", "5형식", "5형식 동사에 대한 이해",
                 8, 90))
 
         homeBinding!!.homeRecyclerviewChallengeOngoing.layoutManager = LinearLayoutManager(context)
         homeBinding!!.homeRecyclerviewChallengeOngoing.adapter = HomeChallengeOngoingRecyclerAdapter(challengeOngoingList)
+        homeBinding!!.homeRecyclerviewChallengeOngoing.addItemDecoration(VerticalItemDecorator(10))
 
 
         // 진행 중 챌린지 리스트 livedata observe

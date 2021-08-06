@@ -24,9 +24,6 @@ class HomeCategoryRecyclerAdapter(
         val view =LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.item_home_recyclerview_category, viewGroup, false)
 
-        var params = view.layoutParams
-        params.height = viewGroup.measuredHeight / 4 * 3   //리사이클러뷰가 차지하는 높이 기준
-
         // 카테고리 텍스트 값에 따라 배경 색상 지정해주기
         //
         //

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import com.example.candy.R
-import com.example.candy.candy.CandyFragment
 import com.example.candy.challenge.ChallengeFragment
 import com.example.candy.data.User
 import com.example.candy.databinding.ActivityMainBinding
@@ -24,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var  homeFrgment : HomeFragment
     private lateinit var  challengeFragment : ChallengeFragment
-    private lateinit var  candyFragment : CandyFragment
     private lateinit var  myPageFragment : MyPageFragment
 
     private lateinit var userInfo: User
@@ -56,13 +54,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "MainActivity - 홈 탭 클릭!")
                 homeFrgment = HomeFragment.newInstance()
                 supportFragmentManager.beginTransaction().replace(R.id.framelayout_main, homeFrgment).commit()
-            }
-            R.id.item_candy -> {
-
-
-                Log.d(TAG, "MainActivity -  캔디 관리 탭 클릭!")
-                candyFragment = CandyFragment.newInstance()
-                supportFragmentManager.beginTransaction().replace(R.id.framelayout_main, candyFragment).commit()
             }
             R.id.item_challenge -> {
 

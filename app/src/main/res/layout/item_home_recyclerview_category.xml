@@ -5,59 +5,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="80dp"
-    android:layout_height="80dp">
+    android:layout_width="50dp"
+    android:layout_height="50dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
+    <com.libRG.CustomTextView
+        android:id="@+id/tv_category_name"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintDimensionRatio="1"
-        tools:ignore="MissingConstraints"
-        android:background="@drawable/main_category_rounded_1"
-        >
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/reycler_category_guideline_horizontal_30"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.3"/>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/reycler_category_guideline_horizontal_70"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.7"/>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/reycler_category_guideline_vertical_15"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.15"/>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/reycler_category_guideline_vertical_85"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.85"/>
-
-        <TextView
-            android:id="@+id/tv_category_name"
-            style="@style/tv_recycler_category_style"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="ALL"
-            app:layout_constraintBottom_toBottomOf="@id/reycler_category_guideline_horizontal_70"
-            app:layout_constraintBottom_toTopOf="@id/reycler_category_guideline_horizontal_70"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toRightOf="@id/reycler_category_guideline_vertical_15"
-            app:layout_constraintRight_toLeftOf="@id/reycler_category_guideline_vertical_85"
-            app:layout_constraintTop_toTopOf="@id/reycler_category_guideline_horizontal_30"
-            app:layout_constraintVertical_bias="0.0" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:gravity="center"
+        android:text="영어"
+        android:padding="10dp"
+        android:maxLines="1"
+        app:lib_setRoundedBGColor="#FBCFCF"
+        app:lib_setRoundedView="true"
+        app:lib_setShape="oval"
+        android:autoSizeMinTextSize="2sp"
+        android:autoSizeMaxTextSize="12sp"
+        android:autoSizeTextType="uniform"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
