@@ -5,14 +5,84 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidline_vertical_85"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidline_horizontal_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.01"/>
+
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/top_title_tv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintHeight_percent="0.04"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="챌린지"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/top_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_search_challenge"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/challenge_search_icon"
+        app:layout_constraintLeft_toRightOf="@id/guidline_vertical_85"
+        app:layout_constraintTop_toBottomOf="@id/guidline_horizontal_1"
+        app:layout_constraintWidth_percent="0.07"
+        app:layout_constraintHeight_percent="0.05"
+        />
+
+    <View
+        android:id="@+id/top_border"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#EBEBEB"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_search_challenge" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_border"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tabIndicatorColor="@color/black"
+        app:tabTextColor="#959595"
+        app:tabSelectedTextColor="@color/black"
+
+        />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tab_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="챌린지"
-        android:textSize="30dp"/>
+        android:layoutDirection="ltr"
+        />
+
+    <!-- ltr = left-> right swipe -->
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
