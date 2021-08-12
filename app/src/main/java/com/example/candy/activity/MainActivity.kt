@@ -1,4 +1,4 @@
-package com.example.candy.Activitiy
+package com.example.candy.activity
 
 import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity

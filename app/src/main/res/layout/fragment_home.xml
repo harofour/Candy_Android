@@ -309,8 +309,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_45"
-        app:layout_constraintLeft_toRightOf="@id/guideline_vertical_4"
-        app:layout_constraintRight_toLeftOf="@id/guideline_vertical_96"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         />
 
 

@@ -12,17 +12,17 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Candy">
-        <activity android:name=".Activitiy.SplashActivity">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activitiy.LogInActivity" />
-        <activity android:name=".Activitiy.SignUpActivity" />
-        <activity android:name=".Activitiy.FindPasswordActivity" />
-        <activity android:name=".Activitiy.FindIdActivity" />
-        <activity android:name=".Activitiy.MainActivity" />
+        <activity android:name=".activity.LogInActivity" />
+        <activity android:name=".activity.SignUpActivity" />
+        <activity android:name=".activity.FindPasswordActivity" />
+        <activity android:name=".activity.FindIdActivity" />
+        <activity android:name=".activity.MainActivity" />
     </application>
 </manifest>
