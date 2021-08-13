@@ -5,6 +5,7 @@ import com.example.candy.data.ApiResponse
 import com.example.candy.utils.API.BASE_URL
 import com.example.candy.utils.Constants.TAG
 import com.example.candy.utils.RESPONSE_STATE
+import com.google.gson.Gson
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
@@ -24,9 +25,11 @@ class RetrofitManager {
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 Log.d(TAG, "RetrofitManager - onResponse() called / response.body(): ${response.body()}")
                 Log.d(TAG, "RetrofitManager - onResponse() called / response.code(): ${response.code()}")
+
                 if(response.code() == 200){
                     // 성공
-                    completion(RESPONSE_STATE.SUCCESS, response.body().toString())
+                    val str = Gson().toJson(response.body(), ApiResponse::class.java).toString()
+                    completion(RESPONSE_STATE.SUCCESS, str)
                 }else{
                     // 실패
                     completion(RESPONSE_STATE.FAILURE, response.code().toString())
