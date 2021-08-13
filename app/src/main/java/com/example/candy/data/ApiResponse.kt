@@ -7,7 +7,7 @@ import java.io.Serializable
 data class ApiResponse(
     @SerializedName("error")
     @Expose
-    val error: Any,
+    val error: Error?,
     @SerializedName("response")
     @Expose
     val response: Response,

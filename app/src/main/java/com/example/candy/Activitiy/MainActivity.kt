@@ -11,12 +11,13 @@ import com.example.candy.data.User
 import com.example.candy.databinding.ActivityMainBinding
 import com.example.candy.home.HomeFragment
 import com.example.candy.myPage.MyPageFragment
+import com.example.candy.utils.CurrentUser
 import com.example.candy.viewModel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
-
+    private val Tag = "MainActivity"
     private var mainBinding: ActivityMainBinding? = null
 
     private val mainViewModel: MainViewModel by viewModels()
@@ -24,8 +25,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var  homeFrgment : HomeFragment
     private lateinit var  challengeFragment : ChallengeFragment
     private lateinit var  myPageFragment : MyPageFragment
-
-    private lateinit var userInfo: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +34,15 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(mainBinding!!.root)
 
-
         mainBinding?.bottomNavView?.setOnNavigationItemSelectedListener(onBottomNavItemSelectedListener)
 
         homeFrgment = HomeFragment.newInstance()
         supportFragmentManager.beginTransaction().add(R.id.framelayout_main, homeFrgment).commit()
 
-        // 회원가입 후 유저 정보 저장
-        userInfo = intent.getSerializableExtra("userInfo") as User
+        // 로그인 후 유저 정보 저장
+        CurrentUser.userInfo = intent.getSerializableExtra("userInfo") as User
+        CurrentUser.userToken = "Bearer ${intent.getStringExtra(" userToken ")}"
+        Log.d(Tag, ".\n userInfo : ${CurrentUser.userInfo}   \n userToken : ${CurrentUser.userToken}")
     }
 
     // 바텀네비게이션 아이템 클릭 리스너 설정
