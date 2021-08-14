@@ -40,14 +40,37 @@ class RetrofitManager {
                 Log.d(TAG, "RetrofitManager - onFailure() called / t: $t")
                 completion(RESPONSE_STATE.FAILURE, t.toString())
             }
-
         })
 
     }
+
     fun signUp(data: HashMap<String,Any>, completion: (RESPONSE_STATE, String) -> Unit){
         val call = iRetrofit?.signUp(data) ?: return
 
         call.enqueue(object : retrofit2.Callback<ApiResponse> {
+            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                Log.d(TAG, "RetrofitManager - onResponse() called / response.body(): ${response.body()}")
+                Log.d(TAG, "RetrofitManager - onResponse() called / response.code(): ${response.code()}")
+                if(response.code() == 200){
+                    // 성공
+                    completion(RESPONSE_STATE.SUCCESS, response.body().toString())
+                }else{
+                    // 실패
+                    completion(RESPONSE_STATE.FAILURE, response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                Log.d(TAG, "RetrofitManager - onFailure() called / t: $t")
+                completion(RESPONSE_STATE.FAILURE, t.toString())
+            }
+        })
+    }
+
+    fun verifyEmail(data: HashMap<String,Any>, completion: (RESPONSE_STATE, String) -> Unit){
+        val call = iRetrofit?.verifyEmail(data) ?: return
+
+        call.enqueue(object : retrofit2.Callback<ApiResponse>{
             override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
                 Log.d(TAG, "RetrofitManager - onResponse() called / response.body(): ${response.body()}")
                 Log.d(TAG, "RetrofitManager - onResponse() called / response.code(): ${response.code()}")

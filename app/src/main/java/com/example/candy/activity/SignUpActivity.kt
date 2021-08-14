@@ -19,16 +19,15 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : BaseActivity() {
     private val Tag = "SignUpActivity"
     private var mBinding: ActivitySignUpBinding? = null
     private val binding get() = mBinding!!
     private lateinit var gmailCode: String
 
-    private var isEmailDoubleChecked = false
+    private var isEmailVerified = false
     private var isEmailAuthSended = false
     private var isEmailAuthChecked = false
 
@@ -80,6 +79,7 @@ class SignUpActivity : AppCompatActivity() {
                 map["birth"] = birth
 
 
+                // 회원가입 정보 조건 체크
 //                if(email.length !in 4..50){
 //                    Log.d(Tag, "id 길이가 범위를 벗어남.")
 //                    Util.toast(applicationContext, "아이디는 4~50자사이로 입력해 주세요")
@@ -96,6 +96,7 @@ class SignUpActivity : AppCompatActivity() {
 //                    Log.d(Tag, "parent password 가 다름")
 //                    Util.toast(applicationContext, "2차 비밀번호가 다릅니다")
 //                }else{
+
                 if(true){
                     // 서버에 전송할 데이터
                     val reqData = HashMap<String,Any>()
@@ -110,7 +111,7 @@ class SignUpActivity : AppCompatActivity() {
                     var userInfo: User?     // 서버로부터 받아온 유저 정보
 
 
-                    if(isEmailDoubleChecked && isEmailAuthChecked){
+                    if(isEmailVerified && isEmailAuthChecked){
                         if(isEmailAuthChecked){
                             // 서버 통신
                             CoroutineScope(Dispatchers.IO).launch{
@@ -151,14 +152,39 @@ class SignUpActivity : AppCompatActivity() {
 
             }
             // 이메일 중복 확인 버튼.
-            emailDoubleCheckBtn.setOnClickListener {
+            verifyEmailButton.setOnClickListener {
+                val email = binding.emailET.text.toString()
+                val reqData = HashMap<String,Any>()
+                reqData.put("email",email)
+
                 if(true){   // 중복 확인 성공
+                    CoroutineScope(Dispatchers.IO).launch{
+                        RetrofitManager.instance.verifyEmail(reqData){responseState, responseBody ->
+                            when(responseState){
+                                RESPONSE_STATE.SUCCESS -> {
+                                    // String to Gson
+                                    val result = Gson().fromJson(responseBody, ApiResponse::class.java)
+
+//                                    if(result.response. ???){
+//                                        isEmailVerified = true
+//                                    }else{
+//
+//                                    }
+                                }
+                                RESPONSE_STATE.FAILURE -> {
+
+                                }
+                            }
+
+                        }
+                    }
+
                     sendEmailAuthBtn.linksClickable
-                    isEmailDoubleChecked = true
+                    isEmailVerified = true
                     Util.toast(applicationContext, "사용 가능한 이메일 입니다")
-                    emailDoubleCheckBtn.isClickable = false
+                    verifyEmailButton.isClickable = false
                 }else {
-                    isEmailDoubleChecked = false
+                    isEmailVerified = false
                     Util.toast(applicationContext, "사용 중인 이메일 입니다.")
                 }
             }
@@ -166,7 +192,7 @@ class SignUpActivity : AppCompatActivity() {
             sendEmailAuthBtn.setOnClickListener {
                 // 메일 전송.
                 if(!isEmailAuthSended){
-                    if(isEmailDoubleChecked){
+                    if(isEmailVerified){
                         CoroutineScope(Dispatchers.IO).launch {
                             Util.sendMail(applicationContext, emailET.text.toString())?.let{
                                 gmailCode = it
@@ -196,16 +222,4 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
     }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                //toolbar의 back키 눌렀을 때 동작
-                finish()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-
 }

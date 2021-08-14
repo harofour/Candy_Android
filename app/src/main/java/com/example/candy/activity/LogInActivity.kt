@@ -22,7 +22,7 @@ import kotlin.concurrent.fixedRateTimer
 import kotlin.concurrent.timer
 
 
-class LogInActivity : AppCompatActivity() {
+class LogInActivity : BaseActivity() {
     private val Tag: String = "LogInActivity"
     private var mBinding: ActivityLogInBinding? = null
     private val binding get() = mBinding!!

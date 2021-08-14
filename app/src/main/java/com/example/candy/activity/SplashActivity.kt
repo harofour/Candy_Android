@@ -19,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
         }, 1000)
     }
 
-    // 뒤로가기 x
     override fun onBackPressed() {
+        // 뒤로가기 x
     }
 }
