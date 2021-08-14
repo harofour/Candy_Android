@@ -16,5 +16,14 @@ interface IRetrofit {
     fun signUp(@Body sighUpData: HashMap<String,Any>): Call<ApiResponse>
 
     // 이메일 중복 확인
+    @POST("user/email/exist")
     fun verifyEmail(@Body emailData: HashMap<String,Any>): Call<ApiResponse>
+
+    // 이메일 찾기
+    @POST("user/find_email")
+    fun findEmail(@Body emailData: HashMap<String,Any>): Call<ApiResponse>
+
+    // 비밀번호 재설정
+    @POST("user/new_pw")
+    fun resetPassword(@Body emailData: HashMap<String,Any>): Call<ApiResponse>
 }

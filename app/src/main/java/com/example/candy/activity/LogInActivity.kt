@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.data.ApiResponse
 import com.example.candy.data.User
 import com.example.candy.databinding.ActivityLogInBinding
 import com.example.candy.retrofit.RetrofitManager
+import com.example.candy.utils.REQUEST_TYPE
 import com.example.candy.utils.RESPONSE_STATE
 import com.example.candy.utils.Util
 import com.google.gson.Gson
@@ -94,12 +96,11 @@ class LogInActivity : BaseActivity() {
                 reqData.put("password",pwd)
 
                 CoroutineScope(Dispatchers.IO).launch{
-                    RetrofitManager.instance.logIn(reqData) { responseState, responseBody ->
+                    RetrofitManager.instance.request(reqData, REQUEST_TYPE.LOG_IN) { responseState, responseBody ->
                         when (responseState){
                             RESPONSE_STATE.SUCCESS -> {
                                 Log.d(Tag, "api 호출 성공: $responseBody")
 
-                                // String to Gson
                                 try {
                                     // parse String to Json
                                     val result = Gson().fromJson(responseBody, ApiResponse::class.java)

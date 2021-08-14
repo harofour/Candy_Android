@@ -3,6 +3,7 @@ package com.example.candy.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.R
 
 class FindIdActivity : BaseActivity() {

@@ -22,8 +22,9 @@
         </activity>
         <activity android:name=".activity.LogInActivity" />
         <activity android:name=".activity.SignUpActivity" />
-        <activity android:name=".activity.FindPasswordActivity" />
         <activity android:name=".activity.FindIdActivity" />
+        <activity android:name=".activity.FindPasswordActivity" />
+        <activity android:name=".activity.ResetPasswordActivity" />
         <activity android:name=".activity.MainActivity" />
     </application>
 </manifest>

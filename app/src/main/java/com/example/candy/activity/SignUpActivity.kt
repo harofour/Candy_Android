@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.R
 import com.example.candy.data.ApiResponse
 import com.example.candy.utils.Util
@@ -14,6 +15,7 @@ import com.example.candy.retrofit.IRetrofit
 import com.example.candy.retrofit.RetrofitClient
 import com.example.candy.retrofit.RetrofitManager
 import com.example.candy.utils.API.BASE_URL
+import com.example.candy.utils.REQUEST_TYPE
 import com.example.candy.utils.RESPONSE_STATE
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -115,7 +117,7 @@ class SignUpActivity : BaseActivity() {
                         if(isEmailAuthChecked){
                             // 서버 통신
                             CoroutineScope(Dispatchers.IO).launch{
-                                RetrofitManager.instance.signUp(reqData){ responseState, responseBody ->
+                                RetrofitManager.instance.request(reqData, REQUEST_TYPE.SIGN_UP){ responseState, responseBody ->
                                     when (responseState) {
                                         RESPONSE_STATE.SUCCESS -> {
                                             Log.d(Tag, "api 호출 성공: $responseBody")
@@ -159,7 +161,7 @@ class SignUpActivity : BaseActivity() {
 
                 if(true){   // 중복 확인 성공
                     CoroutineScope(Dispatchers.IO).launch{
-                        RetrofitManager.instance.verifyEmail(reqData){responseState, responseBody ->
+                        RetrofitManager.instance.request(reqData, REQUEST_TYPE.VERIFY_EMAIL){ responseState, responseBody ->
                             when(responseState){
                                 RESPONSE_STATE.SUCCESS -> {
                                     // String to Gson

@@ -14,7 +14,9 @@ object CurrentUser {
 enum class REQUEST_TYPE {
     LOG_IN,
     SIGN_UP,
-    EMAIL_DOUBLE_CHECK
+    FIND_EMAIL,
+    RESET_PASSWORD,
+    VERIFY_EMAIL
 }
 
 enum class RESPONSE_STATE{

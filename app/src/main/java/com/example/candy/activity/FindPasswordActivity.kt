@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.R
 import com.example.candy.databinding.ActivityFindPasswordBinding
 import com.example.candy.databinding.ActivityLogInBinding
@@ -59,8 +60,8 @@ class FindPasswordActivity : BaseActivity() {
             }
 
             finishButton.setOnClickListener {
-                val intent = Intent(applicationContext,ResetPasswordActivity::class.java)
-                startActivity(intent)
+//                val intent = Intent(applicationContext,ResetPasswordActivity::class.java)
+//                startActivity(intent)
             }
         }
     }
