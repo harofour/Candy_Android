@@ -14,4 +14,7 @@ interface IRetrofit {
     // 회원가입
     @POST("user/join")
     fun signUp(@Body sighUpData: HashMap<String,Any>): Call<ApiResponse>
+
+    // 이메일 중복 확인
+    fun verifyEmail(@Body emailData: HashMap<String,Any>): Call<ApiResponse>
 }

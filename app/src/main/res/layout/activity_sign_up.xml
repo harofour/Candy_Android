@@ -43,7 +43,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
                 <TextView
-                    android:id="@+id/emailDoubleCheckBtn"
+                    android:id="@+id/verifyEmailButton"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/rect_stroke_pink"
