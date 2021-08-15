@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         // 로그인 후 유저 정보 저장
         CurrentUser.userInfo = intent.getSerializableExtra("userInfo") as User
-        CurrentUser.userToken = "Bearer ${intent.getStringExtra(" userToken ")}"
+        CurrentUser.userToken = "Bearer ${intent.getStringExtra("userToken")}"
         Log.d(Tag, ".\n userInfo : ${CurrentUser.userInfo}   \n userToken : ${CurrentUser.userToken}")
     }
 
