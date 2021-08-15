@@ -2,26 +2,17 @@ package com.example.candy.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import com.example.candy.Activitiy.BaseActivity
-import com.example.candy.data.ApiResponse
+import com.example.candy.data.ApiUserResponse
 import com.example.candy.data.User
 import com.example.candy.databinding.ActivityLogInBinding
 import com.example.candy.retrofit.RetrofitManager
 import com.example.candy.utils.REQUEST_TYPE
 import com.example.candy.utils.RESPONSE_STATE
-import com.example.candy.utils.Util
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.*
-import org.json.JSONObject
-import java.lang.IllegalStateException
-import java.util.concurrent.TimeUnit
-import java.util.logging.Handler
-import kotlin.concurrent.fixedRateTimer
-import kotlin.concurrent.timer
 
 
 class LogInActivity : BaseActivity() {
@@ -34,7 +25,7 @@ class LogInActivity : BaseActivity() {
         mBinding = ActivityLogInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setListeners()
+        initListeners()
 
         with(binding){
             // 아이디 비밀번호 불러오기
@@ -46,13 +37,13 @@ class LogInActivity : BaseActivity() {
 
         // for test
         with(binding){
-            emailET.setText("hi@naver.com")
-            pwdET.setText("rhdahwjs12")
+            emailET.setText("candy@naver.com")
+            pwdET.setText("candy123")
         }
     }
 
 
-    private fun setListeners(){
+    private fun initListeners(){
         with(binding){
             //for test
             logo.setOnClickListener{val intent = Intent(applicationContext, MainActivity::class.java)
@@ -106,14 +97,14 @@ class LogInActivity : BaseActivity() {
                 reqData.put("password",pwd)
 
                 CoroutineScope(Dispatchers.IO).launch{
-                    RetrofitManager.instance.request(reqData, REQUEST_TYPE.LOG_IN) { responseState, responseBody ->
+                    RetrofitManager.instance.requestUser(reqData, REQUEST_TYPE.LOG_IN) { responseState, responseBody ->
                         when (responseState){
                             RESPONSE_STATE.SUCCESS -> {
                                 Log.d(Tag, "api 호출 성공: $responseBody")
 
                                 try {
                                     // parse String to Json
-                                    val result = Gson().fromJson(responseBody, ApiResponse::class.java)
+                                    val result = Gson().fromJson(responseBody, ApiUserResponse::class.java)
 
                                     // 받은 data 저장
                                     userInfo = result.response.user

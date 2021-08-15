@@ -3,18 +3,14 @@ package com.example.candy.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.R
-import com.example.candy.data.ApiResponse
+import com.example.candy.data.ApiUserResponse
+import com.example.candy.data.Response
 import com.example.candy.utils.Util
 import com.example.candy.data.User
 import com.example.candy.databinding.ActivitySignUpBinding
-import com.example.candy.retrofit.IRetrofit
-import com.example.candy.retrofit.RetrofitClient
 import com.example.candy.retrofit.RetrofitManager
-import com.example.candy.utils.API.BASE_URL
 import com.example.candy.utils.REQUEST_TYPE
 import com.example.candy.utils.RESPONSE_STATE
 import com.google.gson.Gson
@@ -46,22 +42,21 @@ class SignUpActivity : BaseActivity() {
             title = "회원가입"
         }
 
-        setListeners()
+        initListeners()
 
         //for test
-        binding.emailET.setText("hi@naver.com")
-        binding.nameET.setText("20010101")
-        binding.pwdET.setText("rhdahwjs12")
-        binding.parentPwdET.setText("rhdahwjs12")
+        binding.emailET.setText("candy@naver.com")
+        binding.nameET.setText("candy")
+        binding.pwdET.setText("candy123")
+        binding.parentPwdET.setText("candy123")
         binding.birthET.setText("2000-01-01")
         binding.phoneET.setText("010-1234-4321")
     }
 
-    private fun setListeners(){
+    private fun initListeners(){
         with(binding){
             // 회원가입 버튼. MainActivity로 이동.
             signupBtn.setOnClickListener {
-                val api = RetrofitClient.getClient(BASE_URL).create(IRetrofit::class.java)
 
                 val email = binding.emailET.text.toString()
                 val pwd = binding.pwdET.text.toString()
@@ -72,13 +67,6 @@ class SignUpActivity : BaseActivity() {
                 val phone = binding.phoneET.text.toString()
                 val birth = binding.birthET.text.toString()
 
-                val map = HashMap<String, Any>()
-                map["email"] = email
-                map["password"] = pwd
-                map["parentPassword"] = parentPwd
-                map["name"] = name
-                map["phone"] = phone
-                map["birth"] = birth
 
 
                 // 회원가입 정보 조건 체크
@@ -118,17 +106,19 @@ class SignUpActivity : BaseActivity() {
                         if(/*isEmailAuthChecked*/true){
                             // 서버 통신
                             CoroutineScope(Dispatchers.IO).launch{
-                                RetrofitManager.instance.request(reqData, REQUEST_TYPE.SIGN_UP){ responseState, responseBody ->
+                                RetrofitManager.instance.requestUser(reqData, REQUEST_TYPE.SIGN_UP){ responseState, responseBody ->
                                     when (responseState) {
                                         RESPONSE_STATE.SUCCESS -> {
                                             Log.d(Tag, "api 호출 성공: $responseBody")
 
                                             // String to Gson
-                                            val result = Gson().fromJson(responseBody, ApiResponse::class.java)
+                                            val result = Gson().fromJson(responseBody, ApiUserResponse::class.java)
 
                                             // 받은 User 객체 저장
-                                            userInfo = result.response.user
-                                            userToken = result.response.apiToken
+                                            with(result.response as Response){
+                                                userInfo = user
+                                                userToken = apiToken
+                                            }
 
                                             val intent = Intent(
                                                 applicationContext,
@@ -164,11 +154,11 @@ class SignUpActivity : BaseActivity() {
 
                 if(true){   // 중복 확인 성공
                     CoroutineScope(Dispatchers.IO).launch{
-                        RetrofitManager.instance.request(reqData, REQUEST_TYPE.VERIFY_EMAIL){ responseState, responseBody ->
+                        RetrofitManager.instance.requestUser(reqData, REQUEST_TYPE.VERIFY_EMAIL){ responseState, responseBody ->
                             when(responseState){
                                 RESPONSE_STATE.SUCCESS -> {
                                     // String to Gson
-                                    val result = Gson().fromJson(responseBody, ApiResponse::class.java)
+                                    val result = Gson().fromJson(responseBody, ApiUserResponse::class.java)
 
 
 //                                    if(result.response. ???){
