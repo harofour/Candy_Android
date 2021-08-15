@@ -49,10 +49,10 @@ class SignUpActivity : BaseActivity() {
         setListeners()
 
         //for test
-        binding.emailET.setText("test1@naver.com")
+        binding.emailET.setText("hi@naver.com")
         binding.nameET.setText("20010101")
-        binding.pwdET.setText("12341234")
-        binding.parentPwdET.setText("12345123")
+        binding.pwdET.setText("rhdahwjs12")
+        binding.parentPwdET.setText("rhdahwjs12")
         binding.birthET.setText("2000-01-01")
         binding.phoneET.setText("010-1234-4321")
     }
@@ -75,7 +75,7 @@ class SignUpActivity : BaseActivity() {
                 val map = HashMap<String, Any>()
                 map["email"] = email
                 map["password"] = pwd
-                map["parent_password"] = parentPwd
+                map["parentPassword"] = parentPwd
                 map["name"] = name
                 map["phone"] = phone
                 map["birth"] = birth
@@ -105,16 +105,17 @@ class SignUpActivity : BaseActivity() {
                     reqData.put("email",email)
                     reqData.put("emailCheck",true)
                     reqData.put("password", pwd)
-                    reqData.put("parent_password", parentPwd)
+                    reqData.put("parentPassword", parentPwd)
                     reqData.put("name", name)
                     reqData.put("phone", phone)
                     reqData.put("birth", birth)
 
-                    var userInfo: User?     // 서버로부터 받아온 유저 정보
+                    var userInfo: User     // 서버로부터 받아온 유저 정보
+                    var userToken: String
 
 
-                    if(isEmailVerified && isEmailAuthChecked){
-                        if(isEmailAuthChecked){
+                    if(/*isEmailVerified && isEmailAuthChecked*/ true){
+                        if(/*isEmailAuthChecked*/true){
                             // 서버 통신
                             CoroutineScope(Dispatchers.IO).launch{
                                 RetrofitManager.instance.request(reqData, REQUEST_TYPE.SIGN_UP){ responseState, responseBody ->
@@ -127,6 +128,7 @@ class SignUpActivity : BaseActivity() {
 
                                             // 받은 User 객체 저장
                                             userInfo = result.response.user
+                                            userToken = result.response.apiToken
 
                                             val intent = Intent(
                                                 applicationContext,
@@ -135,6 +137,7 @@ class SignUpActivity : BaseActivity() {
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                             intent.putExtra("userInfo", userInfo)
+                                            intent.putExtra("userToken", userToken)
                                             startActivity(intent)
                                             finish()
                                         }
@@ -166,6 +169,7 @@ class SignUpActivity : BaseActivity() {
                                 RESPONSE_STATE.SUCCESS -> {
                                     // String to Gson
                                     val result = Gson().fromJson(responseBody, ApiResponse::class.java)
+
 
 //                                    if(result.response. ???){
 //                                        isEmailVerified = true

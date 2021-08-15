@@ -54,6 +54,16 @@ class LogInActivity : BaseActivity() {
 
     private fun setListeners(){
         with(binding){
+            //for test
+            logo.setOnClickListener{val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("userInfo", User(1,"1","1","1",1))
+                intent.putExtra("userToken", "userToken")
+                startActivity(intent)
+                finish()
+            }
+
             findIdBtn.setOnClickListener {
                 val intent = Intent(applicationContext, FindIdActivity::class.java)
                 startActivity(intent)

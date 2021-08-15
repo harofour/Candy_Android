@@ -34,6 +34,7 @@ class RetrofitManager {
                 Log.d(TAG, "RetrofitManager - onResponse() called / response.code(): ${response.code()}")
                 if(response.code() == 200){
                     // 성공
+                    // gson -> json -> string
                     val str = Gson().toJson(response.body(), ApiResponse::class.java).toString()
                     completion(RESPONSE_STATE.SUCCESS, str)
 
