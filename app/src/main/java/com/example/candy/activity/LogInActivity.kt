@@ -1,8 +1,11 @@
 package com.example.candy.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.widget.CompoundButton
 import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.data.ApiUserResponse
 import com.example.candy.data.User
@@ -18,8 +21,14 @@ import kotlinx.coroutines.*
 
 class LogInActivity : BaseActivity() {
     private val Tag: String = "LogInActivity"
+
     private var mBinding: ActivityLogInBinding? = null
     private val binding get() = mBinding!!
+
+    // SharedPreferences
+    private val preferenceName = "LOG_IN_DATA"
+    private val preferences: SharedPreferences by lazy { getSharedPreferences(preferenceName, Context.MODE_PRIVATE) }
+    private val prefEditor: SharedPreferences.Editor by lazy { preferences.edit() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,31 +38,46 @@ class LogInActivity : BaseActivity() {
         initListeners()
 
         with(binding){
+            // 기억하기 체크박스 불러오기
+            rememberIdPwdCheckBox.isChecked = preferences.getBoolean("rememberIdPwd",false)
+
             // 아이디 비밀번호 불러오기
             if(rememberIdPwdCheckBox.isChecked){
-                emailET.setText("")
-                pwdET.setText("")
+                emailET.setText(preferences.getString("email", ""))
+                pwdET.setText(preferences.getString("password", ""))
             }
-        }
 
-        // for test
-        with(binding){
+            // for test
             emailET.setText("candy@naver.com")
             pwdET.setText("candy123")
         }
+
     }
 
 
     private fun initListeners(){
         with(binding){
-            //for test
             logo.setOnClickListener{val intent = Intent(applicationContext, MainActivity::class.java)
+                // for test
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.putExtra("userInfo", User(1,"1","1","1",1))
                 intent.putExtra("userToken", "userToken")
                 startActivity(intent)
                 finish()
+            }
+
+            // 아이디 비밀번호 기억하기 체크박스
+            rememberIdPwdCheckBox.setOnCheckedChangeListener { _, isChecked ->
+                prefEditor.putBoolean("rememberIdPwd", isChecked)
+                    .commit()
+
+                // 체크 해제한 경우 저장된 정보 지움
+                if(!isChecked){
+                    prefEditor.putString("email","")
+                    prefEditor.putString("password","")
+                        .commit()
+                }
             }
 
             findIdBtn.setOnClickListener {
@@ -103,12 +127,15 @@ class LogInActivity : BaseActivity() {
                             userInfo = result.response.user
                             userToken = result.response.apiToken
 
-//                                    // 아이디 비밀번호 저장
-//                                    with(binding){
-//                                        if(rememberIdPwdCheckBox.isChecked){
-//
-//                                        }
-//                                    }
+                            // 아이디 비밀번호 저장
+                            with(binding){
+                                Log.d(Tag,"test")
+                                if(rememberIdPwdCheckBox.isChecked){
+                                    prefEditor.putString("email",email)
+                                    prefEditor.putString("password",pwd)
+                                        .commit()
+                                }
+                            }
 
                             //  Activity Stack 초기화 후 MainActivity 로 이동
                             val intent = Intent(
