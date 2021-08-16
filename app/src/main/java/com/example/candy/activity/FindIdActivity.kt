@@ -38,22 +38,26 @@ class FindIdActivity : BaseActivity() {
     private fun initListeners() {
         with(binding) {
             findBtn.setOnClickListener {
+                findId()
+            }
+        }
+    }
 
-                val data = HashMap<String, Any>()
-                data.put("name",nameET.text.toString())
-                RetrofitManager.instance.requestString(data, REQUEST_TYPE.FIND_EMAIL){ responseState, responseBody ->
-                    when(responseState){
-                        RESPONSE_STATE.SUCCESS->{
-                            val result = Gson().fromJson(responseBody, ApiStringResponse::class.java)
-                            val name = result.response
-                            Log.d(Tag, name)
+    private fun findId() {
+        val data = HashMap<String, Any>()
+        data.put("name",binding.nameET.text.toString())
 
-                            Util.toast(applicationContext, "아이디는 '$name' 입니다")
-                        }
-                        RESPONSE_STATE.FAILURE->{
-                            Util.toast(applicationContext, "아이디를 찾기를 실패했습니다.")
-                        }
-                    }
+        RetrofitManager.instance.requestString(data, REQUEST_TYPE.FIND_EMAIL){ responseState, responseBody ->
+            when(responseState){
+                RESPONSE_STATE.SUCCESS->{
+                    val result = Gson().fromJson(responseBody, ApiStringResponse::class.java)
+                    val name = result.response
+                    Log.d(Tag, name)
+
+                    Util.toast(applicationContext, "아이디는 '$name' 입니다")
+                }
+                RESPONSE_STATE.FAILURE->{
+                    Util.toast(applicationContext, "아이디를 찾기를 실패했습니다.")
                 }
             }
         }

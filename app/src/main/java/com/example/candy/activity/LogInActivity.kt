@@ -69,33 +69,39 @@ class LogInActivity : BaseActivity() {
                 startActivity(intent)
             }
             loginBtn.setOnClickListener {
-                val email = binding.emailET.text.toString()
-                val pwd = binding.pwdET.text.toString()
+                logIn()
+            }
+        }
+    }
 
-                var userInfo: User
-                var userToken: String
+    private fun logIn() {
+        val email = binding.emailET.text.toString()
+        val pwd = binding.pwdET.text.toString()
 
-                if(email.length in 4..50){
+        var userInfo: User
+        var userToken: String
 
-                }
+        if(email.length in 4..50){
 
-                val reqData = HashMap<String,Any>()
-                reqData.put("email",email)
-                reqData.put("password",pwd)
+        }
 
-                CoroutineScope(Dispatchers.IO).launch{
-                    RetrofitManager.instance.requestUser(reqData, REQUEST_TYPE.LOG_IN) { responseState, responseBody ->
-                        when (responseState){
-                            RESPONSE_STATE.SUCCESS -> {
-                                Log.d(Tag, "api 호출 성공: $responseBody")
+        val reqData = HashMap<String,Any>()
+        reqData.put("email",email)
+        reqData.put("password",pwd)
 
-                                try {
-                                    // parse String to Json
-                                    val result = Gson().fromJson(responseBody, ApiUserResponse::class.java)
+        CoroutineScope(Dispatchers.IO).launch{
+            RetrofitManager.instance.requestUser(reqData, REQUEST_TYPE.LOG_IN) { responseState, responseBody ->
+                when (responseState){
+                    RESPONSE_STATE.SUCCESS -> {
+                        Log.d(Tag, "api 호출 성공: $responseBody")
 
-                                    // 받은 data 저장
-                                    userInfo = result.response.user
-                                    userToken = result.response.apiToken
+                        try {
+                            // parse String to Json
+                            val result = Gson().fromJson(responseBody, ApiUserResponse::class.java)
+
+                            // 받은 data 저장
+                            userInfo = result.response.user
+                            userToken = result.response.apiToken
 
 //                                    // 아이디 비밀번호 저장
 //                                    with(binding){
@@ -104,27 +110,25 @@ class LogInActivity : BaseActivity() {
 //                                        }
 //                                    }
 
-                                    //  Activity Stack 초기화 후 MainActivity 로 이동
-                                    val intent = Intent(
-                                        applicationContext,
-                                        MainActivity::class.java
-                                    )
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    intent.putExtra("userInfo", userInfo)
-                                    intent.putExtra("userToken", userToken)
-                                    startActivity(intent)
-                                    finish()
+                            //  Activity Stack 초기화 후 MainActivity 로 이동
+                            val intent = Intent(
+                                applicationContext,
+                                MainActivity::class.java
+                            )
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            intent.putExtra("userInfo", userInfo)
+                            intent.putExtra("userToken", userToken)
+                            startActivity(intent)
+                            finish()
 
-                                }catch (e: JsonSyntaxException){
-                                    e.printStackTrace()
-                                }
-                            }
-                            RESPONSE_STATE.FAILURE -> {
-                                Log.d(Tag, "api 호출 실패: $responseBody")
-                                Util.toast(applicationContext, "로그인에 실패하였습니다")
-                            }
+                        }catch (e: JsonSyntaxException){
+                            e.printStackTrace()
                         }
+                    }
+                    RESPONSE_STATE.FAILURE -> {
+                        Log.d(Tag, "api 호출 실패: $responseBody")
+                        Util.toast(applicationContext, "로그인에 실패하였습니다")
                     }
                 }
             }
