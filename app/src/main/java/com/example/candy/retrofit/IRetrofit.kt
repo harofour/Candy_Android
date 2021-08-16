@@ -24,6 +24,14 @@ interface IRetrofit {
     @POST("user/find_email")
     fun findEmail(@Body emailData: HashMap<String,Any>): Call<ApiStringResponse>
 
+    // 이메일 인증
+    @POST("user/email")
+    fun sendAuth(@Body emailData: HashMap<String,Any>): Call<ApiBooleanResponse>
+
+    // 이메일 인증 코드 확인
+    @POST("user/email/validate")
+    fun checkAuth(@Body emailData: HashMap<String,Any>): Call<ApiBooleanResponse>
+
     // 비밀번호 재설정
     @POST("user/new_pw")
     fun resetPassword(@Body emailData: HashMap<String,Any>): Call<ApiBooleanResponse>

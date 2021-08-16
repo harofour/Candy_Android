@@ -83,6 +83,8 @@ class RetrofitManager {
         when(type){
             REQUEST_TYPE.VERIFY_EMAIL ->  call = iRetrofit?.verifyEmail(data)
             REQUEST_TYPE.RESET_PASSWORD -> call = iRetrofit?.resetPassword(data)
+            REQUEST_TYPE.SEND_AUTH -> call = iRetrofit?.sendAuth(data)
+            REQUEST_TYPE.CHECK_AUTH -> call = iRetrofit?.checkAuth(data)
             else -> return
         }
         call?.enqueue(object : retrofit2.Callback<ApiBooleanResponse>{

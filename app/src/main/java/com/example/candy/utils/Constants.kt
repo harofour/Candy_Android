@@ -16,7 +16,9 @@ enum class REQUEST_TYPE {
     SIGN_UP,
     FIND_EMAIL,
     RESET_PASSWORD,
-    VERIFY_EMAIL
+    VERIFY_EMAIL,
+    SEND_AUTH,
+    CHECK_AUTH
 }
 
 enum class RESPONSE_STATE{

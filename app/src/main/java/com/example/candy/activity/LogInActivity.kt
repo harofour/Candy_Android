@@ -10,6 +10,7 @@ import com.example.candy.databinding.ActivityLogInBinding
 import com.example.candy.retrofit.RetrofitManager
 import com.example.candy.utils.REQUEST_TYPE
 import com.example.candy.utils.RESPONSE_STATE
+import com.example.candy.utils.Util
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.*
@@ -68,20 +69,6 @@ class LogInActivity : BaseActivity() {
                 startActivity(intent)
             }
             loginBtn.setOnClickListener {
-
-//                //  Activity Stack 초기화 후 MainActivity 로 이동
-//                val intent = Intent(
-//                    applicationContext,
-//                    MainActivity::class.java
-//                )
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                intent.putExtra("userInfo", User("1","1",1,"1",1,"1"))
-//                startActivity(intent)
-//                finish()
-
-
-
                 val email = binding.emailET.text.toString()
                 val pwd = binding.pwdET.text.toString()
 
@@ -132,12 +119,10 @@ class LogInActivity : BaseActivity() {
                                 }catch (e: JsonSyntaxException){
                                     e.printStackTrace()
                                 }
-
-
-
                             }
                             RESPONSE_STATE.FAILURE -> {
                                 Log.d(Tag, "api 호출 실패: $responseBody")
+                                Util.toast(applicationContext, "로그인에 실패하였습니다")
                             }
                         }
                     }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.R
+import com.example.candy.data.ApiBooleanResponse
 import com.example.candy.data.ApiUserResponse
 import com.example.candy.data.Response
 import com.example.candy.utils.Util
@@ -154,18 +155,12 @@ class SignUpActivity : BaseActivity() {
 
                 if(true){   // 중복 확인 성공
                     CoroutineScope(Dispatchers.IO).launch{
-                        RetrofitManager.instance.requestUser(reqData, REQUEST_TYPE.VERIFY_EMAIL){ responseState, responseBody ->
+                        RetrofitManager.instance.requestBoolean(reqData, REQUEST_TYPE.VERIFY_EMAIL){ responseState, responseBody ->
                             when(responseState){
                                 RESPONSE_STATE.SUCCESS -> {
                                     // String to Gson
-                                    val result = Gson().fromJson(responseBody, ApiUserResponse::class.java)
-
-
-//                                    if(result.response. ???){
-//                                        isEmailVerified = true
-//                                    }else{
-//
-//                                    }
+                                    val result = Gson().fromJson(responseBody, ApiBooleanResponse::class.java)
+                                    isEmailVerified = result.response
                                 }
                                 RESPONSE_STATE.FAILURE -> {
 
