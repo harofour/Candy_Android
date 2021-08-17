@@ -1,4 +1,4 @@
-package com.example.candy.retrofit
+package com.example.candy.model.api
 
 import com.example.candy.data.ApiBooleanResponse
 import com.example.candy.data.ApiUserResponse
@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface IRetrofit {
+interface LogInApi {
     // 로그인
     @POST("auth/authenticate")
     fun logIn(@Body logInData: HashMap<String,Any>): Call<ApiUserResponse>

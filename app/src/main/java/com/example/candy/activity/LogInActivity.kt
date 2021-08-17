@@ -5,10 +5,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.widget.CompoundButton
 import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.data.ApiUserResponse
-import com.example.candy.data.User
+import com.example.candy.model.data.User
 import com.example.candy.databinding.ActivityLogInBinding
 import com.example.candy.retrofit.RetrofitManager
 import com.example.candy.utils.REQUEST_TYPE
@@ -45,13 +44,11 @@ class LogInActivity : BaseActivity() {
             if(rememberIdPwdCheckBox.isChecked){
                 emailET.setText(preferences.getString("email", ""))
                 pwdET.setText(preferences.getString("password", ""))
+            }else{
+                emailET.setText("candy@naver.com")
+                pwdET.setText("candy123")
             }
-
-            // for test
-            emailET.setText("candy@naver.com")
-            pwdET.setText("candy123")
         }
-
     }
 
 

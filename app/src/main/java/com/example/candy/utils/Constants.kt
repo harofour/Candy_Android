@@ -1,6 +1,6 @@
 package com.example.candy.utils
 
-import com.example.candy.data.User
+import com.example.candy.model.data.User
 
 object Constants {
     const val TAG : String = "로그"

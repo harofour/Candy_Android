@@ -9,7 +9,7 @@ import com.example.candy.data.ApiBooleanResponse
 import com.example.candy.data.ApiUserResponse
 import com.example.candy.data.Response
 import com.example.candy.utils.Util
-import com.example.candy.data.User
+import com.example.candy.model.data.User
 import com.example.candy.databinding.ActivitySignUpBinding
 import com.example.candy.retrofit.RetrofitManager
 import com.example.candy.utils.REQUEST_TYPE

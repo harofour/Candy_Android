@@ -1,8 +1,18 @@
 package com.example.candy.data
 
+import com.example.candy.model.data.Error
+import com.example.candy.model.data.User
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
+
+data class Response(
+    @SerializedName("apiToken")
+    @Expose
+    val apiToken: String,
+    @SerializedName("user")
+    @Expose
+    val user: User
+)
 
 data class ApiUserResponse(
     @SerializedName("error")

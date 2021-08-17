@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.candy.data.ApiBooleanResponse
 import com.example.candy.data.ApiUserResponse
 import com.example.candy.data.ApiStringResponse
+import com.example.candy.model.api.LogInApi
+import com.example.candy.model.api.RetrofitClient
 import com.example.candy.utils.API.BASE_URL
 import com.example.candy.utils.Constants.TAG
 import com.example.candy.utils.REQUEST_TYPE
@@ -18,13 +20,13 @@ class RetrofitManager {
         val instance = RetrofitManager()
     }
 
-    private val iRetrofit : IRetrofit? = RetrofitClient.getClient(BASE_URL).create(IRetrofit::class.java)
+    private val logInApi : LogInApi? = RetrofitClient.getClient(BASE_URL).create(LogInApi::class.java)
 
     fun requestUser(data: HashMap<String,Any>, type: REQUEST_TYPE, completion: (RESPONSE_STATE, String) -> Unit){
         var call: Call<ApiUserResponse>? = null
         when(type){
-            REQUEST_TYPE.LOG_IN -> call = iRetrofit?.logIn(data)
-            REQUEST_TYPE.SIGN_UP -> call = iRetrofit?.signUp(data)
+            REQUEST_TYPE.LOG_IN -> call = logInApi?.logIn(data)
+            REQUEST_TYPE.SIGN_UP -> call = logInApi?.signUp(data)
             else -> return
         }
         call?.enqueue(object : retrofit2.Callback<ApiUserResponse>{
@@ -53,7 +55,7 @@ class RetrofitManager {
     fun requestString(data: HashMap<String,Any>, type: REQUEST_TYPE, completion: (RESPONSE_STATE, String) -> Unit){
         var call: Call<ApiStringResponse>? = null
         when(type){
-            REQUEST_TYPE.FIND_EMAIL -> call = iRetrofit?.findEmail(data)
+            REQUEST_TYPE.FIND_EMAIL -> call = logInApi?.findEmail(data)
         }
         call?.enqueue(object : retrofit2.Callback<ApiStringResponse>{
             override fun onResponse(call: Call<ApiStringResponse>, response: Response<ApiStringResponse>) {
@@ -81,10 +83,10 @@ class RetrofitManager {
     fun requestBoolean(data: HashMap<String,Any>, type: REQUEST_TYPE, completion: (RESPONSE_STATE, String) -> Unit){
         var call: Call<ApiBooleanResponse>? = null
         when(type){
-            REQUEST_TYPE.VERIFY_EMAIL ->  call = iRetrofit?.verifyEmail(data)
-            REQUEST_TYPE.RESET_PASSWORD -> call = iRetrofit?.resetPassword(data)
-            REQUEST_TYPE.SEND_AUTH -> call = iRetrofit?.sendAuth(data)
-            REQUEST_TYPE.CHECK_AUTH -> call = iRetrofit?.checkAuth(data)
+            REQUEST_TYPE.VERIFY_EMAIL ->  call = logInApi?.verifyEmail(data)
+            REQUEST_TYPE.RESET_PASSWORD -> call = logInApi?.resetPassword(data)
+            REQUEST_TYPE.SEND_AUTH -> call = logInApi?.sendAuth(data)
+            REQUEST_TYPE.CHECK_AUTH -> call = logInApi?.checkAuth(data)
             else -> return
         }
         call?.enqueue(object : retrofit2.Callback<ApiBooleanResponse>{
