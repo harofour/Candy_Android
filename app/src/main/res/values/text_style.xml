@@ -39,6 +39,14 @@
         <item name="fontFamily">@font/nanum_square_round_bold</item>
     </style>
 
+    <style name="tv_recycler_category_style2">
+        <item name="android:textColor">#3A3A3A</item>
+        <item name="autoSizeMinTextSize">2sp</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="android:gravity">center</item>
+        <item name="fontFamily">@font/nanum_square_round_bold</item>
+    </style>
+
     <style name="tv_title_style">
         <item name="android:textColor">#000000</item>
         <item name="autoSizeMinTextSize">2sp</item>
