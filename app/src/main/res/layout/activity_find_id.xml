@@ -32,55 +32,8 @@
             android:textColor="@color/black"
             android:backgroundTint="#FDB1D8"
             android:textColorHint="#999999"
-            android:drawableStart="@drawable/ic_baseline_email_24"
+            android:drawableStart="@drawable/ic_baseline_person_24"
             android:drawablePadding="10dp"/>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="20dp">
-            <EditText
-                android:id="@+id/phoneET"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="휴대폰 번호"
-                android:textColor="@color/black"
-                android:backgroundTint="#FDB1D8"
-                android:textColorHint="#999999"
-                android:drawableStart="@drawable/ic_baseline_phone_24"
-                android:drawablePadding="10dp"
-
-                app:layout_constraintWidth_percent="0.55"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/rect_stroke_pink"
-                android:text="인증번호 전송"
-                android:gravity="center"
-                android:textColor="@color/text_pink"
-                android:textStyle="bold"
-
-                app:layout_constraintWidth_percent="0.4"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <EditText
-            android:id="@+id/phoneCheckET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="인증번호 확인"
-            android:textColor="@color/black"
-            android:backgroundTint="#FDB1D8"
-            android:textColorHint="#999999"
-            android:drawableStart="@drawable/ic_baseline_smartphone_24"
-            android:drawablePadding="10dp"
-
-            android:layout_marginTop="20dp"/>
-
     </LinearLayout>
 
     <TextView
@@ -99,4 +52,5 @@
         app:layout_constraintTop_toBottomOf="@+id/findIdContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

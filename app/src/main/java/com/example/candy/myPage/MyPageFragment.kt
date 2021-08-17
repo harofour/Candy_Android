@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.candy.R
-import com.example.candy.data.Candy
-import com.example.candy.data.User
+import com.example.candy.model.data.Candy
+import com.example.candy.model.data.User
 import com.example.candy.databinding.FragmentHomeBinding
 import com.example.candy.databinding.FragmentMypageBinding
 import com.example.candy.home.HomeFragment

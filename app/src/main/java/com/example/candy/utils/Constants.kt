@@ -2,8 +2,8 @@ package com.example.candy.utils
 
 
 import androidx.lifecycle.MutableLiveData
-import com.example.candy.data.Candy
-import com.example.candy.data.User
+import com.example.candy.model.data.Candy
+import com.example.candy.model.data.User
 
 object Constants {
     const val TAG : String = "로그"
@@ -20,7 +20,9 @@ enum class REQUEST_TYPE {
     SIGN_UP,
     FIND_EMAIL,
     RESET_PASSWORD,
-    VERIFY_EMAIL
+    VERIFY_EMAIL,
+    SEND_AUTH,
+    CHECK_AUTH
 }
 
 enum class RESPONSE_STATE{

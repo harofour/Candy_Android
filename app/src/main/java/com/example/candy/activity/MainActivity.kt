@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import com.example.candy.R
 import com.example.candy.challenge.ChallengeFragment
-import com.example.candy.data.User
+import com.example.candy.model.data.User
 import com.example.candy.databinding.ActivityMainBinding
 import com.example.candy.home.HomeFragment
 import com.example.candy.myPage.CandyViewModel

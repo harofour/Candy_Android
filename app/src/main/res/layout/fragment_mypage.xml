@@ -5,10 +5,10 @@
     <data>
         <variable
             name="user"
-            type="com.example.candy.data.User" />
+            type="com.example.candy.model.data.User" />
         <variable
             name="candy"
-            type="com.example.candy.data.Candy" />
+            type="com.example.candy.model.data.Candy" />
         <variable
             name="viewModel"
             type="com.example.candy.myPage.CandyViewModel" />

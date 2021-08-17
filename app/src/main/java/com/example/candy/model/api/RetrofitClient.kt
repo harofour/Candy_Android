@@ -1,4 +1,4 @@
-package com.example.candy.retrofit
+package com.example.candy.model.api
 
 import android.util.Log
 import com.example.candy.utils.isJsonArray
