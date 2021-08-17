@@ -23,7 +23,7 @@ class ChallengeFragment : Fragment() {
 
     private var challengeBinding : FragmentChallengeBinding? = null   // onDestory 에서 완벽한 제거를 위해 null 허용
 
-    private val mainViewModel : MainViewModel by activityViewModels()    // 프래그먼트 간에 뷰 모델 공유하기 위해 액티비티의 뷰모델 인스턴스 사용
+    //private val mainViewModel : MainViewModel by activityViewModels()    // 프래그먼트 간에 뷰 모델 공유하기 위해 액티비티의 뷰모델 인스턴스 사용
 
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
@@ -75,6 +75,8 @@ class ChallengeFragment : Fragment() {
                 else -> {"TAB"}
             }
         }.attach()
+
+        Log.d("fragment check","ChallengeFragment onViewCreated")
     }
 
 

@@ -7,9 +7,7 @@ data class DataHomeChallengeOngoing(
         val assigned_candy: Int,
         val required_score: Int,
         val complete: Boolean = false
-) {
-
-}
+)
 
 
 
