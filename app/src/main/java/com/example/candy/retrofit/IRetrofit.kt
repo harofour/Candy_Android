@@ -1,9 +1,11 @@
 package com.example.candy.retrofit
 
 import com.example.candy.data.ApiResponse
+import com.example.candy.data.CandyResponse
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface IRetrofit {
@@ -26,4 +28,8 @@ interface IRetrofit {
     // 비밀번호 재설정
     @POST("user/new_pw")
     fun resetPassword(@Body emailData: HashMap<String,Any>): Call<ApiResponse>
+
+    // 학생캔디 조회
+    @GET("candy/student")
+    fun getCandyStudent() : Call<CandyResponse>
 }

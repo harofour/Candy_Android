@@ -1,19 +1,26 @@
 package com.example.candy.myPage
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import com.example.candy.R
+import com.example.candy.data.Candy
+import com.example.candy.data.User
 import com.example.candy.databinding.FragmentHomeBinding
 import com.example.candy.databinding.FragmentMypageBinding
 import com.example.candy.home.HomeFragment
+import com.example.candy.utils.CurrentUser
+import com.example.candy.viewModel.MainViewModel
 
 class MyPageFragment: Fragment() {
-
-    private var mypageBinding : FragmentMypageBinding? = null   // onDestory 에서 완벽한 제거를 위해 null 허용
-
-    //private val mypageBinding get() = _mypageBinding!! // 매번 null 체크를 할 필요 없이 편의성을 위해 바인딩 변수 재선언
+    private lateinit var binding: FragmentMypageBinding
+    private val viewModel: CandyViewModel by viewModels()
 
     companion object {
         const val TAG : String = "로그"
@@ -24,18 +31,37 @@ class MyPageFragment: Fragment() {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?):
-            View? {
-        val binding = FragmentMypageBinding.inflate(inflater, container, false)
-        mypageBinding = binding
-        return mypageBinding!!.root
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d(TAG, "MyPageFragment - onAttach() called")
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mypage,container,false)
+        Log.d(TAG, "MyPageFragment - onCreateView() called")
+        return binding.root
 
 
+    }
 
-    override fun onDestroyView() {
-        mypageBinding = null
-        super.onDestroyView()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        binding.user = viewModel.getUserInfo()
+
+        viewModel.getCandyStudent().observe(viewLifecycleOwner,{
+            binding.candy = it
+        })
+
+        // 캔디 수 변경하는 임시 버튼
+        binding.tempBtn.setOnClickListener {
+            CurrentUser.userCandy.value = Candy("32")
+        }
+
     }
 }

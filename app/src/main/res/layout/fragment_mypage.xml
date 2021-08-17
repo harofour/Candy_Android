@@ -1,194 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/top_title_tv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.5"
-        app:layout_constraintHeight_percent="0.04"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="마이페이지"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toTopOf="@+id/top_border"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+    <data>
+        <variable
+            name="user"
+            type="com.example.candy.data.User" />
+        <variable
+            name="candy"
+            type="com.example.candy.data.Candy" />
+        <variable
+            name="viewModel"
+            type="com.example.candy.myPage.CandyViewModel" />
+    </data>
 
-    <View
-        android:id="@+id/top_border"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="#EBEBEB"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_title_tv" />
-
-    <LinearLayout
-        android:id="@+id/user_info"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.18"
-        android:orientation="vertical"
-        android:paddingVertical="15dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_border">
+        android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_user_name"
-            android:layout_width="match_parent"
+            android:id="@+id/top_title_tv"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="16"
-            android:text="김아아"
-            android:textColor="@android:color/black"
+            app:layout_constraintWidth_percent="0.5"
+            app:layout_constraintHeight_percent="0.04"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="마이페이지"
             android:textStyle="bold"
-            android:textSize="16sp"
-            android:gravity="center"/>
-        <TextView
-            android:id="@+id/tv_user_email"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="15"
-            android:text="candy@gamil.com"
-            android:textSize="14sp"
-            android:gravity="center"/>
-        <TextView
-            android:id="@+id/tv_user_candy"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="12"
-            android:text="보유 중인 캔디 : 111개"
-            android:textSize="12sp"
-            android:gravity="center"/>
-    </LinearLayout>
-    <View
-        android:id="@+id/user_info_border"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#EBEBEB"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_info"/>
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toTopOf="@+id/top_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/menu"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintWidth_percent="0.9"
-        app:layout_constraintHeight_percent="0.33"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_info_border">
+        <View
+            android:id="@+id/top_border"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="#EBEBEB"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_title_tv" />
 
         <LinearLayout
+            android:id="@+id/user_info"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
+            app:layout_constraintHeight_percent="0.18"
+            android:orientation="vertical"
+            android:paddingVertical="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/top_border">
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:iconGravity="top"
-                android:text="정보변경"
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                app:icon="@drawable/profile_icon"/>
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="16"
+                android:text="@{user.name}"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:gravity="center" />
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:iconGravity="top"
-                android:text="비밀번호 변경"
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                app:icon="@drawable/ic_baseline_lock_24"/>
+            <TextView
+                android:id="@+id/tv_user_email"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="15"
+                android:text="@{user.email}"
+                android:textSize="14sp"
+                android:gravity="center" />
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:iconGravity="top"
-                android:text="캔디 내역"
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                app:icon="@drawable/ic_baseline_history_24"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="12"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    android:text="보유 중인 캔디 : "/>
+                <TextView
+                    android:id="@+id/tv_user_candy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@{candy.candy}"
+                    android:textSize="12sp"
+                    android:gravity="center" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
+        <View
+            android:id="@+id/user_info_border"
             android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#EBEBEB"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_info" />
+
+        <LinearLayout
+            android:id="@+id/menu"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintHeight_percent="0.33"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_info_border">
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                app:iconGravity="top"
-                android:text="캔디 인출"
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                app:icon="@drawable/ic_baseline_attach_money_24"/>
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:iconGravity="top"
-                android:text="캔디 충전"
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                app:icon="@drawable/ic_baseline_credit_card_24"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/temp_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconGravity="top"
+                    android:text="정보변경"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                    app:icon="@drawable/profile_icon" />
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconGravity="top"
+                    android:text="비밀번호 변경"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                    app:icon="@drawable/ic_baseline_lock_24" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconGravity="top"
+                    android:text="캔디 내역"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                    app:icon="@drawable/ic_baseline_history_24" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                app:iconGravity="top"
-                android:text="임시"
-                style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                app:icon="@drawable/bottom_nav_icon_challenge"/>
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconGravity="top"
+                    android:text="캔디 인출"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                    app:icon="@drawable/ic_baseline_attach_money_24" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconGravity="top"
+                    android:text="캔디 충전"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                    app:icon="@drawable/ic_baseline_credit_card_24" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:iconGravity="top"
+                    android:text="임시"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                    app:icon="@drawable/bottom_nav_icon_challenge" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:id="@+id/menu_border"
-        android:background="#EBEBEB"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menu"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/menu_border"
+            android:background="#EBEBEB"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menu" />
 
-    <Button
-        android:id="@+id/outlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintWidth_percent="0.8"
-        android:paddingVertical="10dp"
-        android:text="로그아웃"
-        android:textColor="#F874AB"
-        app:strokeColor="#FDB1D8"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        <Button
+            android:id="@+id/outlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintWidth_percent="0.8"
+            android:paddingVertical="10dp"
+            android:text="로그아웃"
+            android:textColor="#F874AB"
+            app:strokeColor="#FDB1D8"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
 
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

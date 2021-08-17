@@ -1,5 +1,8 @@
 package com.example.candy.utils
 
+
+import androidx.lifecycle.MutableLiveData
+import com.example.candy.data.Candy
 import com.example.candy.data.User
 
 object Constants {
@@ -9,6 +12,7 @@ object Constants {
 object CurrentUser {
     var userInfo: User? = null
     var userToken: String? = null
+    var userCandy =  MutableLiveData<Candy>()
 }
 
 enum class REQUEST_TYPE {
