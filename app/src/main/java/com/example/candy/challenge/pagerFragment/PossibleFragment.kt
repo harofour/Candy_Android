@@ -1,5 +1,6 @@
 package com.example.candy.challenge.pagerFragment
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.SyncStateContract
 import android.util.Log
@@ -73,11 +74,20 @@ class PossibleFragment: Fragment() {
             }
         }).get(PossibleChallengeViewModel::class.java)
 
+        // 도전 가능 챌린지 리스트 observe
         viewModel.possibleChallengeLiveData.observe(viewLifecycleOwner,{
             (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).updateList(it)
         })
 
-
+        // progressbar observe
+        viewModel.progressVisible.observe(viewLifecycleOwner, {
+            if(it){
+                possibleChallengeBinding!!.progressbar.visibility = View.VISIBLE
+            }
+            else{
+                possibleChallengeBinding!!.progressbar.visibility = View.GONE
+            }
+        })
 
     }
 

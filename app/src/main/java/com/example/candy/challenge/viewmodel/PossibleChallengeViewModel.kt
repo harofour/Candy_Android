@@ -16,13 +16,18 @@ class PossibleChallengeViewModel(
     val possibleChallengeLiveData = MutableLiveData<List<Challenge>>()
     private var possibleChallengeDataList : List<Challenge>? = null// 외부에서 수정 불가
 
+    var progressVisible = MutableLiveData<Boolean>() // progressbar
+
     fun getAllPossibleChallengeList(){
         viewModelScope.launch {
 
+            progressVisible.postValue(true)
             possibleChallengeDataList = challengeRepository.searchPossibleChallenge(CurrentUser.userToken!!)
             Log.d("api test", "getAllPossibleChallengeList 호출")
-            if(possibleChallengeDataList != null)
+            if(possibleChallengeDataList != null){
                 possibleChallengeLiveData.value = possibleChallengeDataList!!
+                progressVisible.postValue(false)
+            }
         }
     }
 
