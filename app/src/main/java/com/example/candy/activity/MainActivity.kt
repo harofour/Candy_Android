@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         CurrentUser.userToken = "Bearer ${intent.getStringExtra("userToken")}"
         Log.d(Tag, ".\n userInfo : ${CurrentUser.userInfo}   \n userToken : ${CurrentUser.userToken}")
 
-        candyViewModel.getAPICandyStudent()
+        candyViewModel.getAPICandyStudent(CurrentUser.userToken!!)
     }
 
     // 바텀네비게이션 아이템 클릭 리스너 설정

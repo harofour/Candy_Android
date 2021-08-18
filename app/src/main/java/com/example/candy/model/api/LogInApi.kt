@@ -38,8 +38,4 @@ interface LogInApi {
     @POST("user/new_pw")
     fun resetPassword(@Body emailData: HashMap<String,Any>): Call<ApiBooleanResponse>
 
-    // 학생캔디 조회
-    @GET("candy/student")
-    fun getCandyStudent() : Call<CandyResponse>
-
 }

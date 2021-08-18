@@ -14,8 +14,8 @@ class CandyViewModel(application: Application) : AndroidViewModel(application) {
         return repository.getUserInfo()
     }
 
-    fun getAPICandyStudent(){
-        return repository.getAPICandyStudent()
+    fun getAPICandyStudent(apiKey :String){
+        return repository.getAPICandyStudent(apiKey)
     }
 
     fun getCandyStudent() : LiveData<Candy>{

@@ -3,7 +3,6 @@ package com.example.candy.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.R
 import com.example.candy.data.ApiBooleanResponse
 import com.example.candy.data.ApiUserResponse

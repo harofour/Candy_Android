@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.data.ApiUserResponse
 import com.example.candy.model.data.User
 import com.example.candy.databinding.ActivityLogInBinding

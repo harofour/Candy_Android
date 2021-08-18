@@ -2,7 +2,6 @@ package com.example.candy.activity
 
 import android.os.Bundle
 import android.util.Log
-import com.example.candy.Activitiy.BaseActivity
 import com.example.candy.R
 import com.example.candy.data.ApiStringResponse
 import com.example.candy.databinding.ActivityFindIdBinding
