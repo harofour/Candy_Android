@@ -18,7 +18,19 @@ class CandyViewModel(application: Application) : AndroidViewModel(application) {
         return repository.getAPICandyStudent(apiKey)
     }
 
+    fun getAPICandyParent(apiKey: String){
+        return repository.getAPICandyParent(apiKey)
+    }
+
     fun getCandyStudent() : LiveData<Candy>{
         return repository.getCandyStudent()
+    }
+
+    fun getCandyParent() : LiveData<Candy>{
+        return repository.getCandyParent()
+    }
+
+    fun updateCandyParent(apiKey: String,chargeCandy : HashMap<String,Int>){
+        return repository.updateCandyParent(apiKey,chargeCandy)
     }
 }

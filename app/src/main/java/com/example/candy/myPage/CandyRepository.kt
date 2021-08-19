@@ -8,6 +8,7 @@ import com.example.candy.model.api.RetrofitClient
 import com.example.candy.model.data.Candy
 import com.example.candy.model.data.CandyResponse
 import com.example.candy.model.data.User
+import com.example.candy.model.data.chargeCandyResponse
 import com.example.candy.utils.API.BASE_URL
 import com.example.candy.utils.CurrentUser
 import retrofit2.Call
@@ -25,11 +26,21 @@ class CandyRepository(application: Application) {
     }
 
     fun getAPICandyStudent(apiKey: String){
-        Log.d(TAG, "Repository - getCandyStudent() called")
-
         api.getCandyStudent(apiKey).enqueue(object : Callback<CandyResponse> {
             override fun onResponse(call: Call<CandyResponse>, response: Response<CandyResponse>) {
-                CurrentUser.userCandy.value = response.body()!!.candy
+                CurrentUser.studentCandy.value = response.body()!!.candy
+            }
+
+            override fun onFailure(call: Call<CandyResponse>, t: Throwable) {
+                Log.d(TAG, "Repository - onFailure() called")
+            }
+        })
+    }
+
+    fun getAPICandyParent(apiKey: String){
+        api.getCandyParent(apiKey).enqueue(object : Callback<CandyResponse>{
+            override fun onResponse(call: Call<CandyResponse>, response: Response<CandyResponse>) {
+                CurrentUser.parentCandy.value = response.body()!!.candy
             }
 
             override fun onFailure(call: Call<CandyResponse>, t: Throwable) {
@@ -39,6 +50,27 @@ class CandyRepository(application: Application) {
     }
 
     fun getCandyStudent() : LiveData<Candy>{
-        return CurrentUser.userCandy
+        return CurrentUser.studentCandy
+    }
+
+    fun getCandyParent(): LiveData<Candy> {
+        return CurrentUser.parentCandy
+    }
+
+    fun updateCandyParent(apiKey: String, chargeCandy: HashMap<String,Int>) {
+        api.chargeCandy(apiKey,chargeCandy).enqueue(object : Callback<chargeCandyResponse>{
+            override fun onResponse(
+                call: Call<chargeCandyResponse>,
+                response: Response<chargeCandyResponse>
+            ) {
+                if(response.code() == 200 && response.body()!!.success){
+                    CurrentUser.parentCandy.value = Candy(response.body()!!.response.candy)
+                }
+            }
+
+            override fun onFailure(call: Call<chargeCandyResponse>, t: Throwable) {
+
+            }
+        })
     }
 }

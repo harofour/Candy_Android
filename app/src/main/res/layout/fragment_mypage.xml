@@ -3,18 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="user"
             type="com.example.candy.model.data.User" />
+
         <variable
             name="candy"
             type="com.example.candy.model.data.Candy" />
+
         <variable
             name="viewModel"
             type="com.example.candy.myPage.CandyViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/myPage_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -22,17 +26,17 @@
             android:id="@+id/top_title_tv"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintWidth_percent="0.5"
-            app:layout_constraintHeight_percent="0.04"
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="마이페이지"
-            android:textStyle="bold"
             android:textColor="@android:color/black"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/top_border"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.04"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5" />
 
         <View
             android:id="@+id/top_border"
@@ -48,11 +52,11 @@
             android:id="@+id/user_info"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.18"
             android:orientation="vertical"
             android:paddingVertical="15dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.18"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/top_border">
 
             <TextView
@@ -60,20 +64,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="16"
+                android:gravity="center"
                 android:text="@{user.name}"
                 android:textColor="@android:color/black"
-                android:textStyle="bold"
                 android:textSize="16sp"
-                android:gravity="center" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_user_email"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="15"
+                android:gravity="center"
                 android:text="@{user.email}"
-                android:textSize="14sp"
-                android:gravity="center" />
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -81,19 +85,21 @@
                 android:layout_weight="12"
                 android:gravity="center"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="12sp"
                     android:gravity="center"
-                    android:text="보유 중인 캔디 : "/>
+                    android:text="보유 중인 캔디 : "
+                    android:textSize="12sp" />
+
                 <TextView
                     android:id="@+id/tv_user_candy"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="@{candy.candy}"
-                    android:textSize="12sp"
-                    android:gravity="center" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -104,8 +110,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#EBEBEB"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_info" />
 
         <LinearLayout
@@ -113,11 +119,11 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="vertical"
-            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.33"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_info_border">
+            app:layout_constraintTop_toBottomOf="@id/user_info_border"
+            app:layout_constraintWidth_percent="0.9">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -128,31 +134,31 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/temp_btn"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:iconGravity="top"
                     android:text="정보변경"
-                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    app:icon="@drawable/profile_icon" />
+                    app:icon="@drawable/profile_icon"
+                    app:iconGravity="top" />
 
                 <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:iconGravity="top"
                     android:text="비밀번호 변경"
-                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    app:icon="@drawable/ic_baseline_lock_24" />
+                    app:icon="@drawable/ic_baseline_lock_24"
+                    app:iconGravity="top" />
 
                 <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:iconGravity="top"
                     android:text="캔디 내역"
-                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    app:icon="@drawable/ic_baseline_history_24" />
+                    app:icon="@drawable/ic_baseline_history_24"
+                    app:iconGravity="top" />
 
             </LinearLayout>
 
@@ -164,59 +170,61 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/withdrawCandy"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:iconGravity="top"
                     android:text="캔디 인출"
-                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    app:icon="@drawable/ic_baseline_attach_money_24" />
+                    app:icon="@drawable/ic_baseline_attach_money_24"
+                    app:iconGravity="top" />
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/chargeCandy"
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:iconGravity="top"
                     android:text="캔디 충전"
-                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    app:icon="@drawable/ic_baseline_credit_card_24" />
+                    app:icon="@drawable/ic_baseline_credit_card_24"
+                    app:iconGravity="top" />
 
                 <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:iconGravity="top"
                     android:text="임시"
-                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    app:icon="@drawable/bottom_nav_icon_challenge" />
+                    app:icon="@drawable/bottom_nav_icon_challenge"
+                    app:iconGravity="top" />
 
             </LinearLayout>
 
         </LinearLayout>
 
         <View
+            android:id="@+id/menu_border"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:id="@+id/menu_border"
             android:background="#EBEBEB"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/menu" />
 
         <Button
             android:id="@+id/outlinedButton"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintWidth_percent="0.8"
+            android:layout_marginBottom="5dp"
             android:paddingVertical="10dp"
             android:text="로그아웃"
             android:textColor="#F874AB"
-            app:strokeColor="#FDB1D8"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.8"
+            app:strokeColor="#FDB1D8" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

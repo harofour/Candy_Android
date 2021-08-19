@@ -12,7 +12,9 @@ object Constants {
 object CurrentUser {
     var userInfo: User? = null
     var userToken: String? = null
-    var userCandy =  MutableLiveData<Candy>()
+    var studentCandy =  MutableLiveData<Candy>()
+    var parentCandy = MutableLiveData<Candy>()
+
 }
 
 enum class REQUEST_TYPE {
