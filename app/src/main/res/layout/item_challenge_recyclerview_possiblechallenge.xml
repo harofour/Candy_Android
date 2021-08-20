@@ -1,6 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:elevation="10dp"
@@ -19,7 +22,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="영어"
+            tools:text="MATH"
             android:padding="10dp"
             android:maxLines="1"
             app:lib_setRoundedBGColor="#FBCFCF"
@@ -44,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1.2"
-                android:text="5형식"
+                tools:text="챌린지명"
                 android:textStyle="bold"
                 android:autoSizeMinTextSize="2sp"
                 android:autoSizeTextType="uniform"/>
@@ -53,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="5형식 동사에 대한 이해"
+                tools:text="부제목"
                 android:autoSizeMinTextSize="2sp"
                 android:autoSizeTextType="uniform"
                 android:maxLines="1"/>
@@ -112,17 +115,19 @@
                 android:gravity="center"
                 android:autoSizeMinTextSize="2sp"
                 android:autoSizeTextType="uniform"/>
+
             <TextView
                 android:id="@+id/tv_required_score"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
-                android:text="80"
-                android:textStyle="bold"
+                android:autoSizeMinTextSize="2sp"
+                android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:textColor="#FBCFCF"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeTextType="uniform"/>
+                android:textStyle="bold"
+                tools:text="80" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -156,3 +161,4 @@
 
 
 </androidx.cardview.widget.CardView>
+

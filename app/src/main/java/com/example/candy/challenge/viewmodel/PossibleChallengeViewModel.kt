@@ -13,21 +13,25 @@ class PossibleChallengeViewModel(
     private val challengeRepository: ChallengeListRepository
 ): ViewModel() {
 
-    val possibleChallengeLiveData = MutableLiveData<List<Challenge>>()
-    private var possibleChallengeDataList : List<Challenge>? = null// 외부에서 수정 불가
+    val possibleChallengeLiveData = MutableLiveData<ArrayList<Challenge>>()
+    private var possibleChallengeDataList : ArrayList<Challenge>? = null// 외부에서 수정 불가
 
     var progressVisible = MutableLiveData<Boolean>() // progressbar
 
-    fun getAllPossibleChallengeList(){
+    fun getAllPossibleChallengeList(lastChallengeId: Int, size: Int, initial: Boolean){
         viewModelScope.launch {
 
-            progressVisible.postValue(true)
-            possibleChallengeDataList = challengeRepository.searchPossibleChallenge(CurrentUser.userToken!!)
+            if(initial == true){
+                progressVisible.postValue(true)
+            }
+            possibleChallengeDataList = challengeRepository.searchPossibleChallenge(
+                    CurrentUser.userToken!!, lastChallengeId, size)
             Log.d("api test", "getAllPossibleChallengeList 호출")
             if(possibleChallengeDataList != null){
                 possibleChallengeLiveData.value = possibleChallengeDataList!!
                 progressVisible.postValue(false)
             }
+
         }
     }
 

@@ -4,5 +4,5 @@ import com.example.candy.model.data.Challenge
 
 interface ChallengeListRepository {
 
-    suspend fun searchPossibleChallenge(apiKey: String): List<Challenge>?
+    suspend fun searchPossibleChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<Challenge>?
 }

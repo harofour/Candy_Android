@@ -12,9 +12,9 @@ class ChallengeListRepositoryImpl(
 ): ChallengeListRepository {
 
 
-    override suspend fun searchPossibleChallenge(apiKey: String): List<Challenge>? {
+    override suspend fun searchPossibleChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<Challenge>? {
         // 통신코드 작성
-        val request = challengeApi.getPossibleChallengeList(apiKey)
+        val request = challengeApi.getPossibleChallengeList(apiKey, lastChallengeId, size)
 
         if(request.isSuccessful){
             Log.d("possibleChallengeList", request.body().toString())

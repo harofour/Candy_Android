@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class ChallengeList(
     @SerializedName("success") val isSuccess: Boolean,
-    @SerializedName("response") val response: List<Challenge>
+    @SerializedName("response") val response: ArrayList<Challenge>
 )

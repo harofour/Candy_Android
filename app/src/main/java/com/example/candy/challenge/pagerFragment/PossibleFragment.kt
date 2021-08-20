@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.adapter.HomeCategoryRecyclerAdapter
 import com.example.candy.adapter.HorizontalItemDecorator
 import com.example.candy.adapter.VerticalItemDecorator
@@ -33,6 +34,9 @@ class PossibleFragment: Fragment() {
     private val categoryList = arrayListOf<String>()  // 카테고리
     //private lateinit var possibleChallengeList : List<Challenge>
     private lateinit var viewModel: PossibleChallengeViewModel
+
+    private var page = 1 // 리스트 10개가 1page
+    private var noMoreData = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?):
             View? {
@@ -62,7 +66,7 @@ class PossibleFragment: Fragment() {
 
 
         possibleChallengeBinding!!.recyclerPossibleChallenge.layoutManager = LinearLayoutManager(context)
-        possibleChallengeBinding!!.recyclerPossibleChallenge.adapter = PossibleChallengeRecyclerAdapter(emptyList())
+        possibleChallengeBinding!!.recyclerPossibleChallenge.adapter = PossibleChallengeRecyclerAdapter(ArrayList<Challenge>()) //
         possibleChallengeBinding!!.recyclerPossibleChallenge.addItemDecoration(VerticalItemDecorator(10))
 
 
@@ -77,6 +81,15 @@ class PossibleFragment: Fragment() {
         // 도전 가능 챌린지 리스트 observe
         viewModel.possibleChallengeLiveData.observe(viewLifecycleOwner,{
             (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).updateList(it)
+
+            (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).
+                    notifyItemRangeChanged((page-1) * 10, it.size)
+
+            // 마지막 목록이면 더 이상 데이터가 없으므로 progressbar 제거해주기!!
+            if(it.size == 0){
+                (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).deleteLoading()
+                noMoreData = true
+            }
         })
 
         // progressbar observe
@@ -89,13 +102,43 @@ class PossibleFragment: Fragment() {
             }
         })
 
+        // 리사클러뷰 무한스크롤 구현
+        possibleChallengeBinding!!.recyclerPossibleChallenge.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemViewPosition =
+                        (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                val totalItemViewCount = recyclerView.adapter!!.itemCount-1
+
+                // 스크롤 마지막에 도달 시
+                if(lastVisibleItemViewPosition == totalItemViewCount){
+                    (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).deleteLoading()
+
+                    var lastChallengeId = (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter)
+                                .getLastChallengeId(totalItemViewCount - 1)
+
+                    // 페이지 증가
+                    page++
+
+
+                    viewModel.getAllPossibleChallengeList(lastChallengeId, 10, false)
+
+
+
+                }
+
+            }
+        })
+
     }
 
     override fun onResume() {
         super.onResume()
         Log.d("fragment check","PossibleFragment onResume")
 
-        viewModel.getAllPossibleChallengeList()
+        (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).dataSetClear()
+        viewModel.getAllPossibleChallengeList(100000000, 10, true)
     }
 
     override fun onDestroyView() {
