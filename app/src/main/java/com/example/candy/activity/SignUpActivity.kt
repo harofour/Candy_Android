@@ -183,11 +183,11 @@ class SignUpActivity : BaseActivity() {
             Log.d(Tag, "이메일 중복 확인 x")
             return
         }
-        if(!isEmailAuthChecked) {
-            Util.toast(applicationContext, "이메일을 인증해 주세요")
-            Log.d(Tag, "이메일 인증 x")
-            return
-        }
+//        if(!isEmailAuthChecked) {
+//            Util.toast(applicationContext, "이메일을 인증해 주세요")
+//            Log.d(Tag, "이메일 인증 x")
+//            return
+//        }
         if(pwd != pwdCheck) {
             Log.d(Tag, "parent 가 다름")
             Util.toast(applicationContext, "비밀번호가 다릅니다.")
