@@ -11,4 +11,7 @@
     <color name="background">#FFF3FB</color>
     <color name="transparent">#00000000</color>
     <color name="text_pink">#F874AB</color>
+
+    <color name="unselected">#C4C4C4</color>
+    <color name="selected">#FBCFCF</color>
 </resources>
