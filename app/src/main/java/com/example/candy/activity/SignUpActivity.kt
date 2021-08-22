@@ -33,13 +33,11 @@ class SignUpActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.topBar))
 
-        with(supportActionBar!!){
-            setDisplayShowCustomEnabled(true)
-            setDisplayShowTitleEnabled(true)
-            setDisplayHomeAsUpEnabled(true)
-            title = "회원가입"
+        binding.titleBar.title.text = "회원가입"
+        binding.titleBar.backBtn.setOnClickListener {
+            finish()
         }
 
         initListeners()

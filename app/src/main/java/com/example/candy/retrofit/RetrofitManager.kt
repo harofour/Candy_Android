@@ -23,7 +23,7 @@ class RetrofitManager {
     private val logInApi : LogInApi? = RetrofitClient.getClient(BASE_URL).create(LogInApi::class.java)
 
     fun requestUser(data: HashMap<String,Any>, type: REQUEST_TYPE, completion: (RESPONSE_STATE, String) -> Unit){
-        var call: Call<ApiUserResponse>? = null
+        val call: Call<ApiUserResponse>?
         when(type){
             REQUEST_TYPE.LOG_IN -> call = logInApi?.logIn(data)
             REQUEST_TYPE.SIGN_UP -> call = logInApi?.signUp(data)

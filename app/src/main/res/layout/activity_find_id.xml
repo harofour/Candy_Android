@@ -7,9 +7,11 @@
     android:background="#FFF3FB"
     tools:context=".activity.FindIdActivity">
     <include
-        layout="@layout/view_toolbar"
+        android:id="@+id/titleBar"
+        layout="@layout/view_titlebar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="?attr/actionBarSize" />
+
     <LinearLayout
         android:id="@+id/findIdContainer"
         android:orientation="vertical"
