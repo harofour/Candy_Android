@@ -1,8 +1,6 @@
 package com.example.candy.myPage
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +13,13 @@ import com.example.candy.utils.CurrentUser
 
 class MyPageFragment: Fragment() {
     private lateinit var binding: FragmentMypageBinding
-    private val viewModel: CandyViewModel by viewModels()
+    private val viewModel: MyPageViewModel by viewModels()
 
     // 하위 메뉴 프래그먼트
     private lateinit var studentCandyFragment: StudentCandyFragment
     private lateinit var parentCandyFragment: ParentCandyFragment
+    private lateinit var userChangeFragment: UserChangeFragment
+    private lateinit var pwChangeFragment: PwChangeFragment
 
     companion object {
         const val TAG : String = "로그"
@@ -76,6 +76,24 @@ class MyPageFragment: Fragment() {
             parentCandyFragment = ParentCandyFragment()
             parentFragmentManager.beginTransaction()
                 .add(R.id.framelayout_main,parentCandyFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        // 정보 변경 메뉴 클릭 시
+        binding.userChangeBtn.setOnClickListener {
+            userChangeFragment = UserChangeFragment()
+            parentFragmentManager.beginTransaction()
+                .add(R.id.framelayout_main,userChangeFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        // 비밀번호 변경 메뉴 클릭 시
+        binding.pwChangeBtn.setOnClickListener {
+            pwChangeFragment = PwChangeFragment()
+            parentFragmentManager.beginTransaction()
+                .add(R.id.framelayout_main,pwChangeFragment)
                 .addToBackStack(null)
                 .commit()
         }

@@ -15,13 +15,10 @@ data class Candy(
 
 data class chargeCandyResponse(
     @SerializedName("error")
-    @Expose
     val error: Error?,
     @SerializedName("response")
-    @Expose
     val response: Candy,
     @SerializedName("success")
-    @Expose
     val success: Boolean
 )
 

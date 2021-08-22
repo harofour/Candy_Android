@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,7 +15,7 @@ import com.example.candy.utils.Util
 
 class StudentCandyFragment : Fragment() {
     private lateinit var binding: FragmentStudnetCandyBinding
-    private val viewModel: CandyViewModel by viewModels()
+    private val viewModel: MyPageViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -10,7 +10,7 @@ import com.example.candy.challenge.ChallengeFragment
 import com.example.candy.model.data.User
 import com.example.candy.databinding.ActivityMainBinding
 import com.example.candy.home.HomeFragment
-import com.example.candy.myPage.CandyViewModel
+import com.example.candy.myPage.MyPageViewModel
 import com.example.candy.myPage.MyPageFragment
 import com.example.candy.utils.CurrentUser
 import com.example.candy.viewModel.MainViewModel
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private var mainBinding: ActivityMainBinding? = null
 
     private val mainViewModel: MainViewModel by viewModels()
-    private val candyViewModel : CandyViewModel by viewModels()
+    private val myPageViewModel : MyPageViewModel by viewModels()
 
     private lateinit var  homeFrgment : HomeFragment
     private lateinit var  challengeFragment : ChallengeFragment
@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         // 로그인 후 유저 정보 저장
         CurrentUser.userInfo = intent.getSerializableExtra("userInfo") as User
         CurrentUser.userToken = "Bearer ${intent.getStringExtra("userToken")}"
+        CurrentUser.userPw = intent.getStringExtra("userPw")
         Log.d(Tag, ".\n userInfo : ${CurrentUser.userInfo}   \n userToken : ${CurrentUser.userToken}")
 
 
