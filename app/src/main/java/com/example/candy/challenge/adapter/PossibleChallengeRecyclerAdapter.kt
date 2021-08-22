@@ -8,7 +8,9 @@ import com.example.candy.databinding.ChallengelistItemViewLoadingBinding
 import com.example.candy.databinding.ItemChallengeRecyclerviewPossiblechallengeBinding
 import com.example.candy.model.data.Challenge
 
-class PossibleChallengeRecyclerAdapter(  private var dataSet: ArrayList<Challenge>
+class PossibleChallengeRecyclerAdapter(
+        private var dataSet: ArrayList<Challenge>,
+        val touchLikeImage: (challenge: Challenge, index: Int) -> Unit
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_ITEM = 0
@@ -36,9 +38,16 @@ class PossibleChallengeRecyclerAdapter(  private var dataSet: ArrayList<Challeng
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_ITEM -> {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemChallengeRecyclerviewPossiblechallengeBinding.inflate(layoutInflater, parent, false)
-                ItemViewHolder(binding)
+                //val layoutInflater = LayoutInflater.from(parent.context)
+                //val binding = ItemChallengeRecyclerviewPossiblechallengeBinding.inflate(layoutInflater, parent, false)
+
+                val view =LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_challenge_recyclerview_possiblechallenge, parent, false)
+
+                var parmas =view.layoutParams
+                parmas.height = parent.measuredHeight / 8
+
+                ItemViewHolder(ItemChallengeRecyclerviewPossiblechallengeBinding.bind(view))
             }
             else -> {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -61,12 +70,18 @@ class PossibleChallengeRecyclerAdapter(  private var dataSet: ArrayList<Challeng
 
 
             var isLike = dataSet[safePosition].likeDone
-            /*if(isLike){  좋아요 처리하기
-
+            if(isLike){  //찜 여부 처리하기
+                holder.binding.ivLike.setImageResource(R.drawable.icon_challenge_like_filled)
             }
             else{
+                holder.binding.ivLike.setImageResource(R.drawable.icon_challenge_like_empty)
+            }
 
-            }*/
+            // 하트 누를 시 찜 활성화 or 비활성화
+            holder.binding.ivLike.setOnClickListener {
+                touchLikeImage.invoke(dataSet[safePosition], safePosition)
+            }
+
 
             // 챌린지 리스트 중 하나 누를 시 해당 챌린지 세부 페이지 이동할 것임
             holder.binding.root.setOnClickListener {
@@ -104,4 +119,6 @@ class PossibleChallengeRecyclerAdapter(  private var dataSet: ArrayList<Challeng
     fun dataSetClear(){
         dataSet.clear()
     }
+
+
 }

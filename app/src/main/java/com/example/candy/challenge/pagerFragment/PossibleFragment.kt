@@ -66,7 +66,16 @@ class PossibleFragment: Fragment() {
 
 
         possibleChallengeBinding!!.recyclerPossibleChallenge.layoutManager = LinearLayoutManager(context)
-        possibleChallengeBinding!!.recyclerPossibleChallenge.adapter = PossibleChallengeRecyclerAdapter(ArrayList<Challenge>()) //
+        possibleChallengeBinding!!.recyclerPossibleChallenge.adapter =
+                PossibleChallengeRecyclerAdapter(
+                        ArrayList<Challenge>(),
+                        touchLikeImage={ x: Challenge, y: Int ->
+                            // 하트 이미지 터치로 찜하기, 활성화 상태에서 다시 터치하면 찜 취소
+                            viewModel.touchLikeImage(x.challengeId, x.likeDone)
+                            x.likeDone = !x.likeDone
+                            (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).
+                                    notifyItemRangeChanged(y, 1)
+                        })
         possibleChallengeBinding!!.recyclerPossibleChallenge.addItemDecoration(VerticalItemDecorator(10))
 
 
