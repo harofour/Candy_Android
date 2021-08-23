@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.example.candy.R
 import com.example.candy.databinding.FragmentUserChangeBinding
 import com.example.candy.model.data.UserInfo
@@ -23,6 +25,7 @@ import java.lang.Exception
 class UserChangeFragment : Fragment() {
     private lateinit var binding: FragmentUserChangeBinding
     private val viewModel: MyPageViewModel by viewModels()
+    private lateinit var navController: NavController
 
     private lateinit var changeBirth: String
     private lateinit var changePhone: String
@@ -40,10 +43,12 @@ class UserChangeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = this
 
+        navController = Navigation.findNavController(view)
+
         // Setting Title
         binding.titleBar.title.text = "정보 변경"
         binding.titleBar.backBtn.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            navController.popBackStack()
         }
 
         // Setting UserInfo
@@ -71,7 +76,7 @@ class UserChangeFragment : Fragment() {
                         when (responseState) {
                             RESPONSE_STATE.SUCCESS -> {
                                 try{
-                                    parentFragmentManager.popBackStack()
+                                    navController.popBackStack()
                                 }catch (e : Exception){
                                     e.printStackTrace()
                                 }

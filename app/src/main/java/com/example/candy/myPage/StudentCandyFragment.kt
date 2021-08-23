@@ -7,33 +7,39 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.example.candy.R
-import com.example.candy.databinding.FragmentStudnetCandyBinding
+import com.example.candy.databinding.FragmentStudentCandyBinding
 import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.CustomDialog
 import com.example.candy.utils.Util
 
 class StudentCandyFragment : Fragment() {
-    private lateinit var binding: FragmentStudnetCandyBinding
+    private lateinit var binding: FragmentStudentCandyBinding
     private val viewModel: MyPageViewModel by viewModels()
+    private lateinit var navController: NavController
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_studnet_candy,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_student_candy,container,false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = Navigation.findNavController(view)
+
         binding.titleBar.title.text = "캔디 인출"
         binding.studentCandy.text = CurrentUser.studentCandy.value?.candy
 
         binding.titleBar.backBtn.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            navController.popBackStack()
         }
 
         // 캔디 인출 버튼

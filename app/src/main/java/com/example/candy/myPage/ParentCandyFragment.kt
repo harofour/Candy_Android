@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.example.candy.R
 import com.example.candy.databinding.FragmentParentCandyBinding
 import com.example.candy.utils.CurrentUser
@@ -15,6 +17,7 @@ import com.example.candy.utils.CustomDialog
 class ParentCandyFragment : Fragment() {
     private lateinit var binding: FragmentParentCandyBinding
     private val viewModel: MyPageViewModel by viewModels()
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +33,8 @@ class ParentCandyFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        navController = Navigation.findNavController(view)
+
         binding.titleBar.title.text = "캔디 충전"
         binding.studentCandy.text = CurrentUser.parentCandy.value?.candy
 
@@ -38,7 +43,7 @@ class ParentCandyFragment : Fragment() {
         })
 
         binding.titleBar.backBtn.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            navController.popBackStack()
         }
 
         // 캔디 충전 버튼
