@@ -22,13 +22,12 @@ class ResetPasswordActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityResetPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.topBar))
 
-        with(supportActionBar!!) {
-            setDisplayShowCustomEnabled(true)
-            setDisplayShowTitleEnabled(true)
-            setDisplayHomeAsUpEnabled(true)
-            title = "비밀번호 재설정"
+
+        binding.titleBar.title.text = "비밀번호 재설정"
+        binding.titleBar.backBtn.setOnClickListener {
+            finish()
         }
 
         id = intent.getStringExtra("email") ?: "error"
