@@ -1,10 +1,8 @@
-package com.example.candy.problem
+package com.example.candy.problem.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import com.example.candy.model.data.Candy
-import com.example.candy.model.data.User
+import com.example.candy.problem.repository.ProblemRepository
 
 class ProblemViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = ProblemRepository(application)

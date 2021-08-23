@@ -12,19 +12,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Candy"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.BaseActivity"></activity>
+
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.BaseActivity" />
         <activity android:name=".activity.LogInActivity" />
         <activity android:name=".activity.SignUpActivity" />
         <activity android:name=".activity.FindIdActivity" />
         <activity android:name=".activity.FindPasswordActivity" />
         <activity android:name=".activity.ResetPasswordActivity" />
         <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.SolvingProblemActivity" >
+        </activity>
+        <activity android:name=".activity.MarkingProblemActivity"/>
     </application>
+
 </manifest>
