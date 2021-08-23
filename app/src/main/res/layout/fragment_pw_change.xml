@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clickable="true">
+
+        <include
+            android:id="@+id/title_bar"
+            layout="@layout/view_titlebar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/top_layout"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/top_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingHorizontal="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_bar"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_layout">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textFieldCurrentPw"
+                app:boxBackgroundColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:hint="새 비밀번호"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textFieldNewPw">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/labelEditCurrentPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_bold" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textFieldNewPw"
+                app:boxBackgroundColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:hint="새 비밀번호"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="@+id/textFieldCurrentPw"
+                app:layout_constraintStart_toStartOf="@+id/textFieldCurrentPw"
+                app:layout_constraintTop_toBottomOf="@+id/textFieldCurrentPw"
+                app:layout_constraintBottom_toTopOf="@+id/textFieldVerifyPw">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/labelEditNewPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_bold" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textFieldVerifyPw"
+                app:boxBackgroundColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:hint="새 비밀번호 확인"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="@+id/textFieldNewPw"
+                app:layout_constraintStart_toStartOf="@+id/textFieldNewPw"
+                app:layout_constraintTop_toBottomOf="@+id/textFieldNewPw"
+                app:layout_constraintBottom_toTopOf="@+id/change_pw_btn">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/labelEditVerifyPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_bold" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/change_pw_btn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="비밀번호 변경"
+                android:textColor="#F874AB"
+                app:layout_constraintEnd_toEndOf="@+id/textFieldVerifyPw"
+                app:layout_constraintStart_toStartOf="@+id/textFieldVerifyPw"
+                app:layout_constraintTop_toBottomOf="@+id/textFieldVerifyPw"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:strokeColor="#FDB1D8" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="30dp"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/top_layout"
+            app:layout_constraintStart_toStartOf="@+id/top_layout"
+            app:layout_constraintTop_toBottomOf="@+id/top_layout">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textFieldParentPw"
+                app:boxBackgroundColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:hint="현재 2차 비밀번호"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textFieldNewParentPw">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/labelEditParentPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_bold" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textFieldNewParentPw"
+                app:boxBackgroundColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:hint="새 2차 비밀번호"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="@+id/textFieldParentPw"
+                app:layout_constraintStart_toStartOf="@+id/textFieldParentPw"
+                app:layout_constraintTop_toBottomOf="@+id/textFieldParentPw"
+                app:layout_constraintBottom_toTopOf="@+id/textFieldVerifyParentPw">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/labelEditNewParentPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_bold" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textFieldVerifyParentPw"
+                app:boxBackgroundColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:hint="새 2차 비밀번호 확인"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="@+id/textFieldNewParentPw"
+                app:layout_constraintStart_toStartOf="@+id/textFieldNewParentPw"
+                app:layout_constraintTop_toBottomOf="@+id/textFieldNewParentPw"
+                app:layout_constraintBottom_toTopOf="@+id/change_parent_pw_btn">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/labelEditVerifyParentPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_round_bold" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/change_parent_pw_btn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="2차 비밀번호 변경"
+                android:textColor="#F874AB"
+                app:layout_constraintEnd_toEndOf="@+id/textFieldVerifyParentPw"
+                app:layout_constraintStart_toStartOf="@+id/textFieldVerifyParentPw"
+                app:layout_constraintTop_toBottomOf="@+id/textFieldVerifyParentPw"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:strokeColor="#FDB1D8" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

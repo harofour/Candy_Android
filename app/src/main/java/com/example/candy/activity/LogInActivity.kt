@@ -142,6 +142,7 @@ class LogInActivity : BaseActivity() {
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent.putExtra("userInfo", userInfo)
                             intent.putExtra("userToken", userToken)
+                            intent.putExtra("userPw",pwd)
                             startActivity(intent)
                             finish()
 

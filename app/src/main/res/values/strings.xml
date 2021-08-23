@@ -10,4 +10,6 @@
     <string name="category">카테고리</string>
     <string name="myChallenge">진행 중인 챌린지</string>
 
+    <string name="userInfoChange">정보 변경</string>
+
 </resources>
