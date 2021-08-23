@@ -5,13 +5,20 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.candy.model.data.Candy
 import com.example.candy.model.data.User
+import com.example.candy.model.data.UserInfo
+import com.example.candy.utils.CurrentUser
+import com.example.candy.utils.RESPONSE_STATE
 
-class CandyViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = CandyRepository(application)
+class MyPageViewModel(application: Application) : AndroidViewModel(application) {
+    private val repository = MyPageRepository(application)
 
 
     fun getUserInfo() : User {
         return repository.getUserInfo()
+    }
+
+    fun getAPIUserInfo(apiKey: String) : LiveData<UserInfo>{
+        return repository.getAPIUserInfo(apiKey)
     }
 
     fun getAPICandyStudent(apiKey :String){
@@ -32,5 +39,9 @@ class CandyViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateCandyParent(apiKey: String,chargeCandy : HashMap<String,Int>){
         return repository.updateCandyParent(apiKey,chargeCandy)
+    }
+
+    fun updateUserInfo(apiKey: String,userData : HashMap<String,Any>,completion: (RESPONSE_STATE)->Unit){
+        return repository.updateAPIUserInfoChange(apiKey,userData,completion)
     }
 }

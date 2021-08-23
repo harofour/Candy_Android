@@ -9,25 +9,21 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
 import com.example.candy.R
 import com.example.candy.databinding.FragmentMypageBinding
 import com.example.candy.utils.CurrentUser
 
 class MyPageFragment: Fragment() {
     private lateinit var binding: FragmentMypageBinding
-    private val viewModel: CandyViewModel by viewModels()
+    private val viewModel: MyPageViewModel by viewModels()
 
-    // 하위 메뉴 프래그먼트
-    private lateinit var studentCandyFragment: StudentCandyFragment
-    private lateinit var parentCandyFragment: ParentCandyFragment
+    private lateinit var navController: NavController
 
     companion object {
         const val TAG : String = "로그"
-
-        fun newInstance() : MyPageFragment {
-            return MyPageFragment()
-        }
-
     }
 
     override fun onCreateView(
@@ -36,6 +32,16 @@ class MyPageFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mypage,container,false)
+
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        binding.user = viewModel.getUserInfo()
+        viewModel.getAPICandyStudent(CurrentUser.userToken!!)
+        viewModel.getAPICandyParent(CurrentUser.userToken!!)
+        viewModel.getCandyStudent().observe(viewLifecycleOwner,{
+            binding.candy = it
+        })
+
         return binding.root
 
 
@@ -43,17 +49,7 @@ class MyPageFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        binding.user = viewModel.getUserInfo()
-
-
-        viewModel.getAPICandyStudent(CurrentUser.userToken!!)
-        viewModel.getAPICandyParent(CurrentUser.userToken!!)
-
-        viewModel.getCandyStudent().observe(viewLifecycleOwner,{
-            binding.candy = it
-        })
+        navController = Navigation.findNavController(view)
 
         // 마이페이지 하위 메뉴 클릭 시
         setMypageMenu()
@@ -64,20 +60,26 @@ class MyPageFragment: Fragment() {
     private fun setMypageMenu() {
         // 캔디 인출 메뉴 클릭 시
         binding.withdrawCandy.setOnClickListener {
-            studentCandyFragment = StudentCandyFragment()
-            parentFragmentManager.beginTransaction()
-                .add(R.id.framelayout_main,studentCandyFragment)
-                .addToBackStack(null)
-                .commit()
+            navController
+                .navigate(R.id.action_myPageFragment_to_studentCandyFragment)
         }
 
         // 캔디 충전 메뉴 클릭 시
         binding.chargeCandy.setOnClickListener {
-            parentCandyFragment = ParentCandyFragment()
-            parentFragmentManager.beginTransaction()
-                .add(R.id.framelayout_main,parentCandyFragment)
-                .addToBackStack(null)
-                .commit()
+            navController
+                .navigate(R.id.action_myPageFragment_to_parentCandyFragment)
+        }
+
+        // 정보 변경 메뉴 클릭 시
+        binding.userChangeBtn.setOnClickListener {
+            navController
+                .navigate(R.id.action_myPageFragment_to_userChangeFragment)
+        }
+
+        // 비밀번호 변경 메뉴 클릭 시
+        binding.pwChangeBtn.setOnClickListener {
+            navController
+                .navigate(R.id.action_myPageFragment_to_pwChangeFragment)
         }
     }
 }

@@ -27,9 +27,13 @@ class PossibleChallengeViewModel(
             possibleChallengeDataList = challengeRepository.searchPossibleChallenge(
                     CurrentUser.userToken!!, lastChallengeId, size)
             Log.d("api test", "getAllPossibleChallengeList 호출")
+            Log.d("api test","도전가능 리스트 response list 수 : ${possibleChallengeDataList?.size}")
             if(possibleChallengeDataList != null){
                 possibleChallengeLiveData.value = possibleChallengeDataList!!
                 progressVisible.postValue(false)
+            }
+            else{
+                Log.d("api test","reponse 빈 리스트 반환됨")
             }
 
         }

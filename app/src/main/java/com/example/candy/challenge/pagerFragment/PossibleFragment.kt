@@ -36,7 +36,7 @@ class PossibleFragment: Fragment() {
     private lateinit var viewModel: PossibleChallengeViewModel
 
     private var page = 1 // 리스트 10개가 1page
-    private var noMoreData = false
+    private var noMoreData = false  // 서버에서 데이터 마지막까지 다 가져 오면 true 된다
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?):
             View? {
@@ -83,7 +83,7 @@ class PossibleFragment: Fragment() {
             (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).updateList(it)
 
             (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).
-                    notifyItemRangeChanged((page-1) * 10, it.size)
+                    notifyItemRangeChanged((page-1) * it.size, it.size)
 
             // 마지막 목록이면 더 이상 데이터가 없으므로 progressbar 제거해주기!!
             if(it.size == 0){
@@ -112,7 +112,7 @@ class PossibleFragment: Fragment() {
                 val totalItemViewCount = recyclerView.adapter!!.itemCount-1
 
                 // 스크롤 마지막에 도달 시
-                if(lastVisibleItemViewPosition == totalItemViewCount){
+                if(lastVisibleItemViewPosition == totalItemViewCount && !noMoreData){
                     (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).deleteLoading()
 
                     var lastChallengeId = (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter)
@@ -137,6 +137,7 @@ class PossibleFragment: Fragment() {
         super.onResume()
         Log.d("fragment check","PossibleFragment onResume")
 
+        noMoreData = false
         (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).dataSetClear()
         viewModel.getAllPossibleChallengeList(100000000, 10, true)
     }

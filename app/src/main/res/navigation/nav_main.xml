@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/challengeFragment"
+        android:name="com.example.candy.challenge.ChallengeFragment"
+        android:label="ChallengeFragment"
+        tools:layout="@layout/fragment_challenge" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.candy.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/myPageFragment"
+        android:name="com.example.candy.myPage.MyPageFragment"
+        android:label="MyPageFragment"
+        tools:layout="@layout/fragment_mypage">
+        <action
+            android:id="@+id/action_myPageFragment_to_userChangeFragment"
+            app:destination="@id/userChangeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_myPageFragment_to_studentCandyFragment"
+            app:destination="@id/studentCandyFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_myPageFragment_to_parentCandyFragment"
+            app:destination="@id/parentCandyFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_myPageFragment_to_pwChangeFragment"
+            app:destination="@id/pwChangeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/userChangeFragment"
+        android:name="com.example.candy.myPage.UserChangeFragment"
+        android:label="@string/userInfoChange"
+        tools:layout="@layout/fragment_user_change" />
+    <action
+        android:id="@+id/action_global_userChangeFragment"
+        app:destination="@id/userChangeFragment" />
+    <fragment
+        android:id="@+id/studentCandyFragment"
+        android:name="com.example.candy.myPage.StudentCandyFragment"
+        android:label="StudentCandyFragment"
+        tools:layout="@layout/fragment_student_candy" />
+    <fragment
+        android:id="@+id/parentCandyFragment"
+        android:name="com.example.candy.myPage.ParentCandyFragment"
+        android:label="ParentCandyFragment" />
+    <fragment
+        android:id="@+id/pwChangeFragment"
+        android:name="com.example.candy.myPage.PwChangeFragment"
+        android:label="PwChangeFragment" />
+</navigation>
