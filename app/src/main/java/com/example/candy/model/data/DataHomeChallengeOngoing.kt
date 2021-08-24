@@ -1,4 +1,4 @@
-package com.example.candy.data
+package com.example.candy.model.data
 
 data class DataHomeChallengeOngoing(
         val category: String,

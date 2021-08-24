@@ -38,7 +38,7 @@
                 app:boxBackgroundColor="@color/white"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:hint="새 비밀번호"
+                android:hint="현재 비밀번호"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"

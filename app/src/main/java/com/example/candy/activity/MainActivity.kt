@@ -22,7 +22,6 @@ import com.example.candy.home.HomeFragment
 import com.example.candy.myPage.MyPageViewModel
 import com.example.candy.myPage.MyPageFragment
 import com.example.candy.utils.CurrentUser
-import com.example.candy.viewModel.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

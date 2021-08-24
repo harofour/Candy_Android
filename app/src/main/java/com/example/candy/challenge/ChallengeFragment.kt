@@ -6,16 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.example.candy.challenge.adapter.PagerFragmentStateAdapter
 import com.example.candy.challenge.pagerFragment.CompleteFragment
 import com.example.candy.challenge.pagerFragment.LikeFragment
 import com.example.candy.challenge.pagerFragment.PossibleFragment
 import com.example.candy.databinding.FragmentChallengeBinding
-import com.example.candy.databinding.FragmentHomeBinding
-import com.example.candy.home.HomeFragment
-import com.example.candy.viewModel.MainViewModel
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
