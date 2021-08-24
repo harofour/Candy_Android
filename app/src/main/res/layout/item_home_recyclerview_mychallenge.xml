@@ -1,162 +1,210 @@
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:elevation="10dp"
-    android:layout_marginHorizontal="4dp"
-    app:cardCornerRadius="10dp">
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="5:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.libRG.CustomTextView
             android:id="@+id/tv_category_name"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:text="영어"
-            android:padding="10dp"
-            android:maxLines="1"
-            app:lib_setRoundedBGColor="#FBCFCF"
-            app:lib_setRoundedView="true"
-            app:lib_setShape="oval"
+            android:layout_marginHorizontal="10dp"
             android:autoSizeMinTextSize="2sp"
-            android:autoSizeTextType="uniform"/>
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:text="영어"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lib_setRoundedBGColor="#FFFFFF"
+            app:lib_setRoundedView="true"
+            app:lib_setShape="oval" />
 
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_title"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_height="0dp"
+            android:autoSizeMinTextSize="2sp"
+            android:autoSizeTextType="uniform"
+            android:text="5형식"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_26"
+            app:layout_constraintStart_toEndOf="@id/guideline_vertical_8"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_3" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeTextType="uniform"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="5형식 동사에 대한 이해"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_4"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_26"
+            app:layout_constraintStart_toEndOf="@id/guideline_vertical_8"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeMinTextSize="2sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="캔디"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_23"
+            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_9"
+            app:layout_constraintStart_toEndOf="@id/guideline_vertical_26"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_3" />
+
+
+        <TextView
+            android:id="@+id/tv_candy"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeMinTextSize="2sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="8"
+            android:textColor="#FBCFCF"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_4"
+            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_9"
+            app:layout_constraintStart_toEndOf="@id/guideline_vertical_26"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_23" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeMinTextSize="2sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="커트 라인"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_23"
+            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_10"
+            app:layout_constraintStart_toEndOf="@id/guideline_vertical_9"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_3" />
+
+
+        <TextView
+            android:id="@+id/tv_required_score"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeMinTextSize="2sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:text="80"
+            android:textColor="#FBCFCF"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_4"
+            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_10"
+            app:layout_constraintStart_toEndOf="@id/guideline_vertical_9"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_23" />
+
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_vertical_10"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/challenge_detail_icon" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#EBEBEB"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <!--Guide Line-->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_8"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            android:gravity="center_vertical">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.2"
-                android:text="5형식"
-                android:textStyle="bold"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeTextType="uniform"/>
-            <TextView
-                android:id="@+id/tv_description"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="5형식 동사에 대한 이해"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeTextType="uniform"
-                android:maxLines="1"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-        </LinearLayout>
+            app:layout_constraintGuide_percent="0.18" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_18"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            android:gravity="center">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="캔디"
-                android:gravity="center"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeTextType="uniform"/>
-            <TextView
-                android:id="@+id/tv_candy"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:text="8"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textColor="#FBCFCF"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeTextType="uniform"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-        </LinearLayout>
+            app:layout_constraintGuide_percent="0.16" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_10"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            android:gravity="center">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:text="커트 라인"
-                android:gravity="center"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeTextType="uniform"/>
-            <TextView
-                android:id="@+id/tv_required_score"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:text="80"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textColor="#FBCFCF"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeTextType="uniform"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-        </LinearLayout>
+            app:layout_constraintGuide_percent="0.9" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_9"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.7" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_26"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/challenge_detail_icon"/>
-        </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_2"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_23"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.42" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_3"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.25" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_4"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
 
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-    </LinearLayout>
-
-
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
