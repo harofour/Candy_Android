@@ -20,15 +20,11 @@ class FindIdActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityFindIdBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.topBar))
 
-
-
-        with(supportActionBar!!) {
-            setDisplayShowCustomEnabled(true)
-            setDisplayShowTitleEnabled(true)
-            setDisplayHomeAsUpEnabled(true)
-            title = "아이디 찾기"
+        binding.titleBar.title.text = "아이디 찾기"
+        binding.titleBar.backBtn.setOnClickListener {
+            finish()
         }
 
         initListeners()
