@@ -39,6 +39,16 @@ class PossibleChallengeViewModel(
         }
     }
 
+    fun touchLikeImage(challengeId: Int, previousState: Boolean){
+        viewModelScope.launch {
+            progressVisible.postValue(true)
+            var response = challengeRepository.touchLikeBtn(CurrentUser.userToken!!, challengeId, previousState)
+            progressVisible.postValue(false)
+
+
+        }
+    }
+
 
 
 

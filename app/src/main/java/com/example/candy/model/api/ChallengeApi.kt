@@ -1,11 +1,11 @@
 package com.example.candy.model.api
 
+import com.example.candy.R
+import com.example.candy.model.data.ChallengeLike
 import com.example.candy.model.data.ChallengeList
 import com.example.candy.utils.CurrentUser
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ChallengeApi {
 
@@ -17,5 +17,19 @@ interface ChallengeApi {
         @Query("size")size: Int
     ): Response<ChallengeList>
 
+    // 찜하기
+    @POST("challenge/{challengeId}/like")
+    suspend fun touchLikeBtn(
+            @Header("api_key")userToken: String,
+            @Path("challengeId")challengeId: Int
+    ): Response<ChallengeLike>
+
+    // 찜한 리스트 조회
+    @GET("challenge/likeList")
+    suspend fun getLikeChallengeList(
+            @Header("api_key")userToken: String,
+            @Query("lastChallengeId")lastChallengeId: Int,
+            @Query("size")size: Int
+    ): Response<ChallengeList>
 
 }

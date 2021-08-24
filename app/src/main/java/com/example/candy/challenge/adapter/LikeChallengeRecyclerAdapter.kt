@@ -8,7 +8,7 @@ import com.example.candy.databinding.ChallengelistItemViewLoadingBinding
 import com.example.candy.databinding.ItemChallengeRecyclerviewPossiblechallengeBinding
 import com.example.candy.model.data.Challenge
 
-class PossibleChallengeRecyclerAdapter(
+class LikeChallengeRecyclerAdapter(
         private var dataSet: ArrayList<Challenge>,
         val touchLikeImage: (challenge: Challenge, index: Int) -> Unit
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -110,6 +110,11 @@ class PossibleChallengeRecyclerAdapter(
 
     fun deleteLoading(){
         dataSet.removeAt(dataSet.lastIndex)
+    }
+
+    fun deleteUnlikeList(index: Int){
+        dataSet.removeAt(index)
+        notifyDataSetChanged()
     }
 
     fun getLastChallengeId(index: Int): Int{
