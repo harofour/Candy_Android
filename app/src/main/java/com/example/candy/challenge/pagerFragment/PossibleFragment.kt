@@ -1,29 +1,23 @@
 package com.example.candy.challenge.pagerFragment
 
-import android.opengl.Visibility
 import android.os.Bundle
-import android.provider.SyncStateContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ViewSwitcher
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.candy.adapter.HomeCategoryRecyclerAdapter
 import com.example.candy.adapter.HorizontalItemDecorator
 import com.example.candy.adapter.VerticalItemDecorator
 import com.example.candy.challenge.adapter.PossibleChallengeRecyclerAdapter
 import com.example.candy.challenge.adapter.categoryRecyclerAdapter.ChallengeCategoryRecyclerAdapter
 import com.example.candy.challenge.viewmodel.PossibleChallengeViewModel
-import com.example.candy.databinding.FragmentLikeChallengeBinding
 import com.example.candy.databinding.FragmentPossibleChallengeBinding
 import com.example.candy.model.data.Challenge
 import com.example.candy.model.injection.Injection
-import com.example.candy.utils.Constants
 import com.example.candy.utils.CurrentUser
 
 
@@ -36,7 +30,7 @@ class PossibleFragment: Fragment() {
     private lateinit var viewModel: PossibleChallengeViewModel
 
     private var page = 1 // 리스트 10개가 1page
-    private var noMoreData = false  // 서버에서 데이터 마지막까지 다 가져 오면 true 된다
+    private var No_More_Data = false  // 서버에서 데이터 마지막까지 다 가져 오면 true 된다
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?):
             View? {
@@ -97,7 +91,7 @@ class PossibleFragment: Fragment() {
             // 마지막 목록이면 더 이상 데이터가 없으므로 progressbar 제거해주기!!
             if(it.size == 0){
                 (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).deleteLoading()
-                noMoreData = true
+                No_More_Data = true
             }
         })
 
@@ -121,7 +115,7 @@ class PossibleFragment: Fragment() {
                 val totalItemViewCount = recyclerView.adapter!!.itemCount-1
 
                 // 스크롤 마지막에 도달 시
-                if(lastVisibleItemViewPosition == totalItemViewCount && !noMoreData){
+                if(lastVisibleItemViewPosition == totalItemViewCount && !No_More_Data){
                     (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).deleteLoading()
 
                     var lastChallengeId = (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter)
@@ -146,7 +140,7 @@ class PossibleFragment: Fragment() {
         super.onResume()
         Log.d("fragment check","PossibleFragment onResume")
 
-        noMoreData = false
+        No_More_Data = false
         (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).dataSetClear()
         viewModel.getAllPossibleChallengeList(100000000, 10, true)
     }

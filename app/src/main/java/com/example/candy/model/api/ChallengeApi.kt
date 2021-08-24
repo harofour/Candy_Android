@@ -17,10 +17,19 @@ interface ChallengeApi {
         @Query("size")size: Int
     ): Response<ChallengeList>
 
+    // 찜하기
     @POST("challenge/{challengeId}/like")
     suspend fun touchLikeBtn(
             @Header("api_key")userToken: String,
             @Path("challengeId")challengeId: Int
     ): Response<ChallengeLike>
+
+    // 찜한 리스트 조회
+    @GET("challenge/likeList")
+    suspend fun getLikeChallengeList(
+            @Header("api_key")userToken: String,
+            @Query("lastChallengeId")lastChallengeId: Int,
+            @Query("size")size: Int
+    ): Response<ChallengeList>
 
 }

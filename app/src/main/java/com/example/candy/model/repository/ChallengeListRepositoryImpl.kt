@@ -47,4 +47,20 @@ class ChallengeListRepositoryImpl(
         }
     }
 
+    override suspend fun searchLikeChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<Challenge>? {
+        // 통신코드 작성
+        val request = challengeApi.getLikeChallengeList(apiKey, lastChallengeId, size)
+
+        if(request.isSuccessful){
+            Log.d("likeChallengeList", request.body().toString())
+
+            return request.body()!!.response
+        }
+        else {
+            // 실패 시
+            Toast.makeText(context, "찜 리스트 조회 오류", Toast.LENGTH_SHORT).show()
+            return null
+        }
+    }
+
 }
