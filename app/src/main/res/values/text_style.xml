@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="tv_app_name_style">
         <item name="android:textColor">#FF7CFD</item>
         <item name="autoSizeMinTextSize">2sp</item>
@@ -78,7 +79,6 @@
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
     </style>
-
 
 
 </resources>
