@@ -56,7 +56,8 @@ class HomeFragment : Fragment() {
         // 카테고리 임시
         val categories : List<String> = generateCategoryData()
         cAdapter.setCategories(categories)
-    }
+
+    } // onViewCreated()
 
     private fun generateChallengeData(): List<Challenge> {
         return listOf<Challenge>(
@@ -71,7 +72,7 @@ class HomeFragment : Fragment() {
 
     private fun generateCategoryData(): List<String> {
         return listOf<String>(
-            "영어","수학","물리","화학","한국사"
+            "영어","수학","물리","화학","한국사","지구과학","국어","미분과 적분"
         )
     }
 
