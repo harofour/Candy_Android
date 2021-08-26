@@ -16,27 +16,27 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MyPageRepository(application: Application) {
-    val TAG: String = "로그"
+    val TAG: String = "로d그"
     private val retrofit = RetrofitClient.getClient(BASE_URL)
     private val apiCandy = retrofit.create(CandyApi::class.java)
-    private val apiUserInfo  = retrofit.create(UserInfoApi::class.java)
+    private val apiUserInfo = retrofit.create(UserInfoApi::class.java)
 
 
-    fun getUserInfo() : User {
+    fun getUserInfo(): User {
         return CurrentUser.userInfo!!
     }
 
-    fun getAPIUserInfo(apiKey: String) : LiveData<UserInfo>{
+    fun getAPIUserInfo(apiKey: String): LiveData<UserInfo> {
         val data = MutableLiveData<UserInfo>()
-        apiUserInfo.getUserInfo(apiKey).enqueue(object : Callback<UserInfoResponse>{
+        apiUserInfo.getUserInfo(apiKey).enqueue(object : Callback<UserInfoResponse> {
             override fun onResponse(
                 call: Call<UserInfoResponse>,
                 response: Response<UserInfoResponse>
             ) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     var userInfo = response.body()?.response
-                    userInfo?.birth!!.replace("-","").also { userInfo.birth = it }
-                    userInfo.phone.replace("-","").also { userInfo.phone = it }
+                    userInfo?.birth!!.replace("-", "").also { userInfo.birth = it }
+                    userInfo.phone.replace("-", "").also { userInfo.phone = it }
                     data.value = userInfo!!
                 }
             }
@@ -49,15 +49,19 @@ class MyPageRepository(application: Application) {
         return data
     }
 
-    fun updateAPIUserInfoChange(apiKey: String,data: HashMap<String,Any>,completion : (RESPONSE_STATE) -> Unit){
-        apiUserInfo.updateUserInfo(apiKey,data).enqueue(object : Callback<UserInfoResponse>{
+    fun updateAPIUserInfoChange(
+        apiKey: String,
+        data: HashMap<String, Any>,
+        completion: (RESPONSE_STATE) -> Unit
+    ) {
+        apiUserInfo.updateUserInfo(apiKey, data).enqueue(object : Callback<UserInfoResponse> {
             override fun onResponse(
                 call: Call<UserInfoResponse>,
                 response: Response<UserInfoResponse>
             ) {
-                if(response.code() == 200 && response.body()?.success!!){
+                if (response.code() == 200 && response.body()?.success!!) {
                     completion(RESPONSE_STATE.SUCCESS)
-                }else
+                } else
                     completion(RESPONSE_STATE.FAILURE)
             }
 
@@ -67,7 +71,7 @@ class MyPageRepository(application: Application) {
         })
     }
 
-    fun getAPICandyStudent(apiKey: String){
+    fun getAPICandyStudent(apiKey: String) {
         apiCandy.getCandyStudent(apiKey).enqueue(object : Callback<CandyResponse> {
             override fun onResponse(call: Call<CandyResponse>, response: Response<CandyResponse>) {
                 CurrentUser.studentCandy.value = response.body()!!.candy
@@ -79,8 +83,8 @@ class MyPageRepository(application: Application) {
         })
     }
 
-    fun getAPICandyParent(apiKey: String){
-        apiCandy.getCandyParent(apiKey).enqueue(object : Callback<CandyResponse>{
+    fun getAPICandyParent(apiKey: String) {
+        apiCandy.getCandyParent(apiKey).enqueue(object : Callback<CandyResponse> {
             override fun onResponse(call: Call<CandyResponse>, response: Response<CandyResponse>) {
                 CurrentUser.parentCandy.value = response.body()!!.candy
             }
@@ -91,7 +95,7 @@ class MyPageRepository(application: Application) {
         })
     }
 
-    fun getCandyStudent() : LiveData<Candy>{
+    fun getCandyStudent(): LiveData<Candy> {
         return CurrentUser.studentCandy
     }
 
@@ -99,13 +103,13 @@ class MyPageRepository(application: Application) {
         return CurrentUser.parentCandy
     }
 
-    fun updateCandyParent(apiKey: String, chargeCandy: HashMap<String,Int>) {
-        apiCandy.chargeCandy(apiKey,chargeCandy).enqueue(object : Callback<chargeCandyResponse>{
+    fun updateCandyParent(apiKey: String, chargeCandy: HashMap<String, Int>) {
+        apiCandy.chargeCandy(apiKey, chargeCandy).enqueue(object : Callback<chargeCandyResponse> {
             override fun onResponse(
                 call: Call<chargeCandyResponse>,
                 response: Response<chargeCandyResponse>
             ) {
-                if(response.code() == 200 && response.body()!!.success){
+                if (response.code() == 200 && response.body()!!.success) {
                     CurrentUser.parentCandy.value = Candy(response.body()!!.response.candy)
                 }
             }
@@ -113,6 +117,29 @@ class MyPageRepository(application: Application) {
             override fun onFailure(call: Call<chargeCandyResponse>, t: Throwable) {
 
             }
+        })
+    }
+
+    fun changePw(apiKey: String, data: HashMap<String, Any>, completion: (RESPONSE_STATE) -> Unit) {
+        apiUserInfo.changePw(apiKey, data).enqueue(object : Callback<UserChangePwResponse> {
+            override fun onResponse(
+                call: Call<UserChangePwResponse>,
+                response: Response<UserChangePwResponse>
+            ) {
+                Log.d(TAG, "MyPageRepository - onResponse() + responseCode = ${response.code()}")
+                if (response.code() == 200) {
+                    completion(RESPONSE_STATE.SUCCESS)
+                } else {
+                    completion(RESPONSE_STATE.FAILURE)
+                }
+            }
+
+            override fun onFailure(call: Call<UserChangePwResponse>, t: Throwable) {
+                Log.d(TAG, "api 요청 실패")
+                completion(RESPONSE_STATE.FAILURE)
+            }
+
+
         })
     }
 }
