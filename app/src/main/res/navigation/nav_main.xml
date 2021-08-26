@@ -48,6 +48,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_myPageFragment_to_challengeLectureFragment"
+            app:destination="@id/challengeLectureFragment" />
     </fragment>
     <fragment
         android:id="@+id/userChangeFragment"
@@ -70,4 +73,8 @@
         android:id="@+id/pwChangeFragment"
         android:name="com.example.candy.myPage.PwChangeFragment"
         android:label="PwChangeFragment" />
+    <fragment
+        android:id="@+id/challengeLectureFragment"
+        android:name="com.example.candy.problem.ChallengeLectureFragment"
+        android:label="ChallengeLectureFragment" />
 </navigation>

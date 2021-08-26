@@ -16,7 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MyPageRepository(application: Application) {
-    val TAG: String = "로d그"
+    val TAG: String = "로그"
     private val retrofit = RetrofitClient.getClient(BASE_URL)
     private val apiCandy = retrofit.create(CandyApi::class.java)
     private val apiUserInfo = retrofit.create(UserInfoApi::class.java)
@@ -42,7 +42,6 @@ class MyPageRepository(application: Application) {
             }
 
             override fun onFailure(call: Call<UserInfoResponse>, t: Throwable) {
-                Log.d(TAG, "MyPageRepository - onFailure() called")
             }
         })
 
@@ -78,7 +77,6 @@ class MyPageRepository(application: Application) {
             }
 
             override fun onFailure(call: Call<CandyResponse>, t: Throwable) {
-                Log.d(TAG, "Repository - onFailure() called")
             }
         })
     }
@@ -90,7 +88,6 @@ class MyPageRepository(application: Application) {
             }
 
             override fun onFailure(call: Call<CandyResponse>, t: Throwable) {
-                Log.d(TAG, "Repository - onFailure() called")
             }
         })
     }
@@ -126,7 +123,6 @@ class MyPageRepository(application: Application) {
                 call: Call<UserChangePwResponse>,
                 response: Response<UserChangePwResponse>
             ) {
-                Log.d(TAG, "MyPageRepository - onResponse() + responseCode = ${response.code()}")
                 if (response.code() == 200) {
                     completion(RESPONSE_STATE.SUCCESS)
                 } else {
@@ -135,7 +131,6 @@ class MyPageRepository(application: Application) {
             }
 
             override fun onFailure(call: Call<UserChangePwResponse>, t: Throwable) {
-                Log.d(TAG, "api 요청 실패")
                 completion(RESPONSE_STATE.FAILURE)
             }
 

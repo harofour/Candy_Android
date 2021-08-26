@@ -81,5 +81,12 @@ class MyPageFragment: Fragment() {
             navController
                 .navigate(R.id.action_myPageFragment_to_pwChangeFragment)
         }
+
+        // 챌린지 강의 확인하는 임시버튼
+        // TODO:: 테스트 확인 후 삭제
+        binding.tempBtn.setOnClickListener {
+            navController
+                .navigate(R.id.action_myPageFragment_to_challengeLectureFragment)
+        }
     }
 }
