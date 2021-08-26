@@ -32,4 +32,9 @@ interface ChallengeApi {
             @Query("size")size: Int
     ): Response<ChallengeList>
 
+    // 카테고리 조회
+    @GET("challenge/category")
+    suspend fun getCategory(
+        @Header("api_key")userToken: String
+    ): Response<ArrayList<String>>
 }
