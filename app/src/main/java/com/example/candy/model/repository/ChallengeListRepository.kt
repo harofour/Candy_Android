@@ -1,6 +1,7 @@
 package com.example.candy.model.repository
 
 import com.example.candy.model.data.Challenge
+import com.example.candy.model.data.ChallengeDetail
 
 interface ChallengeListRepository {
 
@@ -9,4 +10,6 @@ interface ChallengeListRepository {
     suspend fun touchLikeBtn(apiKey: String, challengeId: Int, previousState: Boolean): Boolean
 
     suspend fun searchLikeChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<Challenge>?
+
+    suspend fun searchChallengeDetail(apiKey: String, challengeId: Int): ChallengeDetail?
 }

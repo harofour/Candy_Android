@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.candy.model.api.ChallengeApi
 import com.example.candy.model.data.Challenge
+import com.example.candy.model.data.ChallengeDetail
 
 class ChallengeListRepositoryImpl(
     private val challengeApi: ChallengeApi,
@@ -59,6 +60,21 @@ class ChallengeListRepositoryImpl(
         else {
             // 실패 시
             Toast.makeText(context, "찜 리스트 조회 오류", Toast.LENGTH_SHORT).show()
+            return null
+        }
+    }
+
+    override suspend fun searchChallengeDetail(apiKey: String, challengeId: Int): ChallengeDetail? {
+
+        val request = challengeApi.getChallengeDetail(apiKey, challengeId)
+
+        if(request.isSuccessful){
+            Log.d("api test", "get challenge detail success")
+
+            return  request.body()!!.response
+        }
+        else{
+            Log.d("api test", "get challenge detail fail")
             return null
         }
     }

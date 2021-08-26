@@ -1,5 +1,6 @@
 package com.example.candy.challenge.pagerFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.adapter.HorizontalItemDecorator
 import com.example.candy.adapter.VerticalItemDecorator
+import com.example.candy.challenge.ChallengeDetailActivity
 import com.example.candy.challenge.adapter.PossibleChallengeRecyclerAdapter
 import com.example.candy.challenge.adapter.categoryRecyclerAdapter.ChallengeCategoryRecyclerAdapter
 import com.example.candy.challenge.viewmodel.PossibleChallengeViewModel
@@ -80,6 +82,9 @@ class PossibleFragment: Fragment() {
                         },
                         selectChallenge={
                             // 챌린지 선택 시 해당 챌린지 소개 화면으로 이동
+                            val intent = Intent(activity, ChallengeDetailActivity::class.java)
+                            intent.putExtra("challengeId", it.challengeId)
+                            startActivity(intent)
 
                         }
                     )

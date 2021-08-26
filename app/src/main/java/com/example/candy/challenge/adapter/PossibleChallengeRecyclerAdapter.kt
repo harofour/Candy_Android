@@ -2,10 +2,8 @@ package com.example.candy.challenge.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.R
-import com.example.candy.challenge.pagerFragment.PossibleFragmentDirections
 import com.example.candy.databinding.ChallengelistItemViewLoadingBinding
 import com.example.candy.databinding.ItemChallengeRecyclerviewPossiblechallengeBinding
 import com.example.candy.model.data.Challenge
@@ -92,7 +90,7 @@ class PossibleChallengeRecyclerAdapter(
             }
 
         }
-        else{
+        else{  // 로딩 아이템 뷰
 
         }
 

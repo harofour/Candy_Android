@@ -1,5 +1,6 @@
 package com.example.candy.challenge.pagerFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.adapter.HorizontalItemDecorator
 import com.example.candy.adapter.VerticalItemDecorator
+import com.example.candy.challenge.ChallengeDetailActivity
 import com.example.candy.challenge.adapter.LikeChallengeRecyclerAdapter
 import com.example.candy.challenge.adapter.PossibleChallengeRecyclerAdapter
 import com.example.candy.challenge.adapter.categoryRecyclerAdapter.ChallengeCategoryRecyclerAdapter
@@ -77,7 +79,14 @@ class LikeFragment: Fragment() {
                             x.likeDone = !x.likeDone
                             (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).
                             deleteUnlikeList(y)
-                        })
+                        },
+                        selectChallenge = {
+                            // 챌린지 선택 시 해당 챌린지 소개 화면으로 이동
+                            val intent = Intent(activity, ChallengeDetailActivity::class.java)
+                            intent.putExtra("challengeId", it.challengeId)
+                            startActivity(intent)
+                        }
+                        )
         likeChallengeBinding!!.recyclerLikeChallenge.addItemDecoration(VerticalItemDecorator(10))
 
         viewModel = ViewModelProvider(viewModelStore, object: ViewModelProvider.Factory{

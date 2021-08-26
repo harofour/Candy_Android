@@ -30,6 +30,7 @@
         <activity android:name=".activity.SolvingProblemActivity" >
         </activity>
         <activity android:name=".activity.MarkingProblemActivity"/>
+        <activity android:name=".challenge.ChallengeDetailActivity"/>
     </application>
 
 </manifest>

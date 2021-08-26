@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clickable="true"
+        >
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_45"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.45"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_47"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.47"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_60"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.60"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_63"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.63"/>
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_64"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.64"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_70"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.70"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_90"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.90"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_97"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.97"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_10"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.10"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_90"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.90"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_2"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_215"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.148" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_22"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.68" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_27"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.56" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_24"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_25"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.188" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_26"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.54" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+        <!-- Guidline End -->
+
+       <include
+        android:id="@+id/title_bar"
+        layout="@layout/view_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        style="@style/tv_candy_style2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="3dp"
+        android:layout_marginTop="10dp"
+        android:gravity="start"
+        android:text="5형식"
+        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_215"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_vertical_3"
+        app:layout_constraintStart_toEndOf="@id/guideline_vertical_2"
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
+
+
+    <TextView
+        style="@style/tv_candy_style3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:gravity="start"
+        android:text="5형식 동사에 대한 이해"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_25"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_3"
+        app:layout_constraintStart_toEndOf="@+id/guideline_vertical_2"
+        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_215" />
+
+
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/player_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_26"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_25" />
+
+    <TableLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:shrinkColumns="*"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_22"
+        app:layout_constraintEnd_toStartOf="@id/guideline_vertical_3"
+        app:layout_constraintStart_toEndOf="@id/guideline_vertical_2"
+        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_27">
+
+        <TableRow android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="3dp">
+
+                <TextView
+                    style="@style/tv_candy_style1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="카테고리" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EBEBEB" />
+
+                <TextView
+                    style="@style/tv_candy_style2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="12dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:text="영어" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="3dp">
+
+                <TextView
+                    style="@style/tv_candy_style1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="레벨" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EBEBEB" />
+
+                <TextView
+                    style="@style/tv_candy_style2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="12dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:text="3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="3dp">
+
+                <TextView
+                    style="@style/tv_candy_style1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="배정캔디" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EBEBEB" />
+
+                <TextView
+                    style="@style/tv_candy_style2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="12dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:text="10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="3dp">
+
+                <TextView
+                    style="@style/tv_candy_style1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="커트라인" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EBEBEB" />
+
+                <TextView
+                    style="@style/tv_candy_style2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="12dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:text="80점" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="3dp">
+
+                <TextView
+                    style="@style/tv_candy_style1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="3dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="현재점수" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#EBEBEB" />
+
+                <TextView
+                    style="@style/tv_candy_style2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="12dp"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:text="00점" />
+            </LinearLayout>
+        </TableRow>
+
+
+    </TableLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#EBEBEB"
+        app:layout_constraintEnd_toStartOf="@id/guideline_vertical_3"
+        app:layout_constraintStart_toEndOf="@+id/guideline_vertical_2"
+        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_22" />
+
+
+    <TextView
+        style="@style/tv_candy_style3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="start"
+        android:text="5형식 전반에 대한 이해를 다루고 있습니다."
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_3"
+        app:layout_constraintHeight_percent="0.025"
+        app:layout_constraintStart_toEndOf="@+id/guideline_vertical_2"
+        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_24" />
+
+
+
+        <TextView
+            android:id="@+id/tv_candyBtn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/rect_stroke_pink"
+            android:text="캔디 배정"
+            android:textColor="@color/text_pink"
+            android:textStyle="bold"
+            android:gravity="center"
+
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_90"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_97"
+            app:layout_constraintLeft_toRightOf="@id/guideline_vertical_10"
+            app:layout_constraintRight_toLeftOf="@id/guideline_vertical_90"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
