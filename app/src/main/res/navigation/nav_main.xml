@@ -10,11 +10,13 @@
         android:name="com.example.candy.challenge.ChallengeFragment"
         android:label="ChallengeFragment"
         tools:layout="@layout/fragment_challenge" />
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.candy.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home" />
+
     <fragment
         android:id="@+id/myPageFragment"
         android:name="com.example.candy.myPage.MyPageFragment"
@@ -70,4 +72,6 @@
         android:id="@+id/pwChangeFragment"
         android:name="com.example.candy.myPage.PwChangeFragment"
         android:label="PwChangeFragment" />
+
+
 </navigation>

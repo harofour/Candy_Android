@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.adapter.HorizontalItemDecorator
@@ -29,6 +32,8 @@ class PossibleFragment: Fragment() {
     //private lateinit var possibleChallengeList : List<Challenge>
     private lateinit var viewModel: PossibleChallengeViewModel
 
+    //private lateinit var navController: NavController // 챌린지 선택 시 챌린지 소개 화면으로 넘어가기 위함
+
     private var page = 1 // 리스트 10개가 1page
     private var No_More_Data = false  // 서버에서 데이터 마지막까지 다 가져 오면 true 된다
 
@@ -44,6 +49,9 @@ class PossibleFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("fragment check","PossibleFragment onViewCreated")
         Log.d("token check", CurrentUser.userToken!!)
+
+        // navigation
+       // navController = Navigation.findNavController(view)
 
         // 카테고리 recycler
         categoryList.add("ALL")
@@ -69,7 +77,12 @@ class PossibleFragment: Fragment() {
                             x.likeDone = !x.likeDone
                             (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).
                                     notifyItemRangeChanged(y, 1)
-                        })
+                        },
+                        selectChallenge={
+                            // 챌린지 선택 시 해당 챌린지 소개 화면으로 이동
+
+                        }
+                    )
         possibleChallengeBinding!!.recyclerPossibleChallenge.addItemDecoration(VerticalItemDecorator(10))
 
 
@@ -126,8 +139,6 @@ class PossibleFragment: Fragment() {
 
 
                     viewModel.getAllPossibleChallengeList(lastChallengeId, 10, false)
-
-
 
                 }
 

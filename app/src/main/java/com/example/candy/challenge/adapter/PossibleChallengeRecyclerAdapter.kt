@@ -2,8 +2,10 @@ package com.example.candy.challenge.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.R
+import com.example.candy.challenge.pagerFragment.PossibleFragmentDirections
 import com.example.candy.databinding.ChallengelistItemViewLoadingBinding
 import com.example.candy.databinding.ItemChallengeRecyclerviewPossiblechallengeBinding
 import com.example.candy.model.data.Challenge
@@ -11,6 +13,7 @@ import com.example.candy.model.data.Challenge
 class PossibleChallengeRecyclerAdapter(
         private var dataSet: ArrayList<Challenge>,
         val touchLikeImage: (challenge: Challenge, index: Int) -> Unit
+        ,val selectChallenge:(challenge: Challenge) -> Unit
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_ITEM = 0
@@ -85,7 +88,7 @@ class PossibleChallengeRecyclerAdapter(
 
             // 챌린지 리스트 중 하나 누를 시 해당 챌린지 세부 페이지 이동할 것임
             holder.binding.root.setOnClickListener {
-
+               selectChallenge.invoke(dataSet[safePosition])
             }
 
         }
