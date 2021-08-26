@@ -2,6 +2,7 @@ package com.example.candy.utils
 
 import android.content.Context
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import kotlinx.coroutines.*
 
 object Util {
@@ -21,5 +22,15 @@ object Util {
             }
             finished()
         }
+    }
+
+    fun showErrorAlertDialog(context: Context,title: String,message: String) {
+        AlertDialog.Builder(context)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("확인") { _, _ ->
+            }
+            .create()
+            .show()
     }
 }

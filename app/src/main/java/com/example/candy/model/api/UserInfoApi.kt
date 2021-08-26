@@ -1,5 +1,7 @@
 package com.example.candy.model.api
 
+import com.example.candy.data.ApiStringResponse
+import com.example.candy.model.data.UserChangePwResponse
 import com.example.candy.model.data.UserInfoResponse
 import retrofit2.Call
 import retrofit2.http.Body
@@ -21,4 +23,11 @@ interface UserInfoApi {
         @Header("api_key")userToken: String,
         @Body UserData: HashMap<String,Any>
     ) : Call<UserInfoResponse>
+
+    // 마이페이지에서 비밀번호 변경
+    @POST("user/password/change")
+    fun changePw(
+        @Header("api_key")userToken: String,
+        @Body UserData: HashMap<String,Any>
+    ) : Call<UserChangePwResponse>
 }
