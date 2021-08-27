@@ -1,6 +1,7 @@
-package com.example.candy.problem
+package com.example.candy.challenge
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.example.candy.R
 import com.example.candy.databinding.FragmentChallengeLectureBinding
 
-
 class ChallengeLectureFragment : Fragment() {
     private var _binding: FragmentChallengeLectureBinding? = null
     private val binding get() = _binding!!
@@ -21,8 +21,8 @@ class ChallengeLectureFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentChallengeLectureBinding.inflate(inflater,container,false)
+    ): View {
+        _binding = FragmentChallengeLectureBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -36,13 +36,17 @@ class ChallengeLectureFragment : Fragment() {
             navController.popBackStack()
         }
 
+        arguments?.get("Challenge").let{
+            Log.d("ChallengeLectureFragment","Challenge argement / $it")
+        }
+
         // 임시 좋아요 아이콘
-        Glide.with(binding.root).load(R.drawable.icon_challenge_like_empty).into(binding.titleBar.favoriteIv)
+        Glide.with(binding.root).load(R.drawable.icon_challenge_like_empty)
+            .into(binding.titleBar.favoriteIv)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }

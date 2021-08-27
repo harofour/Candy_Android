@@ -100,4 +100,8 @@ class HomeRepository() {
             _ongoingChallenges.value = newChallenges
         }
     }
+
+    fun getChallenge(position: Int): Challenge {
+        return allChallenges[position]
+    }
 }

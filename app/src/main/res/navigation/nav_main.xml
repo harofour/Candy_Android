@@ -79,6 +79,10 @@
         android:label="PwChangeFragment" />
     <fragment
         android:id="@+id/challengeLectureFragment"
-        android:name="com.example.candy.problem.ChallengeLectureFragment"
-        android:label="ChallengeLectureFragment" />
+        android:name="com.example.candy.challenge.ChallengeLectureFragment"
+        android:label="ChallengeLectureFragment" >
+        <argument
+            android:name="challenge"
+            app:argType="com.example.candy.model.data.Challenge" />
+    </fragment>
 </navigation>

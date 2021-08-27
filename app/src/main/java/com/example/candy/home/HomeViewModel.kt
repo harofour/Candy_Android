@@ -19,4 +19,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     fun sortChallengeByCategory(position: Int) {
         repository.sortChallengeByCategory(position)
     }
+
+    fun getChallenge(position: Int): Challenge {
+        return repository.getChallenge(position)
+    }
 }
