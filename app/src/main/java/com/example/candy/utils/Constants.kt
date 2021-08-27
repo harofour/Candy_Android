@@ -12,9 +12,6 @@ object Constants {
 object CurrentUser {
     var userInfo: User? = null
     var userToken: String? = null
-    var userPw: String? = null
-    var studentCandy =  MutableLiveData<Candy>()
-    var parentCandy = MutableLiveData<Candy>()
 
 }
 

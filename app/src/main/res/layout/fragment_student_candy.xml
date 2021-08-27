@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="candy"
+            type="com.example.candy.model.data.Candy" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center|start"
-                android:text="조회 실패"
+                android:text="@{candy.candy}"
                 android:textStyle="bold" />
 
             <Button

@@ -9,7 +9,7 @@ import com.example.candy.model.data.UserInfo
 import com.example.candy.utils.RESPONSE_STATE
 
 class MyPageViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = MyPageRepository(application)
+    private val repository = MyPageRepository()
 
 
     fun getUserInfo(): User {
@@ -18,26 +18,6 @@ class MyPageViewModel(application: Application) : AndroidViewModel(application) 
 
     fun getAPIUserInfo(apiKey: String): LiveData<UserInfo> {
         return repository.getAPIUserInfo(apiKey)
-    }
-
-    fun getAPICandyStudent(apiKey: String) {
-        return repository.getAPICandyStudent(apiKey)
-    }
-
-    fun getAPICandyParent(apiKey: String) {
-        return repository.getAPICandyParent(apiKey)
-    }
-
-    fun getCandyStudent(): LiveData<Candy> {
-        return repository.getCandyStudent()
-    }
-
-    fun getCandyParent(): LiveData<Candy> {
-        return repository.getCandyParent()
-    }
-
-    fun updateCandyParent(apiKey: String, chargeCandy: HashMap<String, Int>) {
-        return repository.updateCandyParent(apiKey, chargeCandy)
     }
 
     fun updateUserInfo(
