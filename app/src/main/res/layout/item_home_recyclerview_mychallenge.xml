@@ -1,208 +1,232 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="category"
+            type="String" />
+        <variable
+            name="title"
+            type="String"/>
+        <variable
+            name="subTitle"
+            type="String"/>
+        <variable
+            name="candy"
+            type="Integer"/>
+        <variable
+            name="requiredScore"
+            type="Integer"/>
+        <variable
+            name="recyclerItem"
+            type="android.view.View" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="5:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_category_name"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="10dp"
-            android:autoSizeMinTextSize="2sp"
-            android:autoSizeTextType="uniform"
-            android:gravity="center"
-            android:maxLines="1"
-            android:padding="10dp"
-            android:text="영어"
-            android:background="@drawable/main_category_rounded_1"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_18"
+            app:layout_constraintDimensionRatio="5:1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:autoSizeMinTextSize="2sp"
-            android:autoSizeTextType="uniform"
-            android:text="5형식"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_2"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_26"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_8"
-            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_3" />
+            <TextView
+                android:id="@+id/categoryTV"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:autoSizeMinTextSize="2sp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/main_category_rounded_1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:text="@{category}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical_18"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_description"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:autoSizeMinTextSize="12sp"
-            android:autoSizeTextType="uniform"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:text="5형식 동사에 대한 이해"
-            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_4"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_26"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_8"
-            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_2" />
+            <TextView
+                android:id="@+id/challengeTitleTV"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:autoSizeMinTextSize="2sp"
+                android:autoSizeTextType="uniform"
+                android:text="@{title}"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_2"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_26"
+                app:layout_constraintStart_toEndOf="@id/guideline_vertical_8"
+                app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_3" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:autoSizeMinTextSize="2sp"
-            android:autoSizeTextType="uniform"
-            android:gravity="center"
-            android:text="캔디"
-            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_23"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_9"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_26"
-            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_3" />
+            <TextView
+                android:id="@+id/challengeDescriptionTV"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:text="@{subTitle}"
+                app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_4"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_26"
+                app:layout_constraintStart_toEndOf="@id/guideline_vertical_8"
+                app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_2" />
 
-
-        <TextView
-            android:id="@+id/tv_candy"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:autoSizeMinTextSize="2sp"
-            android:autoSizeTextType="uniform"
-            android:gravity="center"
-            android:text="8"
-            android:textColor="#FBCFCF"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_4"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_9"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_26"
-            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_23" />
-
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:autoSizeMinTextSize="2sp"
-            android:autoSizeTextType="uniform"
-            android:gravity="center"
-            android:text="커트 라인"
-            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_23"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_10"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_9"
-            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_3" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:autoSizeMinTextSize="2sp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:text="캔디"
+                app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_23"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical_9"
+                app:layout_constraintStart_toEndOf="@id/guideline_vertical_26"
+                app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_3" />
 
 
-        <TextView
-            android:id="@+id/tv_required_score"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:autoSizeMinTextSize="2sp"
-            android:autoSizeTextType="uniform"
-            android:gravity="center"
-            android:text="80"
-            android:textColor="#FBCFCF"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_4"
-            app:layout_constraintEnd_toStartOf="@id/guideline_vertical_10"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_9"
-            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_23" />
+            <TextView
+                android:id="@+id/candyTV"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:autoSizeMinTextSize="2sp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:text="@{candy.toString()}"
+                android:textColor="#FBCFCF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_4"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical_9"
+                app:layout_constraintStart_toEndOf="@id/guideline_vertical_26"
+                app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_23" />
 
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline_vertical_10"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/challenge_detail_icon" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="#EBEBEB"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:autoSizeMinTextSize="2sp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:text="커트 라인"
+                app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_23"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical_10"
+                app:layout_constraintStart_toEndOf="@id/guideline_vertical_9"
+                app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_3" />
 
 
-        <!--Guide Line-->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_vertical_8"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.18" />
+            <TextView
+                android:id="@+id/requiredScoreTV"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:autoSizeMinTextSize="2sp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:text="@{requiredScore.toString()}"
+                android:textColor="#FBCFCF"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_4"
+                app:layout_constraintEnd_toStartOf="@id/guideline_vertical_10"
+                app:layout_constraintStart_toEndOf="@id/guideline_vertical_9"
+                app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_23" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_vertical_18"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.16" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_vertical_10"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
+            <ImageView
+                android:id="@+id/moveToLectureBtn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guideline_vertical_10"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/challenge_detail_icon" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_vertical_9"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.7" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#EBEBEB"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_vertical_26"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_horizontal_2"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
+            <!--Guide Line-->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_8"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.18" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_horizontal_23"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.42" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_18"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.16" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_horizontal_3"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.25" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_10"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_horizontal_4"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.75" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_9"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.7" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_26"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_horizontal_2"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_horizontal_23"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.42" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_horizontal_3"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_horizontal_4"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.75" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -14,7 +14,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.candy.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_challengeLectureFragment"
+            app:destination="@id/challengeLectureFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myPageFragment"
         android:name="com.example.candy.myPage.MyPageFragment"
