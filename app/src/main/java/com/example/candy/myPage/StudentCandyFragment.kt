@@ -36,7 +36,7 @@ class StudentCandyFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         binding.titleBar.title.text = "캔디 인출"
-        binding.studentCandy.text = CurrentUser.studentCandy.value?.candy
+        binding.studentCandy.text = getString(R.string.numberOfStudentCandy,CurrentUser.studentCandy.value?.candy ?: "조회 실패")
 
         binding.titleBar.backBtn.setOnClickListener {
             navController.popBackStack()
@@ -53,7 +53,7 @@ class StudentCandyFragment : Fragment() {
 
             dialog.setOnClickedListener(object : CustomDialog.ButtonClickListener{
                 override fun onClicked(candy: Int) {
-                    TODO("Not yet implemented")
+
                 }
             })
 

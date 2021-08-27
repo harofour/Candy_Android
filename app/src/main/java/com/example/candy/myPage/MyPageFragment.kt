@@ -14,6 +14,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.example.candy.R
 import com.example.candy.databinding.FragmentMypageBinding
+import com.example.candy.model.data.Candy
 import com.example.candy.utils.CurrentUser
 
 class MyPageFragment: Fragment() {
@@ -39,7 +40,8 @@ class MyPageFragment: Fragment() {
         viewModel.getAPICandyStudent(CurrentUser.userToken!!)
         viewModel.getAPICandyParent(CurrentUser.userToken!!)
         viewModel.getCandyStudent().observe(viewLifecycleOwner,{
-            binding.candy = it
+            val candy = getString(R.string.numberOfStudentCandy,it.candy)
+            binding.candy = Candy(candy)
         })
 
         return binding.root

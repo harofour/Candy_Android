@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.candy.R
 import com.example.candy.databinding.FragmentParentCandyBinding
+import com.example.candy.model.data.Candy
 import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.CustomDialog
 
@@ -39,7 +40,8 @@ class ParentCandyFragment : Fragment() {
         binding.studentCandy.text = CurrentUser.parentCandy.value?.candy
 
         viewModel.getCandyParent().observe(viewLifecycleOwner,{
-            binding.candy = it
+            val numberOfCandy = getString(R.string.numberOfParentCandy,it.candy)
+            binding.candy = Candy(numberOfCandy)
         })
 
         binding.titleBar.backBtn.setOnClickListener {
