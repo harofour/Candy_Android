@@ -1,8 +1,10 @@
 package com.example.candy.model.api
 
+import com.example.candy.data.ApiAnyResponse
 import com.example.candy.model.data.CandyResponse
 import com.example.candy.model.data.chargeCandyResponse
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -28,4 +30,11 @@ interface CandyApi {
         @Header("api_key")userToken: String,
         @Body chargeCandy: HashMap<String,Int>
     ) : Call<chargeCandyResponse>
+
+    // 캔디 획득
+    @POST("candy/attain")
+    fun attainCandy(
+        @Header("api_key")userToken: String,
+        @Body attainCandy: HashMap<String,Int>
+    ) : Call<ApiAnyResponse>
 }

@@ -31,7 +31,7 @@ class HomeRepository() {
 
     fun getCategories(): LiveData<ArrayList<String>> {
         CoroutineScope(Dispatchers.IO).launch {
-            val request = api.getCategory(CurrentUser.userToken!!)
+            val response = api.getCategory(CurrentUser.userToken!!)
 
             if (allCategories.size > 0) {
                 allCategories.clear()
@@ -39,14 +39,14 @@ class HomeRepository() {
 
             allCategories.add(allCategory)
 
-            request.body()?.let {
+            response.body()?.let {
                 it.forEach { category ->
                     allCategories.add(translateCategory(category))
 //                    allCategories.add(category)
                 }
             }
 
-            if (request.isSuccessful) {
+            if (response.isSuccessful) {
                 _categories.postValue(allCategories)
             } else {
                 Log.d(Tag, "getCategories() error occurred")
@@ -65,12 +65,12 @@ class HomeRepository() {
     // for test
     private fun generateChallengeData(): ArrayList<Challenge> {
         return arrayListOf<Challenge>(
-            Challenge(1, "영어", false, 1, 1, "1형식", "ㄱ"),
-            Challenge(2, "수학", false, 1, 1, "덧셈", "ㄴ"),
-            Challenge(3, "한국어", false, 1, 1, "말하기", "ㄷ"),
-            Challenge(4, "영어", false, 1, 1, "3형식", "ㄹ"),
-            Challenge(5, "수학", false, 1, 1, "곱하기", "ㅁ"),
-            Challenge(6, "영어", false, 1, 1, "5형식", "ㅂ")
+            Challenge(1, "영어", false, 1, 41, "1형식", "3"),
+            Challenge(2, "수학", false, 2, 31, "덧셈", "ㄴ"),
+            Challenge(3, "한국어", false, 3, 11, "말하기", "ㄷ"),
+            Challenge(4, "영어", false, 4, 15, "3형식", "ㄹ"),
+            Challenge(5, "수학", false, 15, 13, "곱하기", "ㅁ"),
+            Challenge(6, "영어", false, 16, 12, "5형식", "ㅂ")
         )
     }
 

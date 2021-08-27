@@ -1,5 +1,6 @@
 package com.example.candy.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.candy.R
 import com.example.candy.adapter.HorizontalItemDecorator
 import com.example.candy.adapter.VerticalItemDecorator
+import com.example.candy.challenge.ChallengeLectureActivity
 import com.example.candy.databinding.FragmentHomeBinding
 import com.example.candy.home.adapter.CategoryAdapter
 import com.example.candy.home.adapter.MyChallengeAdapter
@@ -27,7 +29,6 @@ class HomeFragment : Fragment() {
 
     companion object {
         const val TAG: String = "로그"
-
     }
 
     override fun onCreateView(
@@ -93,9 +94,10 @@ class HomeFragment : Fragment() {
     private fun onChallengeItemClicked(position: Int) {
         Log.d("HomeFragment", "ChallengeItemClicked() position $position")
         // 강의 화면으로 이동
-//        val arg = homeViewModel.getChallenge(position)
-//        val action = HomeFragmentDirections.actionHomeFragmentToChallengeLectureFragment(arg)
-//        navController.navigate(action)
+        val challenge = homeViewModel.getChallenge(position)
+        val intent = Intent(requireActivity().applicationContext, ChallengeLectureActivity::class.java)
+        intent.putExtra("Challenge",challenge)
+        requireActivity().startActivity(intent)
     }
 
     override fun onDestroyView() {
