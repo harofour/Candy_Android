@@ -29,7 +29,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="마이페이지"
+            android:text="@string/bottom_nav_item_name_4"
             android:textColor="@android:color/black"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/top_border"
@@ -108,95 +108,84 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_info" />
 
-        <LinearLayout
+        <TableLayout
             android:id="@+id/menu"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:orientation="vertical"
+            android:shrinkColumns="*"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.33"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/user_info_border"
             app:layout_constraintWidth_percent="0.9">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+            <TableRow
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:gravity="center">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/user_change_btn"
                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="정보변경"
+                    android:text="@string/userInfoChange"
                     app:icon="@drawable/profile_icon"
                     app:iconGravity="top" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/pw_change_btn"
                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="비밀번호 변경"
+                    android:text="@string/changePw"
                     app:icon="@drawable/ic_baseline_lock_24"
                     app:iconGravity="top" />
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="임시1"
-                    app:icon="@drawable/ic_baseline_history_24"
-                    app:iconGravity="top" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
                     android:id="@+id/withdrawCandy"
                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="캔디 인출"
+                    android:text="@string/withDrawCandy"
                     app:icon="@drawable/ic_baseline_attach_money_24"
                     app:iconGravity="top" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_weight="1"
+                android:gravity="center">
+
+
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/chargeCandy"
                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="캔디 충전"
+                    android:text="@string/chargeCandy"
                     app:icon="@drawable/ic_baseline_credit_card_24"
                     app:iconGravity="top" />
-
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/temp_btn"
                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="임시"
-                    app:icon="@drawable/bottom_nav_icon_challenge"
+                    app:iconGravity="top" />
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     app:iconGravity="top" />
 
-            </LinearLayout>
+            </TableRow>
 
-        </LinearLayout>
+        </TableLayout>
 
         <View
             android:id="@+id/menu_border"
@@ -208,7 +197,7 @@
             app:layout_constraintTop_toBottomOf="@+id/menu" />
 
         <Button
-            android:id="@+id/outlinedButton"
+            android:id="@+id/logout_btn"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
