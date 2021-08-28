@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.candy.R
 import com.example.candy.databinding.FragmentUserChangeBinding
 import com.example.candy.model.data.UserInfo
+import com.example.candy.model.viewModel.SharedViewModel
 import com.example.candy.myPage.MyPageFragment.Companion.TAG
 import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.RESPONSE_STATE
@@ -25,6 +27,7 @@ import java.lang.Exception
 class UserChangeFragment : Fragment() {
     private lateinit var binding: FragmentUserChangeBinding
     private val viewModel: MyPageViewModel by viewModels()
+    private val sharedViewModel : SharedViewModel by activityViewModels()
     private lateinit var navController: NavController
 
     private lateinit var changeBirth: String
@@ -102,8 +105,8 @@ class UserChangeFragment : Fragment() {
          * 1. 생년월일 형식 20000101 -> 8자리 맞는지 검사
          * 2. 전화번호 형식 01012341234 -> 11자리 맞는지 검사
          */
-        changeBirth = binding.labelEditBirth.text.toString() ?: ""
-        changePhone = binding.labelEditPhone.text.toString() ?: ""
+        changeBirth = binding.labelEditBirth.text.toString()
+        changePhone = binding.labelEditPhone.text.toString()
         if(changeBirth.length == 8 && changePhone.length == 11 && verifyPassword())
             return true
         if(changeBirth.length != 8){
@@ -123,6 +126,6 @@ class UserChangeFragment : Fragment() {
     // 비밀번호 확인 - API 완성 되기 전까지 임시
     // TODO:: API 완성되면 수정 MainActivity 함께 수정
     private fun verifyPassword(): Boolean {
-        return binding.labelEditPw.text.toString() == CurrentUser.userPw
+        return binding.labelEditPw.text.toString() == sharedViewModel.getUserPw()
     }
 }

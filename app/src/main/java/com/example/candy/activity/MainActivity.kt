@@ -1,27 +1,20 @@
 package com.example.candy.activity
 
-import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.NavigationUI.setupWithNavController
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.candy.R
-import com.example.candy.challenge.ChallengeFragment
 import com.example.candy.model.data.User
 import com.example.candy.databinding.ActivityMainBinding
-import com.example.candy.home.HomeFragment
-import com.example.candy.myPage.MyPageViewModel
-import com.example.candy.myPage.MyPageFragment
+import com.example.candy.model.viewModel.SharedViewModel
 import com.example.candy.utils.CurrentUser
+import com.example.candy.utils.RESPONSE_STATE
+import com.example.candy.utils.Util
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -29,6 +22,8 @@ class MainActivity : AppCompatActivity() {
     private val Tag = "MainActivity"
     private var mainBinding: ActivityMainBinding? = null
     private lateinit var appBarConfiguration : AppBarConfiguration
+    private val sharedViewModel: SharedViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +41,20 @@ class MainActivity : AppCompatActivity() {
         // 로그인 후 유저 정보 저장
         CurrentUser.userInfo = intent.getSerializableExtra("userInfo") as User
         CurrentUser.userToken = "Bearer ${intent.getStringExtra("userToken")}"
-        CurrentUser.userPw = intent.getStringExtra("userPw")
+        sharedViewModel.setUserPw(intent.getStringExtra("userPw") ?: "1234")
         Log.d(Tag, ".\n userInfo : ${CurrentUser.userInfo}   \n userToken : ${CurrentUser.userToken}")
+
+        // 학생 캔디 받아오기
+        sharedViewModel.getAPICandyStudent(CurrentUser.userToken!!){responseState, candy ->
+            when(responseState){
+                RESPONSE_STATE.SUCCESS->{
+                    sharedViewModel.setCandyStudentInApp(candy!!)
+                }
+                RESPONSE_STATE.FAILURE ->{
+                    Util.toast(binding.root.context,"보유 중인 캔디 조회에 실패하였습니다.")
+                }
+            }
+        }
 
 
     }

@@ -6,17 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.candy.R
 import com.example.candy.databinding.FragmentParentCandyBinding
+import com.example.candy.model.data.Candy
+import com.example.candy.model.viewModel.SharedViewModel
 import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.CustomDialog
+import com.example.candy.utils.RESPONSE_STATE
+import com.example.candy.utils.Util
 
 class ParentCandyFragment : Fragment() {
     private lateinit var binding: FragmentParentCandyBinding
     private val viewModel: MyPageViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -24,7 +30,20 @@ class ParentCandyFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_parent_candy,container,false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_parent_candy, container, false)
+
+        // 학부모 캔디 초기화
+        sharedViewModel.getAPICandyParent(CurrentUser.userToken!!){responseState,candy ->
+            when(responseState){
+                RESPONSE_STATE.SUCCESS->{
+                    sharedViewModel.setCandyParentInApp(candy!!)
+                }
+                RESPONSE_STATE.FAILURE->{
+
+                }
+            }
+        }
         return binding.root
     }
 
@@ -36,10 +55,10 @@ class ParentCandyFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         binding.titleBar.title.text = "캔디 충전"
-        binding.studentCandy.text = CurrentUser.parentCandy.value?.candy
 
-        viewModel.getCandyParent().observe(viewLifecycleOwner,{
-            binding.candy = it
+        sharedViewModel.candyParent.observe(viewLifecycleOwner, {
+            val numberOfCandy = getString(R.string.numberOfParentCandy, it)
+            binding.candy = Candy(numberOfCandy)
         })
 
         binding.titleBar.backBtn.setOnClickListener {
@@ -48,14 +67,27 @@ class ParentCandyFragment : Fragment() {
 
         // 캔디 충전 버튼
         binding.chargeCandy.setOnClickListener {
-            val dialog = CustomDialog(binding.root.context,100)
+            val dialog = CustomDialog(binding.root.context, 100)
             dialog.myDialog(binding.root.context)
 
-            dialog.setOnClickedListener(object : CustomDialog.ButtonClickListener{
+            dialog.setOnClickedListener(object : CustomDialog.ButtonClickListener {
                 override fun onClicked(candy: Int) {
-                    val reqData = HashMap<String,Int>()
+                    val reqData = HashMap<String, Int>()
                     reqData["amount"] = candy
-                    viewModel.updateCandyParent(CurrentUser.userToken!!,reqData)
+
+                    sharedViewModel.updateCandyParent(
+                        CurrentUser.userToken!!,
+                        reqData
+                    ) { responseState ->
+                        when (responseState) {
+                            RESPONSE_STATE.SUCCESS -> {
+                                sharedViewModel.updateCandyParentInApp(candy)
+                            }
+                            RESPONSE_STATE.FAILURE -> {
+                                Util.showErrorAlertDialog(binding.root.context,"캔디 충전 실패","다시 시도해주세요.")
+                            }
+                        }
+                    }
                 }
             })
         }
