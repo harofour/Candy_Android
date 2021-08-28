@@ -77,7 +77,10 @@ class ChallengeDetailActivity: AppCompatActivity() {
         viewModel.getChallengeDetailInfo(challengeId)
 
 
-
+        binding.tvCandyBtn.setOnClickListener {
+            var dialogView = CandyAssignDialogFragment()
+            dialogView.show(supportFragmentManager, "candy assign dialog open")
+        }
 
     }
 

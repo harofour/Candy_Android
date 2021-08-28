@@ -33,4 +33,7 @@
     <string name="_verifyNew2">새 2차 비밀번호 확인</string>
     <string name="_change2">2차 비밀번호 변경</string>
 
+    <!-- challenge -->
+    <string name="text1">챌린지에 배정할 캔디 개수를 입력하세요</string>
+
 </resources>
