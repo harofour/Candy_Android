@@ -1,24 +1,27 @@
 package com.example.candy.myPage
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
-import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.example.candy.R
 import com.example.candy.databinding.FragmentMypageBinding
+import com.example.candy.model.data.Candy
+import com.example.candy.model.viewModel.SharedViewModel
 import com.example.candy.utils.CurrentUser
+import com.example.candy.utils.RESPONSE_STATE
+import com.example.candy.utils.Util
 
 class MyPageFragment: Fragment() {
     private lateinit var binding: FragmentMypageBinding
     private val viewModel: MyPageViewModel by viewModels()
+    private val sharedViewModel : SharedViewModel by activityViewModels()
 
     private lateinit var navController: NavController
 
@@ -36,12 +39,6 @@ class MyPageFragment: Fragment() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.user = viewModel.getUserInfo()
-        viewModel.getAPICandyStudent(CurrentUser.userToken!!)
-        viewModel.getAPICandyParent(CurrentUser.userToken!!)
-        viewModel.getCandyStudent().observe(viewLifecycleOwner,{
-            binding.candy = it
-        })
-
         return binding.root
 
 
@@ -51,13 +48,18 @@ class MyPageFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
+        sharedViewModel.candyStudent.observe(viewLifecycleOwner, {
+            val numberOfCandy = getString(R.string.numberOfStudentCandy, it)
+            binding.candy = Candy(numberOfCandy)
+        })
+
         // 마이페이지 하위 메뉴 클릭 시
-        setMypageMenu()
+        setMyPageMenu()
 
     } // onViewCreated()
 
 
-    private fun setMypageMenu() {
+    private fun setMyPageMenu() {
         // 캔디 인출 메뉴 클릭 시
         binding.withdrawCandy.setOnClickListener {
             navController
