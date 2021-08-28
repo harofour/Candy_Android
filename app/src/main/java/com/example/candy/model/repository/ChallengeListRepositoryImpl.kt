@@ -70,11 +70,13 @@ class ChallengeListRepositoryImpl(
 
         if(request.isSuccessful){
             Log.d("api test", "get challenge detail success")
-
+            Toast.makeText(context, "챌린지 세부 정보 가져오기 성공", Toast.LENGTH_SHORT).show()
             return  request.body()!!.response
         }
         else{
             Log.d("api test", "get challenge detail fail")
+            // 실패 시
+            Toast.makeText(context, "챌린지 세부 정보 오류", Toast.LENGTH_SHORT).show()
             return null
         }
     }

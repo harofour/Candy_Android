@@ -24,5 +24,4 @@ data class ChallengeDetail(
         @SerializedName("subTitle")val subTitle: String,
         @SerializedName("title")val title: String,
         @SerializedName("totalScore")val totalScore: Int
-
 )
