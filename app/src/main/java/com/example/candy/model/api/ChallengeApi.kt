@@ -1,6 +1,7 @@
 package com.example.candy.model.api
 
 import com.example.candy.R
+import com.example.candy.model.data.ChallengeDetailResponse
 import com.example.candy.model.data.ChallengeLike
 import com.example.candy.model.data.ChallengeList
 import com.example.candy.utils.CurrentUser
@@ -32,9 +33,18 @@ interface ChallengeApi {
             @Query("size")size: Int
     ): Response<ChallengeList>
 
+    // 소개 정보 받아오기
+    @GET("challenge/{challengeId}/detail")
+    suspend fun getChallengeDetail(
+            @Header("api_key")userToken: String,
+            @Path("challengeId")challengeId: Int
+    ): Response<ChallengeDetailResponse>
+
+
     // 카테고리 조회
     @GET("challenge/category")
     suspend fun getCategory(
         @Header("api_key")userToken: String
     ): Response<ArrayList<String>>
+
 }

@@ -1,5 +1,6 @@
 package com.example.candy.challenge.pagerFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,10 +9,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.adapter.HorizontalItemDecorator
 import com.example.candy.adapter.VerticalItemDecorator
+import com.example.candy.challenge.ChallengeDetailActivity
 import com.example.candy.challenge.adapter.LikeChallengeRecyclerAdapter
 import com.example.candy.challenge.adapter.PossibleChallengeRecyclerAdapter
 import com.example.candy.challenge.adapter.categoryRecyclerAdapter.ChallengeCategoryRecyclerAdapter
@@ -30,6 +34,8 @@ class LikeFragment: Fragment() {
 
     private lateinit var viewModel: LikeChallengeViewModel
 
+  //  private lateinit var navController: NavController // 챌린지 선택 시 챌린지 소개 화면으로 넘어가기 위함
+
     private var page = 1 // 리스트 10개가 1page
     private var No_More_Data = false  // 서버에서 데이터 마지막까지 다 가져 오면 true 된다
 
@@ -45,6 +51,9 @@ class LikeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("fragment check","LikeFragment onViewCreated")
+
+        // navigation
+       // navController = Navigation.findNavController(view)
 
         // 카테고리 recycler
         categoryList.add("ALL")
@@ -70,7 +79,14 @@ class LikeFragment: Fragment() {
                             x.likeDone = !x.likeDone
                             (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).
                             deleteUnlikeList(y)
-                        })
+                        },
+                        selectChallenge = {
+                            // 챌린지 선택 시 해당 챌린지 소개 화면으로 이동
+                            val intent = Intent(activity, ChallengeDetailActivity::class.java)
+                            intent.putExtra("challengeId", it.challengeId)
+                            startActivity(intent)
+                        }
+                        )
         likeChallengeBinding!!.recyclerLikeChallenge.addItemDecoration(VerticalItemDecorator(10))
 
         viewModel = ViewModelProvider(viewModelStore, object: ViewModelProvider.Factory{
