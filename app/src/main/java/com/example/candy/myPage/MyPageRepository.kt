@@ -20,6 +20,9 @@ class MyPageRepository() {
     private val apiCandy = retrofit.create(CandyApi::class.java)
     private val apiUserInfo = retrofit.create(UserInfoApi::class.java)
 
+    var parentCandy = MutableLiveData<String>()
+    var studentCandy = MutableLiveData<String>()
+
 
     /**
      * 유저 정보 관련 함수
@@ -72,26 +75,29 @@ class MyPageRepository() {
         })
     }
 
+
     /**
      * 학부모 캔디 관리하는 함수
      */
-    fun getAPICandyParent(apiKey: String,completion: (RESPONSE_STATE,String?) -> Unit) {
+    fun getCandyParent(): LiveData<String> {
+        return parentCandy
+    }
+
+    fun getAPICandyParent(apiKey: String) {
         apiCandy.getCandyParent(apiKey).enqueue(object : Callback<CandyResponse> {
             override fun onResponse(call: Call<CandyResponse>, response: Response<CandyResponse>) {
                 if(response.code() == 200){
-                    completion(RESPONSE_STATE.SUCCESS,response.body()!!.candy.candy)
-                }else{
-                    completion(RESPONSE_STATE.FAILURE,null)
+                    parentCandy.value = response.body()!!.candy.candy
                 }
             }
 
             override fun onFailure(call: Call<CandyResponse>, t: Throwable) {
-                completion(RESPONSE_STATE.FAILURE,null)
+
             }
         })
     }
 
-    fun updateCandyParent(apiKey: String, chargeCandy: HashMap<String, Int>,completion: (RESPONSE_STATE) -> Unit) {
+    fun updateCandyParent(apiKey: String, chargeCandy: HashMap<String, Int>) {
         apiCandy.chargeCandy(apiKey, chargeCandy).enqueue(object : Callback<chargeCandyResponse> {
             override fun onResponse(
                 call: Call<chargeCandyResponse>,
@@ -99,32 +105,32 @@ class MyPageRepository() {
             ) {
                 Log.d(TAG, "MyPageRepository -------- ${response.code()}")
                 if (response.code() == 200 && response.body()!!.success) {
-                    completion(RESPONSE_STATE.SUCCESS)
-                }else{
-                    completion(RESPONSE_STATE.FAILURE)
+                    parentCandy.value = (parentCandy.value!!.toInt() + chargeCandy["amount"]!!).toString()
                 }
             }
 
             override fun onFailure(call: Call<chargeCandyResponse>, t: Throwable) {
-                completion(RESPONSE_STATE.FAILURE)
+
             }
         })
     }
 
+
     /**
      * 학생 캔디 관리하는 함수
      */
-    fun getAPICandyStudent(apiKey: String,completion: (RESPONSE_STATE, String?) -> Unit) {
+    fun getCandyStudent(): LiveData<String> {
+        return studentCandy
+    }
+    fun getAPICandyStudent(apiKey: String) {
         apiCandy.getCandyStudent(apiKey).enqueue(object : Callback<CandyResponse> {
             override fun onResponse(call: Call<CandyResponse>, response: Response<CandyResponse>) {
                 if(response.code() == 200){
-                    completion(RESPONSE_STATE.SUCCESS,response.body()!!.candy.candy)
-                }else{
-                    completion(RESPONSE_STATE.FAILURE,null)
+                    studentCandy.value = response.body()!!.candy.candy
                 }
             }
             override fun onFailure(call: Call<CandyResponse>, t: Throwable) {
-                completion(RESPONSE_STATE.FAILURE,null)
+
             }
         })
     }

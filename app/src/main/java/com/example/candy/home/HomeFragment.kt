@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavArgument
 import androidx.navigation.NavController
@@ -19,6 +20,7 @@ import com.example.candy.challenge.ChallengeLectureActivity
 import com.example.candy.databinding.FragmentHomeBinding
 import com.example.candy.home.adapter.CategoryAdapter
 import com.example.candy.home.adapter.MyChallengeAdapter
+import com.example.candy.model.viewModel.SharedViewModel
 
 class HomeFragment : Fragment() {
     private lateinit var mAdapter: MyChallengeAdapter
@@ -26,6 +28,7 @@ class HomeFragment : Fragment() {
     private var homeBinding: FragmentHomeBinding? = null   // onDestory 에서 완벽한 제거를 위해 null 허용
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var navController: NavController
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     companion object {
         const val TAG: String = "로그"

@@ -1,5 +1,6 @@
 package com.example.candy.myPage
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.candy.R
+import com.example.candy.activity.LogInActivity
 import com.example.candy.databinding.FragmentMypageBinding
 import com.example.candy.model.data.Candy
 import com.example.candy.model.viewModel.SharedViewModel
 import com.example.candy.utils.CurrentUser
-import com.example.candy.utils.RESPONSE_STATE
-import com.example.candy.utils.Util
 
 class MyPageFragment: Fragment() {
     private lateinit var binding: FragmentMypageBinding
@@ -34,7 +34,7 @@ class MyPageFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mypage,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mypage, container, false)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -48,7 +48,7 @@ class MyPageFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        sharedViewModel.candyStudent.observe(viewLifecycleOwner, {
+        sharedViewModel.getCandyStudent().observe(viewLifecycleOwner, {
             val numberOfCandy = getString(R.string.numberOfStudentCandy, it)
             binding.candy = Candy(numberOfCandy)
         })
@@ -84,11 +84,13 @@ class MyPageFragment: Fragment() {
                 .navigate(R.id.action_myPageFragment_to_pwChangeFragment)
         }
 
-        // 챌린지 강의 확인하는 임시버튼
-        // TODO:: 테스트 확인 후 삭제
-        binding.tempBtn.setOnClickListener {
-            navController
-                .navigate(R.id.action_myPageFragment_to_challengeLectureFragment)
+        // 로그아웃 버튼 클릭 시
+        binding.logoutBtn.setOnClickListener {
+            CurrentUser.userToken = null
+            CurrentUser.userInfo = null
+            val intent = Intent(activity, LogInActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
         }
     }
 }

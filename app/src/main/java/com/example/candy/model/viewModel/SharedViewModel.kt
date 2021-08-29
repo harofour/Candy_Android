@@ -11,49 +11,34 @@ class SharedViewModel : ViewModel() {
 
     private var userPw: String? = null
 
-    private val _candyParent = MutableLiveData<String>()
-    val candyParent: LiveData<String> = _candyParent
-
-    private val _candyStudent = MutableLiveData<String>()
-    val candyStudent: LiveData<String> = _candyStudent
-
     /**
      * 학부모 캔디 관리하는 함수
      */
-    fun getAPICandyParent(apiKey: String,completion: (RESPONSE_STATE,String?) -> Unit){
-        repository.getAPICandyParent(apiKey,completion)
+    fun getCandyParent(): LiveData<String> {
+        return repository.getCandyParent()
     }
 
-    fun updateCandyParent(apiKey: String, chargeCandy: HashMap<String, Int>,completion: (RESPONSE_STATE) -> Unit) {
-        return repository.updateCandyParent(apiKey, chargeCandy,completion)
+    fun getAPICandyParent(apiKey: String){
+        repository.getAPICandyParent(apiKey)
     }
 
-    fun setCandyParentInApp(candy : String){
-        _candyParent.value = candy
+    fun updateCandyParent(apiKey: String, chargeCandy: HashMap<String, Int>) {
+        return repository.updateCandyParent(apiKey, chargeCandy)
     }
-
-    fun updateCandyParentInApp(candy: Int){
-        _candyParent.value = (_candyParent.value!!.toInt() + candy).toString()
-    }
-
 
     /**
      * 학생 캔디 관리하는 함수
      */
-    fun getAPICandyStudent(apiKey: String,completion: (RESPONSE_STATE,String?) -> Unit){
-        repository.getAPICandyStudent(apiKey,completion)
+    fun getCandyStudent(): LiveData<String> {
+        return repository.getCandyStudent()
     }
 
-    fun updateCandyStudent(apiKey: String, withDrawCandy: HashMap<String, Int>,completion: (RESPONSE_STATE) -> Unit) {
+    fun getAPICandyStudent(apiKey: String){
+        repository.getAPICandyStudent(apiKey)
+    }
+
+    fun updateCandyStudent(apiKey: String, withDrawCandy: HashMap<String, Int>) {
         // TODO:: 학생 캔디 인출하는 함수 repository에 만들어지면 연결
-    }
-
-    fun setCandyStudentInApp(candy : String){
-        _candyStudent.value = candy
-    }
-
-    fun updateCandyStudentInApp(candy: Int){
-        _candyStudent.value = (_candyStudent.value!!.toInt() + candy).toString()
     }
 
 

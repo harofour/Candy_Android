@@ -41,7 +41,7 @@ class StudentCandyFragment : Fragment() {
         navController = Navigation.findNavController(view)
         binding.titleBar.title.text = "캔디 인출"
 
-        sharedViewModel.candyStudent.observe(viewLifecycleOwner, {
+        sharedViewModel.getCandyStudent().observe(viewLifecycleOwner, {
             val numberOfCandy = getString(R.string.numberOfStudentCandy, it)
             binding.candy = Candy(numberOfCandy)
         })
@@ -52,12 +52,12 @@ class StudentCandyFragment : Fragment() {
         // 캔디 인출 버튼
         // TODO:: 캔디 획득 기능 구현 후 구현하기
         binding.withdrawCandy.setOnClickListener {
-            if (sharedViewModel.candyStudent.value.equals("0")) {
+            if (sharedViewModel.getCandyStudent().value.equals("0")) {
                 Util.toast(binding.root.context, "인출 가능한 캔디가 없습니다.")
                 return@setOnClickListener
             }
             val dialog =
-                CustomDialog(binding.root.context, sharedViewModel.candyStudent.value!!.toInt())
+                CustomDialog(binding.root.context, sharedViewModel.getCandyStudent().value!!.toInt())
             dialog.myDialog(binding.root.context)
 
             dialog.setOnClickedListener(object : CustomDialog.ButtonClickListener {
