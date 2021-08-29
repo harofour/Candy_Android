@@ -2,8 +2,9 @@ package com.example.candy.activity
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,17 +14,23 @@ import com.example.candy.databinding.ActivityMainBinding
 import com.example.candy.model.data.User
 import com.example.candy.model.viewModel.SharedViewModel
 import com.example.candy.utils.CurrentUser
-import com.example.candy.utils.RESPONSE_STATE
-import com.example.candy.utils.Util
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
     private val Tag = "MainActivity"
     private var mainBinding: ActivityMainBinding? = null
-    private lateinit var appBarConfiguration : AppBarConfiguration
-    private val sharedViewModel: SharedViewModel by viewModels()
-
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private val sharedViewModel: SharedViewModel by lazy {
+        ViewModelProvider(viewModelStore, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return when {
+                    modelClass.isAssignableFrom(SharedViewModel::class.java) -> SharedViewModel.getInstance() as T
+                    else -> throw IllegalArgumentException("Unknown viewModel class $modelClass")
+                }
+            }
+        }).get(SharedViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

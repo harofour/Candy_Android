@@ -1,12 +1,17 @@
 package com.example.candy.model.viewModel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.candy.myPage.MyPageRepository
-import com.example.candy.utils.RESPONSE_STATE
 
 class SharedViewModel : ViewModel() {
+    companion object {
+        private var instance: SharedViewModel? = null
+        fun getInstance() = instance ?: synchronized(SharedViewModel::class.java) {
+            instance ?: SharedViewModel().also { instance = it }
+        }
+    }
+
     private val repository = MyPageRepository()
 
     private var userPw: String? = null
@@ -18,7 +23,7 @@ class SharedViewModel : ViewModel() {
         return repository.getCandyParent()
     }
 
-    fun getAPICandyParent(apiKey: String){
+    fun getAPICandyParent(apiKey: String) {
         repository.getAPICandyParent(apiKey)
     }
 
@@ -33,20 +38,20 @@ class SharedViewModel : ViewModel() {
         return repository.getCandyStudent()
     }
 
-    fun getAPICandyStudent(apiKey: String){
+    fun getAPICandyStudent(apiKey: String) {
         repository.getAPICandyStudent(apiKey)
     }
 
-    fun updateCandyStudent(apiKey: String, withDrawCandy: HashMap<String, Int>) {
-        // TODO:: 학생 캔디 인출하는 함수 repository에 만들어지면 연결
+    fun updateCandyStudent(assignedCandy: Int) {
+        repository.updateCandyStudent(assignedCandy)
     }
 
 
-    fun setUserPw(pw : String){
+    fun setUserPw(pw: String) {
         this.userPw = pw
     }
 
-    fun getUserPw() : String{
+    fun getUserPw(): String {
         return this.userPw ?: ""
     }
 }

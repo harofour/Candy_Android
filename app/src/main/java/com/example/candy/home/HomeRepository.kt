@@ -5,14 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.candy.model.api.ChallengeApi
 import com.example.candy.model.api.RetrofitClient
-import com.example.candy.model.data.Challenge
 import com.example.candy.model.data.OnGoingChallenge
 import com.example.candy.utils.API.BASE_URL
 import com.example.candy.utils.CurrentUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeRepository() {
     private val Tag = "HomeRepository"
@@ -59,15 +58,15 @@ class HomeRepository() {
 
 
     fun getOnGoingChallenges(): LiveData<ArrayList<OnGoingChallenge>> {
-        CoroutineScope(Dispatchers.Main).launch{
-            CoroutineScope(Dispatchers.IO).async {
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
                 val response = api.getOnGoingChallenges(CurrentUser.userToken!!, 1000000, 10000)
-                if(response.isSuccessful){
+                if (response.isSuccessful) {
                     allChallenges = response.body()!!.response
                     allChallenges.forEach { it.category = translateCategory(it.category) }
-                    Log.d(Tag,"${allChallenges}")
+                    Log.d(Tag, "${allChallenges}")
                 }
-            }.await()
+            }
             _ongoingChallenges.value = allChallenges
         }
 
@@ -116,5 +115,12 @@ class HomeRepository() {
 
     fun getChallenge(position: Int): OnGoingChallenge {
         return allChallenges[position]
+    }
+
+    fun removeOnGoingChallenge(onGoingChallenge: OnGoingChallenge) {
+        Log.d("removeOnGoingChallenge", "before ongoingChallenges / ${ongoingChallenges.value}")
+        allChallenges.remove(onGoingChallenge)
+        _ongoingChallenges.value = allChallenges
+        Log.d("removeOnGoingChallenge", "after ongoingChallenges / ${ongoingChallenges.value}")
     }
 }

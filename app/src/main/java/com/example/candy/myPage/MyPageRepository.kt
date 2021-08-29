@@ -86,7 +86,7 @@ class MyPageRepository() {
     fun getAPICandyParent(apiKey: String) {
         apiCandy.getCandyParent(apiKey).enqueue(object : Callback<CandyResponse> {
             override fun onResponse(call: Call<CandyResponse>, response: Response<CandyResponse>) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     parentCandy.value = response.body()!!.candy.candy
                 }
             }
@@ -105,7 +105,8 @@ class MyPageRepository() {
             ) {
                 Log.d(TAG, "MyPageRepository -------- ${response.code()}")
                 if (response.code() == 200 && response.body()!!.success) {
-                    parentCandy.value = (parentCandy.value!!.toInt() + chargeCandy["amount"]!!).toString()
+                    parentCandy.value =
+                        (parentCandy.value!!.toInt() + chargeCandy["amount"]!!).toString()
                 }
             }
 
@@ -122,13 +123,15 @@ class MyPageRepository() {
     fun getCandyStudent(): LiveData<String> {
         return studentCandy
     }
+
     fun getAPICandyStudent(apiKey: String) {
         apiCandy.getCandyStudent(apiKey).enqueue(object : Callback<CandyResponse> {
             override fun onResponse(call: Call<CandyResponse>, response: Response<CandyResponse>) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     studentCandy.value = response.body()!!.candy.candy
                 }
             }
+
             override fun onFailure(call: Call<CandyResponse>, t: Throwable) {
 
             }
@@ -136,11 +139,6 @@ class MyPageRepository() {
     }
 
     // TODO:: 학생 인출 함수 만들기
-
-
-
-
-
 
 
     fun changePw(apiKey: String, data: HashMap<String, Any>, completion: (RESPONSE_STATE) -> Unit) {
@@ -160,5 +158,11 @@ class MyPageRepository() {
                 completion(RESPONSE_STATE.FAILURE)
             }
         })
+    }
+
+    fun updateCandyStudent(assignedCandy: Int) {
+        Log.d("updateCandyStudent", "before studentCandy / ${studentCandy.value}")
+        studentCandy.value = (studentCandy.value!!.toInt() + assignedCandy).toString()
+        Log.d("updateCandyStudent", "after studentCandy / ${studentCandy.value}")
     }
 }
