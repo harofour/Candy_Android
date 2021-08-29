@@ -11,6 +11,7 @@ import com.example.candy.model.data.Challenge
 class PossibleChallengeRecyclerAdapter(
         private var dataSet: ArrayList<Challenge>,
         val touchLikeImage: (challenge: Challenge, index: Int) -> Unit
+        ,val selectChallenge:(challenge: Challenge) -> Unit
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_ITEM = 0
@@ -85,11 +86,11 @@ class PossibleChallengeRecyclerAdapter(
 
             // 챌린지 리스트 중 하나 누를 시 해당 챌린지 세부 페이지 이동할 것임
             holder.binding.root.setOnClickListener {
-
+               selectChallenge.invoke(dataSet[safePosition])
             }
 
         }
-        else{
+        else{  // 로딩 아이템 뷰
 
         }
 
