@@ -74,37 +74,39 @@ class ChallengeLectureActivity : AppCompatActivity() {
 
     private fun initListeners() {
         binding.btnGetCandy.setOnClickListener {
-            // 캔디 배정
-            CoroutineScope(Dispatchers.IO).launch {
-                CoroutineScope(Dispatchers.IO).async {
-                    val api = RetrofitClient.getClient(BASE_URL).create(CandyApi::class.java)
-                    val data = HashMap<String, Int>()
-                    data.put("challengeId", challenge.id)
-                    val call = api.attainCandy(CurrentUser.userToken!!, data)
-                    Log.d("Tag", "${CurrentUser.userToken} / $data")
+            // 캔디 획득
+            if(challenge.requiredScore <= challenge.totalScore){
+                CoroutineScope(Dispatchers.IO).launch {
+                    CoroutineScope(Dispatchers.IO).async {
+                        val api = RetrofitClient.getClient(BASE_URL).create(CandyApi::class.java)
+                        val data = HashMap<String, Int>()
+                        data.put("challengeId", challenge.id)
+                        val call = api.attainCandy(CurrentUser.userToken!!, data)
+                        Log.d("Tag", "${CurrentUser.userToken} / $data")
 
-                    call.enqueue(object : retrofit2.Callback<ApiAnyResponse> {
-                        override fun onResponse(
-                            call: Call<ApiAnyResponse>,
-                            response: Response<ApiAnyResponse>
-                        ) {
-                            if (response.isSuccessful) {
-                                sharedViewModel.updateCandyStudent(challenge.assignedCandy)
-                                homeViewModel.removeOnGoingChallenge(challenge)
+                        call.enqueue(object : retrofit2.Callback<ApiAnyResponse> {
+                            override fun onResponse(
+                                call: Call<ApiAnyResponse>,
+                                response: Response<ApiAnyResponse>
+                            ) {
+                                if (response.isSuccessful) {
+                                    sharedViewModel.updateCandyStudent(challenge.assignedCandy)
+                                    homeViewModel.removeOnGoingChallenge(challenge)
 
-                                Util.toast(applicationContext, "캔디 획득 성공")
-                            } else {
-                                Util.toast(applicationContext, "캔디 획득 실패")
+                                    Util.toast(applicationContext, "캔디 획득 성공")
+                                } else {
+                                    Util.toast(applicationContext, "캔디 획득 실패")
+                                }
                             }
-                        }
 
-                        override fun onFailure(call: Call<ApiAnyResponse>, t: Throwable) {
-                            Util.toast(applicationContext, "attainCandy() error occurred")
-                        }
-                    })
-                }.await()
+                            override fun onFailure(call: Call<ApiAnyResponse>, t: Throwable) {
+                                Util.toast(applicationContext, "attainCandy() error occurred")
+                            }
+                        })
+                    }.await()
+                }
+                finish()
             }
-            finish()
         }
     }
 
