@@ -45,18 +45,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(Tag, ".\n userInfo : ${CurrentUser.userInfo}   \n userToken : ${CurrentUser.userToken}")
 
         // 학생 캔디 받아오기
-        sharedViewModel.getAPICandyStudent(CurrentUser.userToken!!){responseState, candy ->
-            when(responseState){
-                RESPONSE_STATE.SUCCESS->{
-                    sharedViewModel.setCandyStudentInApp(candy!!)
-                }
-                RESPONSE_STATE.FAILURE ->{
-                    Util.toast(binding.root.context,"보유 중인 캔디 조회에 실패하였습니다.")
-                }
-            }
-        }
-
-
+        sharedViewModel.getAPICandyStudent(CurrentUser.userToken!!)
     }
 
     private fun setupBottomNavMenu(navController: NavController) {

@@ -33,17 +33,13 @@ class ParentCandyFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_parent_candy, container, false)
 
-        // 학부모 캔디 초기화
-        sharedViewModel.getAPICandyParent(CurrentUser.userToken!!){responseState,candy ->
-            when(responseState){
-                RESPONSE_STATE.SUCCESS->{
-                    sharedViewModel.setCandyParentInApp(candy!!)
-                }
-                RESPONSE_STATE.FAILURE->{
+        sharedViewModel.getCandyParent().observe(viewLifecycleOwner, {
+            val numberOfCandy = getString(R.string.numberOfParentCandy, it)
+            binding.candy = Candy(numberOfCandy)
+        })
 
-                }
-            }
-        }
+        // 학부모 캔디 초기화
+        sharedViewModel.getAPICandyParent(CurrentUser.userToken!!)
         return binding.root
     }
 
@@ -56,10 +52,7 @@ class ParentCandyFragment : Fragment() {
 
         binding.titleBar.title.text = "캔디 충전"
 
-        sharedViewModel.candyParent.observe(viewLifecycleOwner, {
-            val numberOfCandy = getString(R.string.numberOfParentCandy, it)
-            binding.candy = Candy(numberOfCandy)
-        })
+
 
         binding.titleBar.backBtn.setOnClickListener {
             navController.popBackStack()
@@ -74,20 +67,7 @@ class ParentCandyFragment : Fragment() {
                 override fun onClicked(candy: Int) {
                     val reqData = HashMap<String, Int>()
                     reqData["amount"] = candy
-
-                    sharedViewModel.updateCandyParent(
-                        CurrentUser.userToken!!,
-                        reqData
-                    ) { responseState ->
-                        when (responseState) {
-                            RESPONSE_STATE.SUCCESS -> {
-                                sharedViewModel.updateCandyParentInApp(candy)
-                            }
-                            RESPONSE_STATE.FAILURE -> {
-                                Util.showErrorAlertDialog(binding.root.context,"캔디 충전 실패","다시 시도해주세요.")
-                            }
-                        }
-                    }
+                    sharedViewModel.updateCandyParent(CurrentUser.userToken!!, reqData)
                 }
             })
         }

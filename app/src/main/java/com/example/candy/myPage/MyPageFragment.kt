@@ -48,7 +48,7 @@ class MyPageFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        sharedViewModel.candyStudent.observe(viewLifecycleOwner, {
+        sharedViewModel.getCandyStudent().observe(viewLifecycleOwner, {
             val numberOfCandy = getString(R.string.numberOfStudentCandy, it)
             binding.candy = Candy(numberOfCandy)
         })
