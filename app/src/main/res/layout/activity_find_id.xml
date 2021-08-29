@@ -6,53 +6,61 @@
     android:layout_height="match_parent"
     android:background="#FFF3FB"
     tools:context=".activity.FindIdActivity">
+
     <include
-        android:id="@+id/titleBar"
-        layout="@layout/view_titlebar"
+        android:id="@+id/toolbar"
+        layout="@layout/view_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize" />
 
     <LinearLayout
         android:id="@+id/findIdContainer"
-        android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
-        app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintVertical_bias="0.4"
+        android:orientation="vertical"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        >
-        <EditText
-            android:id="@+id/nameET"
+        app:layout_constraintVertical_bias="0.4"
+        app:layout_constraintWidth_percent="0.8">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nameLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="이름"
-            android:textColor="@color/black"
-            android:backgroundTint="#FDB1D8"
-            android:textColorHint="#999999"
-            android:drawableStart="@drawable/ic_baseline_person_24"
-            android:drawablePadding="10dp"/>
+            android:hint="@string/name"
+            app:boxBackgroundColor="@color/editbox"
+            app:endIconDrawable="@drawable/ic_baseline_person_24"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameET"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nanum_square_round_bold"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <TextView
         android:id="@+id/findBtn"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/rect_gradient"
+        android:gravity="center"
         android:text="아이디 찾기"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="30dp"
 
-        app:layout_constraintWidth_percent="0.6"
-
-        app:layout_constraintTop_toBottomOf="@+id/findIdContainer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/findIdContainer"
+        app:layout_constraintWidth_percent="0.6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

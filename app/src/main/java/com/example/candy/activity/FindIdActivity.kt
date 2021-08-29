@@ -22,9 +22,12 @@ class FindIdActivity : BaseActivity() {
         setContentView(binding.root)
         setSupportActionBar(findViewById(R.id.topBar))
 
-        binding.titleBar.title.text = "아이디 찾기"
-        binding.titleBar.backBtn.setOnClickListener {
-            finish()
+        setSupportActionBar(findViewById(R.id.toolbar))
+        with(supportActionBar!!) {
+            setDisplayShowCustomEnabled(true)
+            setDisplayShowTitleEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            title = "아이디 찾기"
         }
 
         initListeners()
@@ -40,18 +43,21 @@ class FindIdActivity : BaseActivity() {
 
     private fun findId() {
         val data = HashMap<String, Any>()
-        data.put("name",binding.nameET.text.toString())
+        data.put("name", binding.nameET.text.toString())
 
-        RetrofitManager.instance.requestString(data, REQUEST_TYPE.FIND_EMAIL){ responseState, responseBody ->
-            when(responseState){
-                RESPONSE_STATE.SUCCESS->{
+        RetrofitManager.instance.requestString(
+            data,
+            REQUEST_TYPE.FIND_EMAIL
+        ) { responseState, responseBody ->
+            when (responseState) {
+                RESPONSE_STATE.SUCCESS -> {
                     val result = Gson().fromJson(responseBody, ApiStringResponse::class.java)
                     val name = result.response
                     Log.d(Tag, name)
 
                     Util.toast(applicationContext, "아이디는 '$name' 입니다")
                 }
-                RESPONSE_STATE.FAILURE->{
+                RESPONSE_STATE.FAILURE -> {
                     Util.toast(applicationContext, "아이디를 찾기를 실패했습니다.")
                 }
             }

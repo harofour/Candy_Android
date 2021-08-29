@@ -7,12 +7,12 @@ import com.example.candy.R
 import com.example.candy.data.ApiBooleanResponse
 import com.example.candy.data.ApiUserResponse
 import com.example.candy.data.Response
-import com.example.candy.utils.Util
-import com.example.candy.model.data.User
 import com.example.candy.databinding.ActivitySignUpBinding
+import com.example.candy.model.data.User
 import com.example.candy.retrofit.RetrofitManager
 import com.example.candy.utils.REQUEST_TYPE
 import com.example.candy.utils.RESPONSE_STATE
+import com.example.candy.utils.Util
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,28 +33,30 @@ class SignUpActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(findViewById(R.id.topBar))
 
-        binding.titleBar.title.text = "회원가입"
-        binding.titleBar.backBtn.setOnClickListener {
-            finish()
+        setSupportActionBar(findViewById(R.id.toolbar))
+        with(supportActionBar!!) {
+            setDisplayShowCustomEnabled(true)
+            setDisplayShowTitleEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            title = "회원가입"
         }
 
         initListeners()
 
         //for test
-        binding.emailET.setText("candy@naver.com")
-        binding.nameET.setText("candy")
-        binding.pwdET.setText("candy123")
-        binding.pwdCheckET.setText("candy123")
-        binding.parentPwdET.setText("candy123")
-        binding.parentPwdCheckET.setText("candy123")
-        binding.birthET.setText("2000-01-01")
-        binding.phoneET.setText("010-1234-4321")
+        binding.idEditText.setText("candy@naver.com")
+        binding.nameEditText.setText("candy")
+        binding.pwEditText.setText("candy123")
+        binding.pwCheckEditText.setText("candy123")
+        binding.parentPwEditText.setText("candy123")
+        binding.parentPwCheckEditText.setText("candy123")
+        binding.birthEditText.setText("2000-01-01")
+        binding.phoneEditText.setText("010-1234-4321")
     }
 
-    private fun initListeners(){
-        with(binding){
+    private fun initListeners() {
+        with(binding) {
             // 이메일 중복 확인 버튼.
             verifyEmailButton.setOnClickListener {
                 verifyEmail()
@@ -74,20 +76,23 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
-    private fun verifyEmail(){
-        val email = binding.emailET.text.toString()
-        val reqData = HashMap<String,Any>()
-        reqData.put("email",email)
+    private fun verifyEmail() {
+        val email = binding.idEditText.text.toString()
+        val reqData = HashMap<String, Any>()
+        reqData.put("email", email)
 
-        CoroutineScope(Dispatchers.IO).launch{
-            RetrofitManager.instance.requestBoolean(reqData, REQUEST_TYPE.VERIFY_EMAIL){ responseState, responseBody ->
-                when(responseState){
+        CoroutineScope(Dispatchers.IO).launch {
+            RetrofitManager.instance.requestBoolean(
+                reqData,
+                REQUEST_TYPE.VERIFY_EMAIL
+            ) { responseState, responseBody ->
+                when (responseState) {
                     RESPONSE_STATE.SUCCESS -> {
                         // String to Gson
                         val result = Gson().fromJson(responseBody, ApiBooleanResponse::class.java)
                         isEmailVerified = !result.response  // true -> 중복 , false -> 사용가능
 
-                        if(isEmailVerified)
+                        if (isEmailVerified)
                             Util.toast(applicationContext, "사용 가능한 아이디 입니다")
                         else
                             Util.toast(applicationContext, "아이디가 중복되었습니다")
@@ -101,24 +106,27 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
-    private fun sendAuth(){
-        if(isEmailAuthSended){
+    private fun sendAuth() {
+        if (isEmailAuthSended) {
             Util.toast(applicationContext, "이미 전송되었습니다")
-            Log.d(Tag,"인증 메일이 이미 전송됨 / isEmailAuthSended : $isEmailAuthSended")
+            Log.d(Tag, "인증 메일이 이미 전송됨 / isEmailAuthSended : $isEmailAuthSended")
             return
         }
 
-        val data = HashMap<String,Any>()
-        data.put("email", binding.emailET.text.toString())
+        val data = HashMap<String, Any>()
+        data.put("email", binding.idEditText.text.toString())
 
-        RetrofitManager.instance.requestBoolean(data, REQUEST_TYPE.SEND_AUTH){ responseSTate, responseBody ->
-            when(responseSTate){
+        RetrofitManager.instance.requestBoolean(
+            data,
+            REQUEST_TYPE.SEND_AUTH
+        ) { responseSTate, responseBody ->
+            when (responseSTate) {
                 RESPONSE_STATE.SUCCESS -> { // 메일 전송 성공
                     val result = Gson().fromJson(responseBody, ApiBooleanResponse::class.java)
                     isEmailAuthSended = result.response
-                    if(result.response){
+                    if (result.response) {
                         Util.toast(applicationContext, "메일이 전송 되었습니다")
-                    }else{
+                    } else {
                         Util.toast(applicationContext, "존재하지 않는 아이디 입니다")
                     }
                 }
@@ -130,30 +138,33 @@ class SignUpActivity : BaseActivity() {
         }
     }
 
-    private fun checkAuth(){
-        if(!isEmailAuthSended){
+    private fun checkAuth() {
+        if (!isEmailAuthSended) {
             Util.toast(applicationContext, "인증 메일을 전송해 주세요")
-            Log.d(Tag,"인증 메일 전송 x / isEmailAuthSenede : $isEmailAuthSended")
+            Log.d(Tag, "인증 메일 전송 x / isEmailAuthSenede : $isEmailAuthSended")
             return
         }
-        if(isEmailAuthChecked){
+        if (isEmailAuthChecked) {
             Util.toast(applicationContext, "이메일 인증이 완료되었습니다")
-            Log.d(Tag,"이미 인증코드 확인됨 / isEmailAuthChecked : $isEmailAuthChecked")
+            Log.d(Tag, "이미 인증코드 확인됨 / isEmailAuthChecked : $isEmailAuthChecked")
             return
         }
 
-        val data = HashMap<String,Any>()
-        data.put("email", binding.emailET.text.toString())
-        data.put("auth", binding.emailAuthET.text.toString())
+        val data = HashMap<String, Any>()
+        data.put("email", binding.idEditText.text.toString())
+        data.put("auth", binding.emailAuthEditText.text.toString())
 
-        RetrofitManager.instance.requestBoolean(data, REQUEST_TYPE.CHECK_AUTH){ responseSTate, responseBody ->
-            when(responseSTate){
+        RetrofitManager.instance.requestBoolean(
+            data,
+            REQUEST_TYPE.CHECK_AUTH
+        ) { responseSTate, responseBody ->
+            when (responseSTate) {
                 RESPONSE_STATE.SUCCESS -> { // 인증 코드 확인 결과
                     val result = Gson().fromJson(responseBody, ApiBooleanResponse::class.java)
                     isEmailAuthChecked = result.response
-                    if(result.response){
+                    if (result.response) {
                         Util.toast(applicationContext, "인증이 완료되었습니다.")
-                    }else{
+                    } else {
                         Util.toast(applicationContext, "인증 코드를 확인해 주세요")
                     }
                 }
@@ -166,17 +177,17 @@ class SignUpActivity : BaseActivity() {
     }
 
     private fun signUp() {
-        val email = binding.emailET.text.toString()
-        val pwd = binding.pwdET.text.toString()
-        val pwdCheck = binding.pwdCheckET.text.toString()
-        val parentPwd = binding.parentPwdET.text.toString()
-        val parentPwdCheck = binding.parentPwdCheckET.text.toString()
-        val name = binding.nameET.text.toString()
-        val phone = binding.phoneET.text.toString()
-        val birth = binding.birthET.text.toString()
+        val email = binding.idEditText.text.toString()
+        val pwd = binding.pwEditText.text.toString()
+        val pwdCheck = binding.pwCheckEditText.text.toString()
+        val parentPwd = binding.parentPwEditText.text.toString()
+        val parentPwdCheck = binding.parentPwCheckEditText.text.toString()
+        val name = binding.nameEditText.text.toString()
+        val phone = binding.phoneEditText.text.toString()
+        val birth = binding.birthEditText.text.toString()
 
         // 회원가입 정보 조건 체크
-        if(!isEmailVerified) {
+        if (!isEmailVerified) {
             Util.toast(applicationContext, "이메일 중복을 확인해 주세요")
             Log.d(Tag, "이메일 중복 확인 x")
             return
@@ -186,12 +197,12 @@ class SignUpActivity : BaseActivity() {
 //            Log.d(Tag, "이메일 인증 x")
 //            return
 //        }
-        if(pwd != pwdCheck) {
+        if (pwd != pwdCheck) {
             Log.d(Tag, "parent 가 다름")
             Util.toast(applicationContext, "비밀번호가 다릅니다.")
             return
         }
-        if(parentPwd != parentPwdCheck) {
+        if (parentPwd != parentPwdCheck) {
             Log.d(Tag, "parent password 가 다름")
             Util.toast(applicationContext, "2차 비밀번호가 다릅니다")
             return
@@ -209,9 +220,9 @@ class SignUpActivity : BaseActivity() {
 
 
         // 서버에 전송할 데이터
-        val reqData = HashMap<String,Any>()
-        reqData.put("email",email)
-        reqData.put("emailCheck",true)
+        val reqData = HashMap<String, Any>()
+        reqData.put("email", email)
+        reqData.put("emailCheck", true)
         reqData.put("password", pwd)
         reqData.put("parentPassword", parentPwd)
         reqData.put("name", name)
@@ -222,8 +233,11 @@ class SignUpActivity : BaseActivity() {
         var userToken: String
 
         // 서버 통신
-        CoroutineScope(Dispatchers.IO).launch{
-            RetrofitManager.instance.requestUser(reqData, REQUEST_TYPE.SIGN_UP){ responseState, responseBody ->
+        CoroutineScope(Dispatchers.IO).launch {
+            RetrofitManager.instance.requestUser(
+                reqData,
+                REQUEST_TYPE.SIGN_UP
+            ) { responseState, responseBody ->
                 when (responseState) {
                     RESPONSE_STATE.SUCCESS -> {
                         Log.d(Tag, "api 호출 성공: $responseBody")
@@ -232,7 +246,7 @@ class SignUpActivity : BaseActivity() {
                         val result = Gson().fromJson(responseBody, ApiUserResponse::class.java)
 
                         // 받은 User 객체 저장
-                        with(result.response as Response){
+                        with(result.response as Response) {
                             userInfo = user
                             userToken = apiToken
                         }
