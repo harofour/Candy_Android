@@ -5,12 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.databinding.ItemHomeRecyclerviewMychallengeBinding
 import com.example.candy.model.data.Challenge
+import com.example.candy.model.data.OnGoingChallenge
 
 class MyChallengeAdapter(
     private val itemClicked: (position: Int) -> Unit
 ) : RecyclerView.Adapter<MyChallengeAdapter.ViewHolder>() {
 
-    private var challenges: List<Challenge> = listOf()
+    private var challenges: List<OnGoingChallenge> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemHomeRecyclerviewMychallengeBinding.inflate(
@@ -27,7 +28,7 @@ class MyChallengeAdapter(
 
     override fun getItemCount(): Int = challenges.size
 
-    fun setChallenges(challenges: List<Challenge>) {
+    fun setChallenges(challenges: List<OnGoingChallenge>) {
         this.challenges = challenges
         notifyDataSetChanged()
     }
@@ -40,12 +41,12 @@ class MyChallengeAdapter(
             }
         }
 
-        fun bind(challenge: Challenge) {
+        fun bind(challenge: OnGoingChallenge) {
             binding.title = challenge.title
             binding.subTitle = challenge.subTitle
             binding.category = challenge.category
-            binding.candy = 11111
-            binding.requiredScore = 11111
+            binding.candy = challenge.assignedCandy
+            binding.requiredScore = challenge.requiredScore
         }
     }
 }

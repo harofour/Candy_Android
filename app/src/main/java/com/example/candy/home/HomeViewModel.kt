@@ -3,7 +3,7 @@ package com.example.candy.home
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.candy.model.data.Challenge
+import com.example.candy.model.data.OnGoingChallenge
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = HomeRepository()
@@ -12,7 +12,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         return repository.getCategories()
     }
 
-    fun getOnGoingChallenges(): LiveData<ArrayList<Challenge>> {
+    fun getOnGoingChallenges(): LiveData<ArrayList<OnGoingChallenge>> {
         return repository.getOnGoingChallenges()
     }
 
@@ -20,7 +20,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         repository.sortChallengeByCategory(position)
     }
 
-    fun getChallenge(position: Int): Challenge {
+    fun getChallenge(position: Int): OnGoingChallenge {
         return repository.getChallenge(position)
     }
 }

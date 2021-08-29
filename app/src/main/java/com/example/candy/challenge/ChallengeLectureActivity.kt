@@ -1,6 +1,7 @@
 package com.example.candy.challenge
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.candy.R
@@ -9,6 +10,7 @@ import com.example.candy.databinding.ActivityChallengeLectureBinding
 import com.example.candy.model.api.CandyApi
 import com.example.candy.model.api.RetrofitClient
 import com.example.candy.model.data.Challenge
+import com.example.candy.model.data.OnGoingChallenge
 import com.example.candy.utils.API.BASE_URL
 import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.Util
@@ -23,7 +25,7 @@ class ChallengeLectureActivity : AppCompatActivity() {
     private val Tag = "ChallengeLectureActivity"
     private var _binding: ActivityChallengeLectureBinding? = null
     private val binding get() = _binding!!
-    private lateinit var challenge: Challenge
+    private lateinit var challenge: OnGoingChallenge
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +51,11 @@ class ChallengeLectureActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch{
                 val api = RetrofitClient.getClient(BASE_URL).create(CandyApi::class.java)
                 val data = HashMap<String, Int>()
-                data.put("challengeId",challenge.challengeId)
+                data.put("challengeId",challenge.id)
                 val call = api.attainCandy(CurrentUser.userToken!!, data)
+                Log.d("Tag","${CurrentUser.userToken} / $data")
 
-                call?.enqueue(object : retrofit2.Callback<ApiAnyResponse>{
+                call.enqueue(object : retrofit2.Callback<ApiAnyResponse>{
                     override fun onResponse(
                         call: Call<ApiAnyResponse>,
                         response: Response<ApiAnyResponse>
@@ -79,7 +82,7 @@ class ChallengeLectureActivity : AppCompatActivity() {
         with(challenge){
             binding.tvCategory.text = category
             binding.tvLevel.text = "2"
-            binding.tvCandy.text = "50"
+            binding.tvCandy.text = assignedCandy.toString()
             binding.tvRequiredScore.text = requiredScore.toString()
             binding.tvCurrentScore.text = totalScore.toString()
             binding.tvSubtitle.text = subTitle

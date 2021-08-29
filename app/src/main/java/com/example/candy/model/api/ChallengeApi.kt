@@ -1,9 +1,7 @@
 package com.example.candy.model.api
 
 import com.example.candy.R
-import com.example.candy.model.data.ChallengeDetailResponse
-import com.example.candy.model.data.ChallengeLike
-import com.example.candy.model.data.ChallengeList
+import com.example.candy.model.data.*
 import com.example.candy.utils.CurrentUser
 import retrofit2.Response
 import retrofit2.http.*
@@ -47,4 +45,10 @@ interface ChallengeApi {
         @Header("api_key")userToken: String
     ): Response<ArrayList<String>>
 
+    @GET("challenge/notCompletedList")
+    suspend fun getOnGoingChallenges(
+        @Header("api_key")userToken: String,
+        @Query("lastChallengeId")lastChallengeId: Int,
+        @Query("size")size: Int
+    ): Response<OnGoingChallengeResponse>
 }

@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import com.example.candy.model.api.ChallengeApi
 import com.example.candy.model.api.RetrofitClient
 import com.example.candy.model.data.Challenge
+import com.example.candy.model.data.OnGoingChallenge
 import com.example.candy.utils.API.BASE_URL
 import com.example.candy.utils.CurrentUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class HomeRepository() {
@@ -21,13 +23,13 @@ class HomeRepository() {
         MutableLiveData<ArrayList<String>>()
     private var categories: LiveData<ArrayList<String>> = _categories
 
-    private val _ongoingChallenges: MutableLiveData<ArrayList<Challenge>> =
-        MutableLiveData<ArrayList<Challenge>>()
-    private var ongoingChallenges: LiveData<ArrayList<Challenge>> = _ongoingChallenges
+    private val _ongoingChallenges: MutableLiveData<ArrayList<OnGoingChallenge>> =
+        MutableLiveData<ArrayList<OnGoingChallenge>>()
+    private var ongoingChallenges: LiveData<ArrayList<OnGoingChallenge>> = _ongoingChallenges
 
     private val allCategories = ArrayList<String>()
     private val allCategory = "전체"
-    var allChallenges = ArrayList<Challenge>()
+    var allChallenges = ArrayList<OnGoingChallenge>()
 
     fun getCategories(): LiveData<ArrayList<String>> {
         CoroutineScope(Dispatchers.IO).launch {
@@ -56,21 +58,32 @@ class HomeRepository() {
     }
 
 
-    fun getOnGoingChallenges(): LiveData<ArrayList<Challenge>> {
-        allChallenges = generateChallengeData()
-        _ongoingChallenges.postValue(allChallenges)
+    fun getOnGoingChallenges(): LiveData<ArrayList<OnGoingChallenge>> {
+        CoroutineScope(Dispatchers.Main).launch{
+            CoroutineScope(Dispatchers.IO).async {
+                val response = api.getOnGoingChallenges(CurrentUser.userToken!!, 1000000, 10000)
+                if(response.isSuccessful){
+                    allChallenges = response.body()!!.response
+                    allChallenges.forEach { it.category = translateCategory(it.category) }
+                    Log.d(Tag,"${allChallenges}")
+                }
+            }.await()
+            _ongoingChallenges.value = allChallenges
+        }
+
+//        allChallenges = generateChallengeData()
         return ongoingChallenges
     }
 
     // for test
-    private fun generateChallengeData(): ArrayList<Challenge> {
-        return arrayListOf<Challenge>(
-            Challenge(1, "영어", false, 1, 41, "1형식", "3"),
-            Challenge(2, "수학", false, 2, 31, "덧셈", "ㄴ"),
-            Challenge(3, "한국어", false, 3, 11, "말하기", "ㄷ"),
-            Challenge(4, "영어", false, 4, 15, "3형식", "ㄹ"),
-            Challenge(5, "수학", false, 15, 13, "곱하기", "ㅁ"),
-            Challenge(6, "영어", false, 16, 12, "5형식", "ㅂ")
+    private fun generateChallengeData(): ArrayList<OnGoingChallenge> {
+        return arrayListOf<OnGoingChallenge>(
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false)
         )
     }
 
@@ -84,7 +97,7 @@ class HomeRepository() {
     }
 
     fun sortChallengeByCategory(position: Int) {
-        val newChallenges = ArrayList<Challenge>()
+        val newChallenges = ArrayList<OnGoingChallenge>()
         val selectedCategory = allCategories[position]
 
         if (selectedCategory == allCategory) {
@@ -101,7 +114,7 @@ class HomeRepository() {
         }
     }
 
-    fun getChallenge(position: Int): Challenge {
+    fun getChallenge(position: Int): OnGoingChallenge {
         return allChallenges[position]
     }
 }
