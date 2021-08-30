@@ -6,15 +6,17 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import com.example.candy.data.ApiUserResponse
-import com.example.candy.model.data.User
 import com.example.candy.databinding.ActivityLogInBinding
+import com.example.candy.model.data.User
 import com.example.candy.retrofit.RetrofitManager
 import com.example.candy.utils.REQUEST_TYPE
 import com.example.candy.utils.RESPONSE_STATE
 import com.example.candy.utils.Util
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class LogInActivity : BaseActivity() {
@@ -25,7 +27,12 @@ class LogInActivity : BaseActivity() {
 
     // SharedPreferences
     private val preferenceName = "LOG_IN_DATA"
-    private val preferences: SharedPreferences by lazy { getSharedPreferences(preferenceName, Context.MODE_PRIVATE) }
+    private val preferences: SharedPreferences by lazy {
+        getSharedPreferences(
+            preferenceName,
+            Context.MODE_PRIVATE
+        )
+    }
     private val prefEditor: SharedPreferences.Editor by lazy { preferences.edit() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,29 +42,30 @@ class LogInActivity : BaseActivity() {
 
         initListeners()
 
-        with(binding){
+        with(binding) {
             // 기억하기 체크박스 불러오기
-            rememberIdPwdCheckBox.isChecked = preferences.getBoolean("rememberIdPwd",false)
+            rememberIdPwdCheckBox.isChecked = preferences.getBoolean("rememberIdPwd", false)
 
             // 아이디 비밀번호 불러오기
-            if(rememberIdPwdCheckBox.isChecked){
-                emailET.setText(preferences.getString("email", ""))
-                pwdET.setText(preferences.getString("password", ""))
-            }else{
-                emailET.setText("candy@naver.com")
-                pwdET.setText("candy123")
+            if (rememberIdPwdCheckBox.isChecked) {
+                idEditText.setText(preferences.getString("email", ""))
+                pwEditText.setText(preferences.getString("password", ""))
+            } else {
+                idEditText.setText("candy@naver.com")
+                pwEditText.setText("candy123")
             }
         }
     }
 
 
-    private fun initListeners(){
-        with(binding){
-            logo.setOnClickListener{val intent = Intent(applicationContext, MainActivity::class.java)
+    private fun initListeners() {
+        with(binding) {
+            logo.setOnClickListener {
+                val intent = Intent(applicationContext, MainActivity::class.java)
                 // for test
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.putExtra("userInfo", User(1,"1","1","1",1))
+                intent.putExtra("userInfo", User(1, "1", "1", "1", 1))
                 intent.putExtra("userToken", "userToken")
                 startActivity(intent)
                 finish()
@@ -69,9 +77,9 @@ class LogInActivity : BaseActivity() {
                     .commit()
 
                 // 체크 해제한 경우 저장된 정보 지움
-                if(!isChecked){
-                    prefEditor.putString("email","")
-                    prefEditor.putString("password","")
+                if (!isChecked) {
+                    prefEditor.putString("email", "")
+                    prefEditor.putString("password", "")
                         .commit()
                 }
             }
@@ -95,23 +103,26 @@ class LogInActivity : BaseActivity() {
     }
 
     private fun logIn() {
-        val email = binding.emailET.text.toString()
-        val pwd = binding.pwdET.text.toString()
+        val email = binding.idEditText.text.toString()
+        val pwd = binding.pwEditText.text.toString()
 
         var userInfo: User
         var userToken: String
 
-        if(email.length in 4..50){
+        if (email.length in 4..50) {
 
         }
 
-        val reqData = HashMap<String,Any>()
-        reqData.put("email",email)
-        reqData.put("password",pwd)
+        val reqData = HashMap<String, Any>()
+        reqData.put("email", email)
+        reqData.put("password", pwd)
 
-        CoroutineScope(Dispatchers.IO).launch{
-            RetrofitManager.instance.requestUser(reqData, REQUEST_TYPE.LOG_IN) { responseState, responseBody ->
-                when (responseState){
+        CoroutineScope(Dispatchers.IO).launch {
+            RetrofitManager.instance.requestUser(
+                reqData,
+                REQUEST_TYPE.LOG_IN
+            ) { responseState, responseBody ->
+                when (responseState) {
                     RESPONSE_STATE.SUCCESS -> {
                         Log.d(Tag, "api 호출 성공: $responseBody")
 
@@ -124,11 +135,11 @@ class LogInActivity : BaseActivity() {
                             userToken = result.response.apiToken
 
                             // 아이디 비밀번호 저장
-                            with(binding){
-                                Log.d(Tag,"test")
-                                if(rememberIdPwdCheckBox.isChecked){
-                                    prefEditor.putString("email",email)
-                                    prefEditor.putString("password",pwd)
+                            with(binding) {
+                                Log.d(Tag, "test")
+                                if (rememberIdPwdCheckBox.isChecked) {
+                                    prefEditor.putString("email", email)
+                                    prefEditor.putString("password", pwd)
                                         .commit()
                                 }
                             }
@@ -142,11 +153,11 @@ class LogInActivity : BaseActivity() {
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             intent.putExtra("userInfo", userInfo)
                             intent.putExtra("userToken", userToken)
-                            intent.putExtra("userPw",pwd)
+                            intent.putExtra("userPw", pwd)
                             startActivity(intent)
                             finish()
 
-                        }catch (e: JsonSyntaxException){
+                        } catch (e: JsonSyntaxException) {
                             e.printStackTrace()
                         }
                     }

@@ -5,12 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.candy.model.api.ChallengeApi
 import com.example.candy.model.api.RetrofitClient
-import com.example.candy.model.data.Challenge
+import com.example.candy.model.data.OnGoingChallenge
 import com.example.candy.utils.API.BASE_URL
 import com.example.candy.utils.CurrentUser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeRepository() {
     private val Tag = "HomeRepository"
@@ -21,17 +22,17 @@ class HomeRepository() {
         MutableLiveData<ArrayList<String>>()
     private var categories: LiveData<ArrayList<String>> = _categories
 
-    private val _ongoingChallenges: MutableLiveData<ArrayList<Challenge>> =
-        MutableLiveData<ArrayList<Challenge>>()
-    private var ongoingChallenges: LiveData<ArrayList<Challenge>> = _ongoingChallenges
+    private val _ongoingChallenges: MutableLiveData<ArrayList<OnGoingChallenge>> =
+        MutableLiveData<ArrayList<OnGoingChallenge>>()
+    private var ongoingChallenges: LiveData<ArrayList<OnGoingChallenge>> = _ongoingChallenges
 
     private val allCategories = ArrayList<String>()
     private val allCategory = "전체"
-    var allChallenges = ArrayList<Challenge>()
+    var allChallenges = ArrayList<OnGoingChallenge>()
 
     fun getCategories(): LiveData<ArrayList<String>> {
         CoroutineScope(Dispatchers.IO).launch {
-            val request = api.getCategory(CurrentUser.userToken!!)
+            val response = api.getCategory(CurrentUser.userToken!!)
 
             if (allCategories.size > 0) {
                 allCategories.clear()
@@ -39,14 +40,14 @@ class HomeRepository() {
 
             allCategories.add(allCategory)
 
-            request.body()?.let {
+            response.body()?.let {
                 it.forEach { category ->
                     allCategories.add(translateCategory(category))
 //                    allCategories.add(category)
                 }
             }
 
-            if (request.isSuccessful) {
+            if (response.isSuccessful) {
                 _categories.postValue(allCategories)
             } else {
                 Log.d(Tag, "getCategories() error occurred")
@@ -56,21 +57,32 @@ class HomeRepository() {
     }
 
 
-    fun getOnGoingChallenges(): LiveData<ArrayList<Challenge>> {
-        allChallenges = generateChallengeData()
-        _ongoingChallenges.postValue(allChallenges)
+    fun getOnGoingChallenges(): LiveData<ArrayList<OnGoingChallenge>> {
+        CoroutineScope(Dispatchers.Main).launch {
+            withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                val response = api.getOnGoingChallenges(CurrentUser.userToken!!, 1000000, 10000)
+                if (response.isSuccessful) {
+                    allChallenges = response.body()!!.response
+                    allChallenges.forEach { it.category = translateCategory(it.category) }
+                    Log.d(Tag, "${allChallenges}")
+                }
+            }
+            _ongoingChallenges.value = allChallenges
+        }
+
+//        allChallenges = generateChallengeData()
         return ongoingChallenges
     }
 
     // for test
-    private fun generateChallengeData(): ArrayList<Challenge> {
-        return arrayListOf<Challenge>(
-            Challenge(1, "영어", false, 1, 1, "1형식", "ㄱ"),
-            Challenge(2, "수학", false, 1, 1, "덧셈", "ㄴ"),
-            Challenge(3, "한국어", false, 1, 1, "말하기", "ㄷ"),
-            Challenge(4, "영어", false, 1, 1, "3형식", "ㄹ"),
-            Challenge(5, "수학", false, 1, 1, "곱하기", "ㅁ"),
-            Challenge(6, "영어", false, 1, 1, "5형식", "ㅂ")
+    private fun generateChallengeData(): ArrayList<OnGoingChallenge> {
+        return arrayListOf<OnGoingChallenge>(
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
+//            OnGoingChallenge("영어", "제목1","설명1",50,80,false)
         )
     }
 
@@ -84,7 +96,7 @@ class HomeRepository() {
     }
 
     fun sortChallengeByCategory(position: Int) {
-        val newChallenges = ArrayList<Challenge>()
+        val newChallenges = ArrayList<OnGoingChallenge>()
         val selectedCategory = allCategories[position]
 
         if (selectedCategory == allCategory) {
@@ -101,7 +113,14 @@ class HomeRepository() {
         }
     }
 
-    fun getChallenge(position: Int): Challenge {
+    fun getChallenge(position: Int): OnGoingChallenge {
         return allChallenges[position]
+    }
+
+    fun removeOnGoingChallenge(onGoingChallenge: OnGoingChallenge) {
+        Log.d("removeOnGoingChallenge", "before ongoingChallenges / ${ongoingChallenges.value}")
+        allChallenges.remove(onGoingChallenge)
+        _ongoingChallenges.value = allChallenges
+        Log.d("removeOnGoingChallenge", "after ongoingChallenges / ${ongoingChallenges.value}")
     }
 }

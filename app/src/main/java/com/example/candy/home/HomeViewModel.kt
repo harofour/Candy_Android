@@ -1,18 +1,24 @@
 package com.example.candy.home
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.candy.model.data.Challenge
+import androidx.lifecycle.ViewModel
+import com.example.candy.model.data.OnGoingChallenge
 
-class HomeViewModel(application: Application) : AndroidViewModel(application) {
+class HomeViewModel() : ViewModel() {
+    companion object {
+        private var instance: HomeViewModel? = null
+        fun getInstance() = instance ?: synchronized(HomeViewModel::class.java) {
+            instance ?: HomeViewModel().also { instance = it }
+        }
+    }
+
     private val repository = HomeRepository()
 
     fun getCategories(): LiveData<ArrayList<String>> {
         return repository.getCategories()
     }
 
-    fun getOnGoingChallenges(): LiveData<ArrayList<Challenge>> {
+    fun getOnGoingChallenges(): LiveData<ArrayList<OnGoingChallenge>> {
         return repository.getOnGoingChallenges()
     }
 
@@ -20,7 +26,11 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         repository.sortChallengeByCategory(position)
     }
 
-    fun getChallenge(position: Int): Challenge {
+    fun getChallenge(position: Int): OnGoingChallenge {
         return repository.getChallenge(position)
+    }
+
+    fun removeOnGoingChallenge(onGoingChallenge: OnGoingChallenge) {
+        repository.removeOnGoingChallenge(onGoingChallenge)
     }
 }

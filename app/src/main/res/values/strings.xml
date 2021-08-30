@@ -22,7 +22,13 @@
     <string name="phone">핸드폰 번호</string>
     <string name="birth">생년월일</string>
     <string name="verifyPassword">개인정보 변경을 위해 비밀번호를 입력해 주세요.</string>
+    <string name="id">아이디</string>
+    <string name="email">이메일</string>
     <string name="pw">비밀번호</string>
+    <string name="checkPw">비밀번호 확인</string>
+    <string name="parentPw">2차 비밀번호</string>
+    <string name="checkParentPw">2차 비밀번호 확인</string>
+    <string name="emailAuth">인증코드</string>
     <string name="change">변경하기</string>
     <string name="currentPw">현재 비밀번호</string>
     <string name="newPw">새 비밀번호</string>

@@ -26,16 +26,20 @@ class FindPasswordActivity : BaseActivity() {
         setContentView(binding.root)
         setSupportActionBar(findViewById(R.id.topBar))
 
-        binding.titleBar.title.text = "비밀번호 찾기"
-        binding.titleBar.backBtn.setOnClickListener {
-            finish()
+
+        setSupportActionBar(findViewById(R.id.toolbar))
+        with(supportActionBar!!) {
+            setDisplayShowCustomEnabled(true)
+            setDisplayShowTitleEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            title = "비밀번호 찾기"
         }
 
         initListeners()
     }
 
-    private fun initListeners(){
-        with(binding){
+    private fun initListeners() {
+        with(binding) {
             sendEmailAuthBtn.setOnClickListener {
                 sendAuth()
             }
@@ -47,32 +51,36 @@ class FindPasswordActivity : BaseActivity() {
     }
 
     private fun checkAuth() {
-        if(!isEmailAuthSended){
+        if (!isEmailAuthSended) {
             Util.toast(applicationContext, "인증 메일을 전송해 주세요")
-            Log.d(Tag,"인증 메일 전송 x / isEmailAuthSenede : $isEmailAuthSended")
+            Log.d(Tag, "인증 메일 전송 x / isEmailAuthSenede : $isEmailAuthSended")
             return
         }
-        if(isEmailAuthChecked){
+        if (isEmailAuthChecked) {
             Util.toast(applicationContext, "이메일 인증이 완료되었습니다")
-            Log.d(Tag,"이미 인증코드 확인됨 / isEmailAuthChecked : $isEmailAuthChecked")
+            Log.d(Tag, "이미 인증코드 확인됨 / isEmailAuthChecked : $isEmailAuthChecked")
             return
         }
 
         val data = HashMap<String, Any>()
-        with(binding){
-            data.put("email",emailET.text.toString())
-            data.put("auth",emailAuthET.text.toString())
+        with(binding) {
+            data.put("email", emailET.text.toString())
+            data.put("auth", emailAuthET.text.toString())
         }
-        RetrofitManager.instance.requestBoolean(data, REQUEST_TYPE.CHECK_AUTH){ responseState, responseBody ->
-            when(responseState){
+        RetrofitManager.instance.requestBoolean(
+            data,
+            REQUEST_TYPE.CHECK_AUTH
+        ) { responseState, responseBody ->
+            when (responseState) {
                 RESPONSE_STATE.SUCCESS -> { // 인증코드 확인 성공
                     val result = Gson().fromJson(responseBody, ApiBooleanResponse::class.java)
-                    if(result.response){ // 확인 결과 인증 성공
-                        val newIntent = Intent(applicationContext, ResetPasswordActivity::class.java)
+                    if (result.response) { // 확인 결과 인증 성공
+                        val newIntent =
+                            Intent(applicationContext, ResetPasswordActivity::class.java)
                         val id = binding.emailET.text.toString()
-                        newIntent.putExtra("email",id)
+                        newIntent.putExtra("email", id)
                         startActivity(newIntent)
-                    }else{  // 인증 실패
+                    } else {  // 인증 실패
                         Util.toast(applicationContext, "인증 코드가 다릅니다")
                     }
                 }
@@ -84,23 +92,26 @@ class FindPasswordActivity : BaseActivity() {
     }
 
     private fun sendAuth() {
-        if(isEmailAuthSended){
+        if (isEmailAuthSended) {
             Util.toast(applicationContext, "이미 전송되었습니다")
-            Log.d(Tag,"인증 메일이 이미 전송됨 / isEmailAuthSended : $isEmailAuthSended")
+            Log.d(Tag, "인증 메일이 이미 전송됨 / isEmailAuthSended : $isEmailAuthSended")
             return
         }
 
-        val data = HashMap<String,Any>()
-        data.put("email",binding.emailET.text.toString())
+        val data = HashMap<String, Any>()
+        data.put("email", binding.emailET.text.toString())
 
-        RetrofitManager.instance.requestBoolean(data, REQUEST_TYPE.SEND_AUTH){ responseSTate, responseBody ->
-            when(responseSTate){
+        RetrofitManager.instance.requestBoolean(
+            data,
+            REQUEST_TYPE.SEND_AUTH
+        ) { responseSTate, responseBody ->
+            when (responseSTate) {
                 RESPONSE_STATE.SUCCESS -> { // 메일 전송 성공
                     val result = Gson().fromJson(responseBody, ApiBooleanResponse::class.java)
                     isEmailAuthSended = result.response
-                    if(result.response){
+                    if (result.response) {
                         Util.toast(applicationContext, "메일이 전송 되었습니다")
-                    }else{
+                    } else {
                         Util.toast(applicationContext, "존재하지 않는 아이디 입니다")
                     }
                 }
@@ -112,16 +123,16 @@ class FindPasswordActivity : BaseActivity() {
         }
     }
 
-    private fun timeToString(time: Int) : String {
+    private fun timeToString(time: Int): String {
         var min = ""
         var sec = ""
-        if(time>120){
+        if (time > 120) {
             min = "2"
-            sec = "${time-120}"
-        }else if(time>60){
+            sec = "${time - 120}"
+        } else if (time > 60) {
             min = "1"
-            sec = "${time-60}"
-        }else{
+            sec = "${time - 60}"
+        } else {
             min = "0"
             sec = "$time"
         }

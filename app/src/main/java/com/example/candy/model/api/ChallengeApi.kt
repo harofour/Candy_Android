@@ -47,6 +47,7 @@ interface ChallengeApi {
         @Header("api_key")userToken: String
     ): Response<ArrayList<String>>
 
+
     // 학부모캔디 조회 rx
     @GET("candy/parent")
     fun getParentCandyAmount(
@@ -61,5 +62,13 @@ interface ChallengeApi {
         @Body candyAssignData: CandyAssignBody
     ) : Single<CandyAssignResponse>
 
+
+
+    @GET("challenge/notCompletedList")
+    suspend fun getOnGoingChallenges(
+        @Header("api_key")userToken: String,
+        @Query("lastChallengeId")lastChallengeId: Int,
+        @Query("size")size: Int
+    ): Response<OnGoingChallengeResponse>
 
 }

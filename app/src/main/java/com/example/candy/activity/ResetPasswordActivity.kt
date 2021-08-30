@@ -25,9 +25,12 @@ class ResetPasswordActivity : BaseActivity() {
         setSupportActionBar(findViewById(R.id.topBar))
 
 
-        binding.titleBar.title.text = "비밀번호 재설정"
-        binding.titleBar.backBtn.setOnClickListener {
-            finish()
+        setSupportActionBar(findViewById(R.id.toolbar))
+        with(supportActionBar!!) {
+            setDisplayShowCustomEnabled(true)
+            setDisplayShowTitleEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            title = "비밀번호 재설정"
         }
 
         id = intent.getStringExtra("email") ?: "error"
@@ -46,30 +49,33 @@ class ResetPasswordActivity : BaseActivity() {
 
     private fun resetPassword() {
         // 새 비밀번호 문자열 확인
-        with(binding){
-            if(newPasswordET != newPasswordChectET) {
+        with(binding) {
+            if (newPasswordET != newPasswordChectET) {
                 Util.toast(applicationContext, "비밀번호가 다릅니다")
                 Log.d(Tag, "비밀번호가 다름")
                 return
             }
         }
 
-        val data = HashMap<String,Any>()
-        data.put("email",id)
-        data.put("password",binding.newPasswordET.text.toString())
+        val data = HashMap<String, Any>()
+        data.put("email", id)
+        data.put("password", binding.newPasswordET.text.toString())
 
-        RetrofitManager.instance.requestBoolean(data, REQUEST_TYPE.RESET_PASSWORD){ responseState, responseBody ->
-            when(responseState){
+        RetrofitManager.instance.requestBoolean(
+            data,
+            REQUEST_TYPE.RESET_PASSWORD
+        ) { responseState, responseBody ->
+            when (responseState) {
                 RESPONSE_STATE.SUCCESS -> {
                     val result = Gson().fromJson(responseBody, ApiBooleanResponse::class.java)
-                    if(result.response){
+                    if (result.response) {
                         // 비밀번호 재설정 성공
-                        val intent = Intent(applicationContext,LogInActivity::class.java)
+                        val intent = Intent(applicationContext, LogInActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                         Util.toast(applicationContext, "비밀번호가 재설정 되었습니다")
-                    }else{
+                    } else {
                         Util.toast(applicationContext, "비밀번호 재설정에 실패하였습니다")
                     }
                 }
