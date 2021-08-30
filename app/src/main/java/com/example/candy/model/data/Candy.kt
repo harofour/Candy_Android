@@ -13,11 +13,31 @@ data class Candy(
     val candy: String
 )
 
-data class chargeCandyResponse(
+data class ChargeCandyResponse(
     @SerializedName("error")
     val error: Error?,
     @SerializedName("response")
     val response: Candy,
+    @SerializedName("success")
+    val success: Boolean
+)
+
+data class History(
+    @SerializedName("amount")
+    var amount: String,
+    @SerializedName("createDate")
+    var createDate: String,
+    @SerializedName("eventType")
+    var eventType: String,
+    @SerializedName("id")
+    val id: String
+)
+
+data class HistoryResponse(
+    @SerializedName("error")
+    val error: Error?,
+    @SerializedName("response")
+    val response: ArrayList<History>,
     @SerializedName("success")
     val success: Boolean
 )

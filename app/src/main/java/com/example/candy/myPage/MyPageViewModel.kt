@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.candy.model.data.Candy
+import com.example.candy.model.data.History
 import com.example.candy.model.data.User
 import com.example.candy.model.data.UserInfo
 import com.example.candy.utils.RESPONSE_STATE
@@ -11,6 +12,18 @@ import com.example.candy.utils.RESPONSE_STATE
 class MyPageViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = MyPageRepository()
 
+
+    fun getParentHistories() : LiveData<List<History>>{
+        return repository.getParentHistories()
+    }
+
+    fun getStudentHistories() : LiveData<List<History>>{
+        return repository.getStudentHistories()
+    }
+
+    fun getAPIHistoryData(apiKey: String,identity : String, category: String,lastId: String,size:String){
+        repository.getAPIHistoryData(apiKey, identity, category, lastId, size)
+    }
 
     fun getUserInfo(): User {
         return repository.getUserInfo()

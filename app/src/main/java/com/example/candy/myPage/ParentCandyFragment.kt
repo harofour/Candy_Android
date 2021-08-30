@@ -10,10 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.candy.R
 import com.example.candy.databinding.FragmentParentCandyBinding
 import com.example.candy.model.data.Candy
 import com.example.candy.model.viewModel.SharedViewModel
+import com.example.candy.myPage.adapter.HistoryAdapter
 import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.CustomDialog
 import com.example.candy.utils.RESPONSE_STATE
@@ -24,6 +26,7 @@ class ParentCandyFragment : Fragment() {
     private val viewModel: MyPageViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var navController: NavController
+    private lateinit var historyAdapter: HistoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,31 +36,40 @@ class ParentCandyFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_parent_candy, container, false)
 
-        sharedViewModel.getCandyParent().observe(viewLifecycleOwner, {
-            val numberOfCandy = getString(R.string.numberOfParentCandy, it)
-            binding.candy = Candy(numberOfCandy)
-        })
+        initParentCandy()
 
-        // 학부모 캔디 초기화
-        sharedViewModel.getAPICandyParent(CurrentUser.userToken!!)
+        initParentCandyHistory()
+
         return binding.root
     }
+
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
         navController = Navigation.findNavController(view)
 
-        binding.titleBar.title.text = "캔디 충전"
+        initTitleBar()
+
+        initChargeCandyButton()
+
+        setRecyclerview()
+
+    }
 
 
 
-        binding.titleBar.backBtn.setOnClickListener {
-            navController.popBackStack()
-        }
+    private fun setRecyclerview() {
+        binding.recyclerview.adapter = historyAdapter
+        binding.recyclerview.layoutManager =
+            LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerview.setHasFixedSize(false)
+    }
 
+    private fun initChargeCandyButton() {
         // 캔디 충전 버튼
         binding.chargeCandy.setOnClickListener {
             val dialog = CustomDialog(binding.root.context, 100)
@@ -69,8 +81,35 @@ class ParentCandyFragment : Fragment() {
                     reqData["amount"] = candy
                     sharedViewModel.updateCandyParent(CurrentUser.userToken!!, reqData)
                 }
+
             })
         }
+    }
 
+    private fun initTitleBar() {
+        // 타이틀바 세팅
+        binding.titleBar.title.text = "캔디 충전"
+        binding.titleBar.backBtn.setOnClickListener {
+            navController.popBackStack()
+        }
+    }
+
+    private fun initParentCandy() {
+        sharedViewModel.getCandyParent().observe(viewLifecycleOwner, {
+            val numberOfCandy = getString(R.string.numberOfParentCandy, it)
+            binding.candy = Candy(numberOfCandy)
+            viewModel.getAPIHistoryData(CurrentUser.userToken!!, "parent", "all", "100000", "20")
+        })
+        // 학부모 캔디 초기화
+        sharedViewModel.getAPICandyParent(CurrentUser.userToken!!)
+    }
+
+    private fun initParentCandyHistory() {
+        // 캔디 내역 세팅
+        historyAdapter = HistoryAdapter()
+        viewModel.getParentHistories().observe(viewLifecycleOwner, {
+            historyAdapter.submitList(it)
+            binding.recyclerview.smoothScrollToPosition(0)
+        })
     }
 }

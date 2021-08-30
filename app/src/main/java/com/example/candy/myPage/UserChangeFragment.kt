@@ -45,14 +45,9 @@ class UserChangeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = this
-
         navController = Navigation.findNavController(view)
 
-        // Setting Title
-        binding.titleBar.title.text = "정보 변경"
-        binding.titleBar.backBtn.setOnClickListener {
-            navController.popBackStack()
-        }
+        initTitleBar()
 
         // Setting UserInfo
         viewModel.getAPIUserInfo(CurrentUser.userToken!!).observe(viewLifecycleOwner,{
@@ -98,7 +93,6 @@ class UserChangeFragment : Fragment() {
     }
 
 
-
     private fun validationCheck() : Boolean {
         /*
          * 생년월일과 전화번호에 대한 유효성 검사
@@ -127,5 +121,13 @@ class UserChangeFragment : Fragment() {
     // TODO:: API 완성되면 수정 MainActivity 함께 수정
     private fun verifyPassword(): Boolean {
         return binding.labelEditPw.text.toString() == sharedViewModel.getUserPw()
+    }
+
+    private fun initTitleBar() {
+        // Setting Title
+        binding.titleBar.title.text = "정보 변경"
+        binding.titleBar.backBtn.setOnClickListener {
+            navController.popBackStack()
+        }
     }
 }

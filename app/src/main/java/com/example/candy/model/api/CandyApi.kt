@@ -1,12 +1,10 @@
 package com.example.candy.model.api
 
 import com.example.candy.model.data.CandyResponse
-import com.example.candy.model.data.chargeCandyResponse
+import com.example.candy.model.data.ChargeCandyResponse
+import com.example.candy.model.data.HistoryResponse
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface CandyApi {
 
@@ -27,5 +25,22 @@ interface CandyApi {
     fun chargeCandy(
         @Header("api_key")userToken: String,
         @Body chargeCandy: HashMap<String,Int>
-    ) : Call<chargeCandyResponse>
+    ) : Call<ChargeCandyResponse>
+
+    // 캔디 인출
+    @POST("candy/withdraw")
+    fun withdrawCandy(
+        @Header("api_key")userToken: String,
+        @Body chargeCandy: HashMap<String,Int>
+    ) : Call<ChargeCandyResponse>
+
+    // 캔디 내역 조회
+    @GET("/candy/history/{identity}/{category}/{lastCandyHistoryId}/{size}")
+    fun getCandyHistory(
+        @Header("api_key")userToken: String,
+        @Path("identity")identity: String,
+        @Path("category")category: String,
+        @Path("lastCandyHistoryId")lastCandyHistoryId: String,
+        @Path("size")size: String
+    ) : Call<HistoryResponse>
 }

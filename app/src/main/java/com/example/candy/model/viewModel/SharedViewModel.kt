@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.candy.myPage.MyPageRepository
 import com.example.candy.utils.RESPONSE_STATE
+import kotlinx.coroutines.withTimeout
 
 class SharedViewModel : ViewModel() {
     private val repository = MyPageRepository()
@@ -38,7 +39,7 @@ class SharedViewModel : ViewModel() {
     }
 
     fun updateCandyStudent(apiKey: String, withDrawCandy: HashMap<String, Int>) {
-        // TODO:: 학생 캔디 인출하는 함수 repository에 만들어지면 연결
+        return repository.updateCandyStudent(apiKey, withDrawCandy)
     }
 
 

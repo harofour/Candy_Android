@@ -35,5 +35,6 @@
 
     <!-- challenge -->
     <string name="text1">챌린지에 배정할 캔디 개수를 입력하세요</string>
+    <string name="recent20History">최근 20개의 내역만 조회 가능합니다.</string>
 
 </resources>

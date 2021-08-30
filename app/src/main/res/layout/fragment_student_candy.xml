@@ -31,7 +31,7 @@
             android:orientation="horizontal"
             android:paddingHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.15"
+            app:layout_constraintHeight_percent="0.14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_bar">
 
@@ -69,14 +69,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/my_candy" />
 
+        <TextView
+            android:id="@+id/info_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/candy_list"
+            app:layout_constraintTop_toBottomOf="@id/candy_list"
+            app:layout_constraintBottom_toTopOf="@id/view"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="start|center_vertical"
+            android:text="@string/recent20History"/>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#EBEBEB"
+            android:layout_marginVertical="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info_tv"
+            app:layout_constraintBottom_toTopOf="@id/recyclerview"/>
+
+
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/candy_list" />
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
