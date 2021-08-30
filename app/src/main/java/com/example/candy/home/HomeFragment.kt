@@ -39,16 +39,7 @@ class HomeFragment : Fragment() {
             }
         }).get(HomeViewModel::class.java)
     }
-    private val sharedViewModel: SharedViewModel by lazy {
-        ViewModelProvider(viewModelStore, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return when {
-                    modelClass.isAssignableFrom(SharedViewModel::class.java) -> SharedViewModel.getInstance() as T
-                    else -> throw IllegalArgumentException("Unknown viewModel class $modelClass")
-                }
-            }
-        }).get(SharedViewModel::class.java)
-    }
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var navController: NavController
 
     companion object {
