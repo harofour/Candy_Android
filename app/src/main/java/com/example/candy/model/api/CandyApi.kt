@@ -1,5 +1,6 @@
-package com.example.candy.model.api
+﻿package com.example.candy.model.api
 
+import com.example.candy.data.ApiAnyResponse
 import com.example.candy.model.data.CandyResponse
 import com.example.candy.model.data.ChargeCandyResponse
 import com.example.candy.model.data.HistoryResponse
@@ -43,4 +44,10 @@ interface CandyApi {
         @Path("lastCandyHistoryId")lastCandyHistoryId: String,
         @Path("size")size: String
     ) : Call<HistoryResponse>
+    // 캔디 획득
+    @POST("candy/attain")
+    fun attainCandy(
+        @Header("api_key")userToken: String,
+        @Body attainCandy: HashMap<String,Int>
+    ) : Call<ApiAnyResponse>
 }

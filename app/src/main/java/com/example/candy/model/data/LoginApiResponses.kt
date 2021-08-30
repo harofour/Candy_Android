@@ -50,3 +50,15 @@ data class ApiBooleanResponse(
     val success: Boolean
 )
 
+data class ApiAnyResponse(
+    @SerializedName("error")
+    @Expose
+    val error: Error?,
+    @SerializedName("response")
+    @Expose
+    val response: Any,
+    @SerializedName("success")
+    @Expose
+    val success: Boolean
+)
+

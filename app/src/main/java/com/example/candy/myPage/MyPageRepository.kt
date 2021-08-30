@@ -1,4 +1,4 @@
-package com.example.candy.myPage
+﻿package com.example.candy.myPage
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -152,11 +152,9 @@ class MyPageRepository() {
             }
 
             override fun onFailure(call: Call<ChargeCandyResponse>, t: Throwable) {
-
             }
         })
     }
-
 
     /**
      * 캔디 내역 불러오는 함수
@@ -164,7 +162,6 @@ class MyPageRepository() {
     fun getParentHistories(): LiveData<List<History>> {
         return historyParentData
     }
-
     fun getStudentHistories(): LiveData<List<History>> {
         return historyStudentData
     }
@@ -220,6 +217,13 @@ class MyPageRepository() {
             })
     }
 
+    fun assignCandyToStudent(assignedCandy: Int) {
+        Log.d("updateCandyStudent", "before studentCandy / ${studentCandy.value}")
+        studentCandy.value = (studentCandy.value!!.toInt() + assignedCandy).toString()
+        Log.d("updateCandyStudent", "after studentCandy / ${studentCandy.value}")
+    }
+
+
 
     fun changePw(apiKey: String, data: HashMap<String, Any>, completion: (RESPONSE_STATE) -> Unit) {
         apiUserInfo.changePw(apiKey, data).enqueue(object : Callback<UserChangePwResponse> {
@@ -240,10 +244,15 @@ class MyPageRepository() {
         })
     }
 
-    private fun changeDateFormat(str : String) : String{
+    private fun changeDateFormat(str : String) : String {
         val oldFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
         val newFormat = SimpleDateFormat("yyyy.MM.dd (E)")
         val old = oldFormat.parse(str)
         return newFormat.format(old)
+    }
+    fun updateCandyStudent(assignedCandy: Int) {
+        Log.d("updateCandyStudent", "before studentCandy / ${studentCandy.value}")
+        studentCandy.value = (studentCandy.value!!.toInt() + assignedCandy).toString()
+        Log.d("updateCandyStudent", "after studentCandy / ${studentCandy.value}")
     }
 }
