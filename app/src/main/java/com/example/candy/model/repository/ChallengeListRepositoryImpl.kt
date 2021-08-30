@@ -4,8 +4,11 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.example.candy.model.api.ChallengeApi
-import com.example.candy.model.data.Challenge
-import com.example.candy.model.data.ChallengeDetail
+import com.example.candy.model.data.*
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+
 
 class ChallengeListRepositoryImpl(
     private val challengeApi: ChallengeApi,
@@ -80,5 +83,19 @@ class ChallengeListRepositoryImpl(
             return null
         }
     }
+
+    override fun getParentCandyAmount(apiKey: String): Single<CandyResponse2> =
+        challengeApi.getParentCandyAmount(apiKey)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    override fun assignCandy(
+        apiKey: String,
+        challengeId: Int,
+        candyCnt: Int
+    ): Single<CandyAssignResponse> =
+        challengeApi.assignCandy(apiKey, CandyAssignBody(candyCnt, challengeId))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
 }

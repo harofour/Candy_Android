@@ -8,9 +8,19 @@ data class CandyResponse(
     val candy: Candy
 )
 
+data class CandyResponse2(
+    @SerializedName("response")
+    val candy: Candy2
+)
+
 data class Candy(
     @SerializedName("candyAmount")
     val candy: String
+)
+
+data class Candy2(
+    @SerializedName("candyAmount")
+    val candy: Int
 )
 
 data class ChargeCandyResponse(
@@ -40,5 +50,17 @@ data class HistoryResponse(
     val response: ArrayList<History>,
     @SerializedName("success")
     val success: Boolean
+)
+
+data class CandyAssignResponse(
+    @SerializedName("success")
+    val isAssignSuccess: Boolean
+)
+
+data class CandyAssignBody(
+    @SerializedName("candyAmount")
+    val candyAmount: Int,
+    @SerializedName("challengeId")
+    val challengeId: Int
 )
 

@@ -25,3 +25,4 @@ data class ChallengeDetail(
         @SerializedName("title")val title: String,
         @SerializedName("totalScore")val totalScore: Int
 )
+

@@ -12,4 +12,11 @@ object Injection{
             context
         )
     }
+
+    fun provideRepoRepositoryRx(context: Context): ChallengeListRepository {
+        return ChallengeListRepositoryImpl(
+            ApiProvider.provideChallegneApi_Rx(),
+            context
+        )
+    }
 }
