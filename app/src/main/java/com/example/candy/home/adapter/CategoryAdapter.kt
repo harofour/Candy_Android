@@ -10,6 +10,7 @@ class CategoryAdapter(
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     private var categories: List<String> = listOf()
+    private var currentCategory: String = "전체"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemHomeRecyclerviewCategoryBinding.inflate(
@@ -29,6 +30,17 @@ class CategoryAdapter(
     fun setCategories(categories: List<String>) {
         this.categories = categories
         notifyDataSetChanged()
+    }
+
+    fun changeCategory(selectedPosition: Int){
+        currentCategory = categories[selectedPosition]
+    }
+    fun getCurrentCategory(): String{
+        return currentCategory
+    }
+
+    fun getCategory(position: Int): String {
+        return categories[position]
     }
 
     inner class ViewHolder(private val binding: ItemHomeRecyclerviewCategoryBinding) :

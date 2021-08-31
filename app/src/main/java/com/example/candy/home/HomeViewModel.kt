@@ -18,12 +18,12 @@ class HomeViewModel() : ViewModel() {
         return repository.getCategories()
     }
 
-    fun getOnGoingChallenges(): LiveData<ArrayList<OnGoingChallenge>> {
-        return repository.getOnGoingChallenges()
+    fun getOnGoingChallenges(lastChallengeId: Int, size: Int, category: String): LiveData<ArrayList<OnGoingChallenge>> {
+        return repository.getOnGoingChallenges(lastChallengeId, size, category)
     }
 
-    fun sortChallengeByCategory(position: Int) {
-        repository.sortChallengeByCategory(position)
+    fun sortChallengeByCategory(category: String) {
+        repository.sortChallengeByCategory(category)
     }
 
     fun getChallenge(position: Int): OnGoingChallenge {
@@ -32,5 +32,9 @@ class HomeViewModel() : ViewModel() {
 
     fun removeOnGoingChallenge(onGoingChallenge: OnGoingChallenge) {
         repository.removeOnGoingChallenge(onGoingChallenge)
+    }
+
+    fun clearOnGoingChallenges(){
+        repository.clearOnGoingChallenges()
     }
 }

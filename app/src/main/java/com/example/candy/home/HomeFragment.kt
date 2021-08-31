@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.R
 import com.example.candy.adapter.HorizontalItemDecorator
 import com.example.candy.adapter.VerticalItemDecorator
@@ -24,8 +25,8 @@ import com.example.candy.home.adapter.MyChallengeAdapter
 import com.example.candy.model.viewModel.SharedViewModel
 
 class HomeFragment : Fragment() {
-    private lateinit var mAdapter: MyChallengeAdapter
-    private lateinit var cAdapter: CategoryAdapter
+    private lateinit var challengeAdapter: MyChallengeAdapter
+    private lateinit var categoryAdapter: CategoryAdapter
     private var homeBinding: FragmentHomeBinding? = null   // onDestory 에서 완벽한 제거를 위해 null 허용
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProvider(viewModelStore, object : ViewModelProvider.Factory {
@@ -41,6 +42,9 @@ class HomeFragment : Fragment() {
     }
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var navController: NavController
+    private var page = 1 // 현재 페이지
+    private var size = 10 // 한번에 불러 올 챌린지 리스트 수
+    private var NO_MORE_DATA = false // 서버로부터 데이터를 받아온 뒤 true
 
     companion object {
         private lateinit var instance: HomeFragment
@@ -57,25 +61,25 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("HomeFragment", "onCreateView")
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
         homeBinding = binding
 
         sharedViewModel.getCandyStudent().observe(viewLifecycleOwner, {
             homeBinding!!.tvMyCandy.text = getString(R.string.myCandy, it)
-            Log.d("HomeFragment", "$it")
         })
-
 
         return homeBinding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("HomeFragment", "onViewCreated")
 
         navController = Navigation.findNavController(view)
 
-        cAdapter = CategoryAdapter { pos -> onCategoryItemClicked(pos) }
-        mAdapter = MyChallengeAdapter { pos -> onChallengeItemClicked(pos) }
+        categoryAdapter = CategoryAdapter { pos -> onCategoryItemClicked(pos) }
+        challengeAdapter = MyChallengeAdapter { pos -> onChallengeItemClicked(pos) }
 
         initCategory()
         initOnGoingChallenge()
@@ -89,7 +93,7 @@ class HomeFragment : Fragment() {
 
     private fun initCategory() {
         homeBinding!!.rvCategory.apply {
-            adapter = cAdapter
+            adapter = categoryAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             addItemDecoration(HorizontalItemDecorator(15))
             setHasFixedSize(true)
@@ -98,28 +102,57 @@ class HomeFragment : Fragment() {
         homeViewModel.getCategories().observe(viewLifecycleOwner) { data ->
             //update ui
             Log.d("HomeFragment", "getCategories / $data")
-            cAdapter.setCategories(data)
+            categoryAdapter.setCategories(data)
         }
     }
 
     private fun initOnGoingChallenge() {
         homeBinding!!.rvChallenge.apply {
-            adapter = mAdapter
+            adapter = challengeAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(VerticalItemDecorator(15))
             setHasFixedSize(true)
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    // 스크롤이 끝에 도달했는지 확인
+                    // 화면에 보이는 마지막 아이템의 position
+                    val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+
+                    // 어댑터에 등록된 아이템의 총 개수 -1
+                    val itemTotalCount = recyclerView.adapter!!.itemCount - 1
+
+                    // 스크롤이 끝에 도달했는지 확인
+                    if (lastVisibleItemPosition == itemTotalCount && !homeBinding!!.rvChallenge.canScrollVertically(1)) {
+                        Log.d("rvChallenge onScrolled()", "끝, itemTotalCount / $itemTotalCount ")
+
+                        Log.d("rvChallenge onScrolled()", "LastChallengeId : ${challengeAdapter.getLastChallengeId()}")
+                        homeViewModel.getOnGoingChallenges(challengeAdapter.getLastChallengeId(), size, categoryAdapter.getCurrentCategory())
+                    }
+                }
+            })
         }
 
-        homeViewModel.getOnGoingChallenges().observe(viewLifecycleOwner) { data ->
+        homeViewModel.getOnGoingChallenges(challengeAdapter.getLastChallengeId(), size, categoryAdapter.getCurrentCategory()).observe(viewLifecycleOwner) { data ->
             //update ui
-            Log.d("HomeFragment", "getCategories / $data")
-            mAdapter.setChallenges(data)
+            Log.d("HomeFragment", "1getChallenges ${data.size} / $data")
+            challengeAdapter.addLoading()
+            challengeAdapter.setList(data)
+
+            // 한 페이지당 게시물이 10개씩 들어있음.
+            // 새로운 게시물이 추가되었다는 것을 알려줌 (추가된 부분만 새로고침)
+            challengeAdapter.notifyItemRangeChanged((page-1)*size ,data.size)
+            challengeAdapter.deleteLoading()
         }
     }
 
     private fun onCategoryItemClicked(position: Int) {
         Log.d("HomeFragment", "CategoryItemClicked() position $position")
-        homeViewModel.sortChallengeByCategory(position)
+        homeViewModel.sortChallengeByCategory(categoryAdapter.getCategory(position))
+        categoryAdapter.changeCategory(position)
+        page = 0
         // 진행중인 챌린지 리스트 정렬
     }
 
@@ -134,7 +167,9 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-//        homeBinding = null
         super.onDestroyView()
+        Log.d("HomeFragment", "onDestroyView")
+        homeViewModel.clearOnGoingChallenges()
     }
 }
+

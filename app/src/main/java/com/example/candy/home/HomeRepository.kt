@@ -28,6 +28,7 @@ class HomeRepository() {
 
     private val allCategories = ArrayList<String>()
     private val allCategory = "전체"
+    var allChallenges1 = ArrayList<OnGoingChallenge>()
     var allChallenges = ArrayList<OnGoingChallenge>()
 
     fun getCategories(): LiveData<ArrayList<String>> {
@@ -57,33 +58,29 @@ class HomeRepository() {
     }
 
 
-    fun getOnGoingChallenges(): LiveData<ArrayList<OnGoingChallenge>> {
+    fun getOnGoingChallenges(lastChallengeId: Int, size: Int, category: String): LiveData<ArrayList<OnGoingChallenge>> {
         CoroutineScope(Dispatchers.Main).launch {
             withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
-                val response = api.getOnGoingChallenges(CurrentUser.userToken!!, 1000000, 10000)
+                var newChallenges = arrayListOf<OnGoingChallenge>()
+
+                val response = api.getOnGoingChallenges(CurrentUser.userToken!!, lastChallengeId, size)
                 if (response.isSuccessful) {
-                    allChallenges = response.body()!!.response
-                    allChallenges.forEach { it.category = translateCategory(it.category) }
-                    Log.d(Tag, "${allChallenges}")
+                    // 받아온 챌린지 추가
+                    newChallenges = response.body()!!.response
+                    newChallenges.forEach {
+                        it.category = translateCategory(it.category)
+                        allChallenges1.add(it)
+                    }
+                    Log.d(Tag, "newChallenges / ${newChallenges}")
                 }
             }
-            _ongoingChallenges.value = allChallenges
+
+            // LiveData Update
+            sortChallengeByCategory(category)
+
+            Log.d(Tag, "_ongoingChallenges ${_ongoingChallenges.value?.size}/ ${_ongoingChallenges.value?.size} ${_ongoingChallenges.value}")
         }
-
-//        allChallenges = generateChallengeData()
         return ongoingChallenges
-    }
-
-    // for test
-    private fun generateChallengeData(): ArrayList<OnGoingChallenge> {
-        return arrayListOf<OnGoingChallenge>(
-//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
-//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
-//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
-//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
-//            OnGoingChallenge("영어", "제목1","설명1",50,80,false),
-//            OnGoingChallenge("영어", "제목1","설명1",50,80,false)
-        )
     }
 
     private fun translateCategory(str: String): String {
@@ -95,17 +92,16 @@ class HomeRepository() {
         }
     }
 
-    fun sortChallengeByCategory(position: Int) {
+    fun sortChallengeByCategory(category: String) {
         val newChallenges = ArrayList<OnGoingChallenge>()
-        val selectedCategory = allCategories[position]
 
-        if (selectedCategory == allCategory) {
+        if (category == allCategory) {
             // 전체 카테고리를 클릭 한 경우
-            _ongoingChallenges.value = allChallenges
+            _ongoingChallenges.value = allChallenges1
         } else {
             // 개별 카테고리를 클릭 한 경우
-            allChallenges.forEach {
-                if (it.category == selectedCategory) {
+            allChallenges1.forEach {
+                if (it.category == category || it.id < 0) {
                     newChallenges.add(it)
                 }
             }
@@ -114,13 +110,18 @@ class HomeRepository() {
     }
 
     fun getChallenge(position: Int): OnGoingChallenge {
-        return allChallenges[position]
+        return allChallenges1[position]
     }
 
     fun removeOnGoingChallenge(onGoingChallenge: OnGoingChallenge) {
         Log.d("removeOnGoingChallenge", "before ongoingChallenges / ${ongoingChallenges.value}")
-        allChallenges.remove(onGoingChallenge)
-        _ongoingChallenges.value = allChallenges
+        allChallenges1.remove(onGoingChallenge)
+        _ongoingChallenges.value = allChallenges1
         Log.d("removeOnGoingChallenge", "after ongoingChallenges / ${ongoingChallenges.value}")
+    }
+
+    fun clearOnGoingChallenges() {
+        allChallenges1.clear()
+        _ongoingChallenges.value = allChallenges1
     }
 }
