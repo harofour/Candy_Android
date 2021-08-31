@@ -26,8 +26,10 @@ data class ChallengeDetail(
         @SerializedName("totalScore")val totalScore: Int
 )
 
+
 data class OnGoingChallengeResponse(
         @SerializedName("success")val isSuccess: Boolean,
         @SerializedName("response")val response: ArrayList<OnGoingChallenge>,
         @SerializedName("error")val error: Error
 )
+

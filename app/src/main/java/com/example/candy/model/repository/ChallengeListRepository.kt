@@ -1,7 +1,7 @@
 package com.example.candy.model.repository
 
-import com.example.candy.model.data.Challenge
-import com.example.candy.model.data.ChallengeDetail
+import com.example.candy.model.data.*
+import io.reactivex.Single
 
 interface ChallengeListRepository {
 
@@ -12,4 +12,8 @@ interface ChallengeListRepository {
     suspend fun searchLikeChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<Challenge>?
 
     suspend fun searchChallengeDetail(apiKey: String, challengeId: Int): ChallengeDetail?
+
+    fun getParentCandyAmount(apiKey: String): Single<CandyResponse2>
+
+    fun assignCandy(apiKey: String, challengeId: Int, candyCnt: Int): Single<CandyAssignResponse>
 }

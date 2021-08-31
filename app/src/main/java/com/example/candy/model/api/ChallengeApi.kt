@@ -3,6 +3,8 @@ package com.example.candy.model.api
 import com.example.candy.R
 import com.example.candy.model.data.*
 import com.example.candy.utils.CurrentUser
+import io.reactivex.Single
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -45,10 +47,28 @@ interface ChallengeApi {
         @Header("api_key")userToken: String
     ): Response<ArrayList<String>>
 
+
+    // 학부모캔디 조회 rx
+    @GET("candy/parent")
+    fun getParentCandyAmount(
+        @Header("api_key")userToken: String
+    ) : Single<CandyResponse2>
+
+
+    // 캔디 배정 rx
+    @POST("candy/assign")
+    fun assignCandy(
+        @Header("api_key")userToken: String,
+        @Body candyAssignData: CandyAssignBody
+    ) : Single<CandyAssignResponse>
+
+
+
     @GET("challenge/notCompletedList")
     suspend fun getOnGoingChallenges(
         @Header("api_key")userToken: String,
         @Query("lastChallengeId")lastChallengeId: Int,
         @Query("size")size: Int
     ): Response<OnGoingChallengeResponse>
+
 }

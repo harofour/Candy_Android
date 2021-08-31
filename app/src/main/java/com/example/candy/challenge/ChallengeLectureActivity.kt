@@ -2,34 +2,25 @@ package com.example.candy.challenge
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.candy.R
-import com.example.candy.data.ApiAnyResponse
+import com.example.candy.challenge.viewmodel.LectureViewModel
 import com.example.candy.databinding.ActivityChallengeLectureBinding
 import com.example.candy.home.HomeViewModel
-import com.example.candy.model.api.CandyApi
-import com.example.candy.model.api.RetrofitClient
 import com.example.candy.model.data.OnGoingChallenge
 import com.example.candy.model.viewModel.SharedViewModel
-import com.example.candy.utils.API.BASE_URL
-import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.Util
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Response
 
 class ChallengeLectureActivity : AppCompatActivity() {
-
     private val Tag = "ChallengeLectureActivity"
     private var _binding: ActivityChallengeLectureBinding? = null
     private val binding get() = _binding!!
     private lateinit var challenge: OnGoingChallenge
+    private val lectureViewModel: LectureViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by lazy {
         ViewModelProvider(viewModelStore, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -64,8 +55,11 @@ class ChallengeLectureActivity : AppCompatActivity() {
         binding.titleBar.backBtn.setOnClickListener {
             finish()
         }
+
+        // intent를 통해 진행중인 챌린지의 정보 전달받음
         challenge = intent.getParcelableExtra("Challenge")!!
 
+        // for test
         Util.toast(this, "test / challengeId : ${challenge.id}")
 
         initviews()
@@ -74,38 +68,20 @@ class ChallengeLectureActivity : AppCompatActivity() {
 
     private fun initListeners() {
         binding.btnGetCandy.setOnClickListener {
-            // 캔디 획득
-            if(challenge.requiredScore <= challenge.totalScore){
-                CoroutineScope(Dispatchers.IO).launch {
-                    CoroutineScope(Dispatchers.IO).async {
-                        val api = RetrofitClient.getClient(BASE_URL).create(CandyApi::class.java)
-                        val data = HashMap<String, Int>()
-                        data.put("challengeId", challenge.id)
-                        val call = api.attainCandy(CurrentUser.userToken!!, data)
-                        Log.d("Tag", "${CurrentUser.userToken} / $data")
-
-                        call.enqueue(object : retrofit2.Callback<ApiAnyResponse> {
-                            override fun onResponse(
-                                call: Call<ApiAnyResponse>,
-                                response: Response<ApiAnyResponse>
-                            ) {
-                                if (response.isSuccessful) {
-                                    sharedViewModel.updateCandyStudent(challenge.assignedCandy)
-                                    homeViewModel.removeOnGoingChallenge(challenge)
-
-                                    Util.toast(applicationContext, "캔디 획득 성공")
-                                } else {
-                                    Util.toast(applicationContext, "캔디 획득 실패")
-                                }
-                            }
-
-                            override fun onFailure(call: Call<ApiAnyResponse>, t: Throwable) {
-                                Util.toast(applicationContext, "attainCandy() error occurred")
-                            }
-                        })
-                    }.await()
+            if (challenge.requiredScore <= challenge.totalScore) {    // 점수 확인
+                lectureViewModel.completeLecture(challenge = challenge).let {
+                    if (it) {
+                        sharedViewModel.assignCandyToStudent(challenge.assignedCandy)   // 캔디 획득
+                        homeViewModel.removeOnGoingChallenge(challenge)                 // 진행중인 챌린지 리스트 수정
+                        Util.toast(applicationContext, "챌린지 완료")
+                        finish()
+                    } else {
+                        Util.toast(applicationContext, "챌린지 실패")
+                    }
                 }
-                finish()
+            } else {
+                Util.toast(applicationContext, "점수를 확인해 주세요")
+                Log.d(Tag, "btnGetCandy.setOnClickListener / 점수가 낮음")
             }
         }
     }
@@ -114,12 +90,15 @@ class ChallengeLectureActivity : AppCompatActivity() {
         // 챌린지 관련
         with(challenge) {
             binding.tvCategory.text = category
-            binding.tvLevel.text = "2"
+            binding.tvLevel.text = "2"      // ?
             binding.tvCandy.text = assignedCandy.toString()
             binding.tvRequiredScore.text = requiredScore.toString()
             binding.tvCurrentScore.text = totalScore.toString()
             binding.tvSubtitle.text = subTitle
         }
+
+        // 썸네일 이미지
+        lectureViewModel.getThombnailImage()
 
         // 임시 좋아요 아이콘
         Glide.with(binding.root).load(R.drawable.icon_challenge_like_empty)

@@ -1,4 +1,4 @@
-package com.example.candy.myPage
+﻿package com.example.candy.myPage
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -13,15 +13,17 @@ import com.example.candy.utils.RESPONSE_STATE
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 
 class MyPageRepository() {
-    val TAG: String = "로그"
     private val retrofit = RetrofitClient.getClient(BASE_URL)
     private val apiCandy = retrofit.create(CandyApi::class.java)
     private val apiUserInfo = retrofit.create(UserInfoApi::class.java)
 
     var parentCandy = MutableLiveData<String>()
     var studentCandy = MutableLiveData<String>()
+    var historyParentData = MutableLiveData<List<History>>()
+    var historyStudentData = MutableLiveData<List<History>>()
 
 
     /**
@@ -98,19 +100,18 @@ class MyPageRepository() {
     }
 
     fun updateCandyParent(apiKey: String, chargeCandy: HashMap<String, Int>) {
-        apiCandy.chargeCandy(apiKey, chargeCandy).enqueue(object : Callback<chargeCandyResponse> {
+        apiCandy.chargeCandy(apiKey, chargeCandy).enqueue(object : Callback<ChargeCandyResponse> {
             override fun onResponse(
-                call: Call<chargeCandyResponse>,
-                response: Response<chargeCandyResponse>
+                call: Call<ChargeCandyResponse>,
+                response: Response<ChargeCandyResponse>
             ) {
-                Log.d(TAG, "MyPageRepository -------- ${response.code()}")
                 if (response.code() == 200 && response.body()!!.success) {
                     parentCandy.value =
                         (parentCandy.value!!.toInt() + chargeCandy["amount"]!!).toString()
                 }
             }
 
-            override fun onFailure(call: Call<chargeCandyResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ChargeCandyResponse>, t: Throwable) {
 
             }
         })
@@ -138,7 +139,90 @@ class MyPageRepository() {
         })
     }
 
-    // TODO:: 학생 인출 함수 만들기
+    fun updateCandyStudent(apiKey: String, chargeCandy: HashMap<String, Int>) {
+        apiCandy.withdrawCandy(apiKey, chargeCandy).enqueue(object : Callback<ChargeCandyResponse> {
+            override fun onResponse(
+                call: Call<ChargeCandyResponse>,
+                response: Response<ChargeCandyResponse>
+            ) {
+                if (response.code() == 200 && response.body()!!.success) {
+                    studentCandy.value =
+                        (studentCandy.value!!.toInt() - chargeCandy["amount"]!!).toString()
+                }
+            }
+
+            override fun onFailure(call: Call<ChargeCandyResponse>, t: Throwable) {
+            }
+        })
+    }
+
+    /**
+     * 캔디 내역 불러오는 함수
+     */
+    fun getParentHistories(): LiveData<List<History>> {
+        return historyParentData
+    }
+    fun getStudentHistories(): LiveData<List<History>> {
+        return historyStudentData
+    }
+
+    fun getAPIHistoryData(
+        apiKey: String,
+        identity: String,
+        category: String,
+        lastId: String,
+        size: String
+    ) {
+        apiCandy.getCandyHistory(apiKey, identity, category, lastId, size)
+            .enqueue(object : Callback<HistoryResponse> {
+                override fun onResponse(
+                    call: Call<HistoryResponse>,
+                    response: Response<HistoryResponse>
+                ) {
+                    if (response.code() == 200) {
+                        if(identity == "parent"){
+                            val data = response.body()!!.response
+                            data.forEachIndexed { index, history ->
+                                data[index].createDate = changeDateFormat(history.createDate)
+                                if(data[index].eventType == "CHARGE"){
+                                    data[index].eventType = "캔디 충전"
+                                    data[index].amount = "+${history.amount}C"
+                                }else{
+                                    data[index].eventType = "캔디 배정"
+                                    data[index].amount = "-${history.amount}C"
+                                }
+                            }
+                            historyParentData.value = data
+                        }else{
+                            val data = response.body()!!.response
+                            data.forEachIndexed { index, history ->
+                                data[index].createDate = changeDateFormat(history.createDate)
+                                if(data[index].eventType == "ATTAIN"){
+                                    data[index].eventType = "캔디 획득"
+                                    data[index].amount = "+${history.amount}C"
+                                }else{
+                                    data[index].eventType = "캔디 인출"
+                                    data[index].amount = "-${history.amount}C"
+                                }
+                            }
+                            historyStudentData.value = data
+                        }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<HistoryResponse>, t: Throwable) {
+
+                }
+            })
+    }
+
+    fun assignCandyToStudent(assignedCandy: Int) {
+        Log.d("updateCandyStudent", "before studentCandy / ${studentCandy.value}")
+        studentCandy.value = (studentCandy.value!!.toInt() + assignedCandy).toString()
+        Log.d("updateCandyStudent", "after studentCandy / ${studentCandy.value}")
+    }
+
 
 
     fun changePw(apiKey: String, data: HashMap<String, Any>, completion: (RESPONSE_STATE) -> Unit) {
@@ -160,6 +244,12 @@ class MyPageRepository() {
         })
     }
 
+    private fun changeDateFormat(str : String) : String {
+        val oldFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+        val newFormat = SimpleDateFormat("yyyy.MM.dd (E)")
+        val old = oldFormat.parse(str)
+        return newFormat.format(old)
+    }
     fun updateCandyStudent(assignedCandy: Int) {
         Log.d("updateCandyStudent", "before studentCandy / ${studentCandy.value}")
         studentCandy.value = (studentCandy.value!!.toInt() + assignedCandy).toString()

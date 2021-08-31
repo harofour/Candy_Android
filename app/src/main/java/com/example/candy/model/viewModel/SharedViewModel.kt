@@ -1,8 +1,10 @@
-package com.example.candy.model.viewModel
+﻿package com.example.candy.model.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.candy.myPage.MyPageRepository
+import kotlinx.coroutines.withTimeout
 
 class SharedViewModel : ViewModel() {
     companion object {
@@ -42,8 +44,12 @@ class SharedViewModel : ViewModel() {
         repository.getAPICandyStudent(apiKey)
     }
 
-    fun updateCandyStudent(assignedCandy: Int) {
-        repository.updateCandyStudent(assignedCandy)
+    fun updateCandyStudent(apiKey: String, chargeCandy: HashMap<String, Int>) {
+        repository.updateCandyStudent(apiKey, chargeCandy)
+    }
+
+    fun assignCandyToStudent(assignedCandy: Int) {
+        repository.assignCandyToStudent(assignedCandy)
     }
 
 
