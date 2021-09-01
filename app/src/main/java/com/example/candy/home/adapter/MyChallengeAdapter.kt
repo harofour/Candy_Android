@@ -76,6 +76,7 @@ class MyChallengeAdapter(
     override fun getItemCount(): Int = challenges.size
 
     fun setList(challenges: ArrayList<OnGoingChallenge>) {
+        Log.d("@@@@","$challenges")
         this.challenges = challenges
         notifyDataSetChanged()
     }
@@ -106,7 +107,7 @@ class MyChallengeAdapter(
         }
     }
 
-    fun deleteLoading(){
+    fun deleteLoading(delay: Long){
         android.os.Handler(Looper.getMainLooper()).postDelayed({
             if(challenges.isNotEmpty() && challenges.last().id < 0){
                 challenges.apply{
@@ -117,6 +118,6 @@ class MyChallengeAdapter(
                     notifyItemRangeChanged(lastIndex, getItemCount() - lastIndex);
                 }
             }
-        }, 2000)
+        }, delay)
     }
 }

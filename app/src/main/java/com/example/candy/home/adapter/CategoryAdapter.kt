@@ -1,8 +1,10 @@
 package com.example.candy.home.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.candy.R
 import com.example.candy.databinding.ItemHomeRecyclerviewCategoryBinding
 
 class CategoryAdapter(
@@ -11,6 +13,8 @@ class CategoryAdapter(
 
     private var categories: List<String> = listOf()
     private var currentCategory: String = "전체"
+
+    var selectedPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemHomeRecyclerviewCategoryBinding.inflate(
@@ -22,7 +26,14 @@ class CategoryAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(categories[position])
+        holder.bind(categories[position], position)
+
+        // recyclerview item 배경색 변경
+        if(selectedPosition == position){
+            holder.binding.tvCategoryName.setBackgroundResource(R.drawable.rect_item_selected)
+        }else{
+            holder.binding.tvCategoryName.setBackgroundResource(R.drawable.rect_item_unselected)
+        }
     }
 
     override fun getItemCount(): Int = categories.size
@@ -32,7 +43,7 @@ class CategoryAdapter(
         notifyDataSetChanged()
     }
 
-    fun changeCategory(selectedPosition: Int){
+    fun setCurrentCategory(selectedPosition: Int){
         currentCategory = categories[selectedPosition]
     }
     fun getCurrentCategory(): String{
@@ -43,14 +54,28 @@ class CategoryAdapter(
         return categories[position]
     }
 
-    inner class ViewHolder(private val binding: ItemHomeRecyclerviewCategoryBinding) :
+    fun updateItemColor(p: Int){
+        this.notifyItemChanged(selectedPosition)
+        selectedPosition = p
+        this.notifyItemChanged(selectedPosition)
+
+    }
+
+    inner class ViewHolder(val binding: ItemHomeRecyclerviewCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.tvCategoryName.setOnClickListener { onItemClicked(layoutPosition) }
+            binding.tvCategoryName.setOnClickListener {
+                if(layoutPosition != selectedPosition) {
+                    onItemClicked(layoutPosition)
+                    updateItemColor(layoutPosition)
+                }
+            }
         }
 
-        fun bind(category: String) {
+
+        fun bind(category: String, position: Int) {
             binding.tvCategoryName.text = category
+            // recyclerview item 배경색 초기화
         }
     }
 }

@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.chip.Chip
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tv_category_name"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:paddingHorizontal="10dp"
+    android:layout_marginHorizontal="2dp"
+    android:layout_marginVertical="5dp"
     android:text="영어"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    android:fontFamily="@font/nanum_square_round_bold"
+    android:gravity="center"
+    android:background="@drawable/rect_item_unselected"
+     />

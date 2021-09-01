@@ -42,9 +42,10 @@ class HomeFragment : Fragment() {
     }
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var navController: NavController
+
+    private var lastChallengeId: Int = 10000000  // 무한 로딩을 위한 Challenge Id
     private var page = 1 // 현재 페이지
     private var size = 10 // 한번에 불러 올 챌린지 리스트 수
-    private var NO_MORE_DATA = false // 서버로부터 데이터를 받아온 뒤 true
 
     companion object {
         private lateinit var instance: HomeFragment
@@ -114,28 +115,30 @@ class HomeFragment : Fragment() {
             setHasFixedSize(true)
 
             addOnScrollListener(object : RecyclerView.OnScrollListener(){
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-
-                    // 스크롤이 끝에 도달했는지 확인
-                    // 화면에 보이는 마지막 아이템의 position
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
                     val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
 
                     // 어댑터에 등록된 아이템의 총 개수 -1
                     val itemTotalCount = recyclerView.adapter!!.itemCount - 1
 
-                    // 스크롤이 끝에 도달했는지 확인
-                    if (lastVisibleItemPosition == itemTotalCount && !homeBinding!!.rvChallenge.canScrollVertically(1)) {
-                        Log.d("rvChallenge onScrolled()", "끝, itemTotalCount / $itemTotalCount ")
+                    // 터치 종류 && 스크롤이 끝에 도달했는지 확인
+                    if (newState == 2 &&
+                            lastVisibleItemPosition == itemTotalCount &&
+                                !homeBinding!!.rvChallenge.canScrollVertically(1)) {
+                                    Log.d("onScrollStateChanged", "$newState")
 
-                        Log.d("rvChallenge onScrolled()", "LastChallengeId : ${challengeAdapter.getLastChallengeId()}")
-                        homeViewModel.getOnGoingChallenges(challengeAdapter.getLastChallengeId(), size, categoryAdapter.getCurrentCategory())
+                                    // 데이터를 size 개수만큼 불러온 뒤 lastChallengeId(Int?) 저장 마지막까지 불러온 경우 -1
+                                    homeViewModel.loadData(lastChallengeId, size, categoryAdapter.getCurrentCategory()) ?: -1
                     }
                 }
             })
         }
 
-        homeViewModel.getOnGoingChallenges(challengeAdapter.getLastChallengeId(), size, categoryAdapter.getCurrentCategory()).observe(viewLifecycleOwner) { data ->
+        homeViewModel.getOnGoingChallengeLiveData().observe(viewLifecycleOwner) { data ->
+            lastChallengeId = homeViewModel.getLastChallengeId()
+            Log.d("observe","lastChallengeId $lastChallengeId")
+
             //update ui
             Log.d("HomeFragment", "1getChallenges ${data.size} / $data")
             challengeAdapter.addLoading()
@@ -144,16 +147,21 @@ class HomeFragment : Fragment() {
             // 한 페이지당 게시물이 10개씩 들어있음.
             // 새로운 게시물이 추가되었다는 것을 알려줌 (추가된 부분만 새로고침)
             challengeAdapter.notifyItemRangeChanged((page-1)*size ,data.size)
-            challengeAdapter.deleteLoading()
+            challengeAdapter.deleteLoading(1000)
         }
+
+        homeViewModel.loadData(lastChallengeId, size, categoryAdapter.getCurrentCategory())
     }
 
+    // 카테고리 선택 시 데이터를 다시 로드.
     private fun onCategoryItemClicked(position: Int) {
-        Log.d("HomeFragment", "CategoryItemClicked() position $position")
-        homeViewModel.sortChallengeByCategory(categoryAdapter.getCategory(position))
-        categoryAdapter.changeCategory(position)
+        Log.d("HomeFragment", "CategoryItemClicked() position $position ")
+        homeViewModel.clearLiveData()
+        categoryAdapter.setCurrentCategory(position)
+//        challengeAdapter.deleteLoading(0)
         page = 0
-        // 진행중인 챌린지 리스트 정렬
+        lastChallengeId = 1000000
+        homeViewModel.loadData(lastChallengeId, size, categoryAdapter.getCurrentCategory())
     }
 
     private fun onChallengeItemClicked(position: Int) {

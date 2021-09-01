@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeRepository() {
+    private var isLoading: Boolean = false
     private val Tag = "HomeRepository"
     private val retrofit = RetrofitClient.getClient(BASE_URL)
     private val api = retrofit.create(ChallengeApi::class.java)
@@ -28,7 +29,6 @@ class HomeRepository() {
 
     private val allCategories = ArrayList<String>()
     private val allCategory = "전체"
-    var allChallenges1 = ArrayList<OnGoingChallenge>()
     var allChallenges = ArrayList<OnGoingChallenge>()
 
     fun getCategories(): LiveData<ArrayList<String>> {
@@ -43,6 +43,7 @@ class HomeRepository() {
 
             response.body()?.let {
                 it.forEach { category ->
+                    // 영어인 카테고리를 한글로 변경.
                     allCategories.add(translateCategory(category))
 //                    allCategories.add(category)
                 }
@@ -57,30 +58,59 @@ class HomeRepository() {
         return categories
     }
 
+    fun getOnGoingChallengeLiveData(): LiveData<ArrayList<OnGoingChallenge>>{
+        return ongoingChallenges
+    }
 
-    fun getOnGoingChallenges(lastChallengeId: Int, size: Int, category: String): LiveData<ArrayList<OnGoingChallenge>> {
+    fun clearLiveData(){
+        allChallenges.clear()
+        _ongoingChallenges.value = allChallenges
+    }
+
+    fun loadData(lastChallengeId: Int, size: Int, category: String){
+        if(isLoading){
+            return
+        }
+        isLoading = true
+        var newChallenges = arrayListOf<OnGoingChallenge>()
         CoroutineScope(Dispatchers.Main).launch {
             withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
-                var newChallenges = arrayListOf<OnGoingChallenge>()
-
                 val response = api.getOnGoingChallenges(CurrentUser.userToken!!, lastChallengeId, size)
                 if (response.isSuccessful) {
-                    // 받아온 챌린지 추가
+                    // 받아온 챌린지 리스트
                     newChallenges = response.body()!!.response
+
+                    // 카테고리 이름 한글로
                     newChallenges.forEach {
                         it.category = translateCategory(it.category)
-                        allChallenges1.add(it)
                     }
                     Log.d(Tag, "newChallenges / ${newChallenges}")
                 }
             }
+            // deleted loading view
+            if(allChallenges.isNotEmpty())
+                if(allChallenges.last().id < 0)
+                    allChallenges.removeLast()
 
-            // LiveData Update
+            // add response to all challenge list
+            newChallenges.forEach { item ->
+                allChallenges.add(item)
+            }
+
+            // sort all challenge list and update LiveData
             sortChallengeByCategory(category)
 
-            Log.d(Tag, "_ongoingChallenges ${_ongoingChallenges.value?.size}/ ${_ongoingChallenges.value?.size} ${_ongoingChallenges.value}")
+            isLoading = false
         }
-        return ongoingChallenges
+    }
+
+    fun getLastChallengeId(): Int{
+        return allChallenges.run{
+            if(this.isNotEmpty())
+                allChallenges.last().id
+            else
+                -1
+        }
     }
 
     private fun translateCategory(str: String): String {
@@ -92,36 +122,37 @@ class HomeRepository() {
         }
     }
 
-    fun sortChallengeByCategory(category: String) {
-        val newChallenges = ArrayList<OnGoingChallenge>()
+    private fun sortChallengeByCategory(category: String) {
+        val sortedChallenges = ArrayList<OnGoingChallenge>()
 
         if (category == allCategory) {
             // 전체 카테고리를 클릭 한 경우
-            _ongoingChallenges.value = allChallenges1
+            _ongoingChallenges.value = allChallenges
         } else {
             // 개별 카테고리를 클릭 한 경우
-            allChallenges1.forEach {
+            allChallenges.forEach {
                 if (it.category == category || it.id < 0) {
-                    newChallenges.add(it)
+                    sortedChallenges.add(it)
                 }
             }
-            _ongoingChallenges.value = newChallenges
+            _ongoingChallenges.value = sortedChallenges
         }
+        Log.d(Tag, "_ongoingChallenges ${_ongoingChallenges.value?.size}/ ${_ongoingChallenges.value?.size} ${_ongoingChallenges.value}")
     }
 
     fun getChallenge(position: Int): OnGoingChallenge {
-        return allChallenges1[position]
+        return allChallenges[position]
     }
 
     fun removeOnGoingChallenge(onGoingChallenge: OnGoingChallenge) {
         Log.d("removeOnGoingChallenge", "before ongoingChallenges / ${ongoingChallenges.value}")
-        allChallenges1.remove(onGoingChallenge)
-        _ongoingChallenges.value = allChallenges1
+        allChallenges.remove(onGoingChallenge)
+        _ongoingChallenges.value = allChallenges
         Log.d("removeOnGoingChallenge", "after ongoingChallenges / ${ongoingChallenges.value}")
     }
 
     fun clearOnGoingChallenges() {
-        allChallenges1.clear()
-        _ongoingChallenges.value = allChallenges1
+        allChallenges.clear()
+        _ongoingChallenges.value = allChallenges
     }
 }
