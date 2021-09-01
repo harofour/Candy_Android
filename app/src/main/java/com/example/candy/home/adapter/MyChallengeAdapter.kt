@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.databinding.ChallengelistItemViewLoadingBinding
 import com.example.candy.databinding.ItemHomeRecyclerviewMychallengeBinding
-import com.example.candy.model.data.Challenge
 import com.example.candy.model.data.OnGoingChallenge
-import java.util.logging.Handler
 
 class MyChallengeAdapter(
     private val itemClicked: (position: Int) -> Unit
@@ -76,46 +74,25 @@ class MyChallengeAdapter(
     override fun getItemCount(): Int = challenges.size
 
     fun setList(challenges: ArrayList<OnGoingChallenge>) {
-        Log.d("@@@@","$challenges")
         this.challenges = challenges
         notifyDataSetChanged()
     }
 
-    fun getLastChallengeId(): Int{
-        Log.d("getLastChallengeId", "$challenges")
-        if(challenges.size == 0) {
-            return 1000
-        } else if(challenges.size == 1){        // progress bar 만 들어있을 경우
-            if(challenges[0].id >= 0){
-                return challenges[0].id
-            }else{
-                return 1000
-            }
-        } else {
-            val lastIndex = challenges.size-1
-            if(challenges[lastIndex].id >= 0){
-                return challenges[lastIndex].id
-            }else{
-                return challenges[lastIndex-1].id
-            }
+    fun addLoading() {
+        if (challenges.isEmpty() || challenges.last().id >= 0) {
+            Log.d("addLoading()", "called")
+            challenges.add(OnGoingChallenge(-1, "", "", "", 1, 1, 1, false))
+            notifyItemInserted(challenges.lastIndex)
         }
     }
 
-    fun addLoading(){
-        if(challenges.isNotEmpty() && challenges.last().id >= 0){
-            challenges.add(OnGoingChallenge(-1, "","","",1,1,1,false))
-        }
-    }
-
-    fun deleteLoading(delay: Long){
+    fun deleteLoading(delay: Long) {
         android.os.Handler(Looper.getMainLooper()).postDelayed({
-            if(challenges.isNotEmpty() && challenges.last().id < 0){
-                challenges.apply{
-                    Log.d("deleteLoading()",last().toString())
+            if (challenges.isNotEmpty() && challenges.last().id < 0) {
+                challenges.apply {
                     val lastIndex = lastIndex
                     removeAt(lastIndex)
-                    notifyItemRemoved(lastIndex);
-                    notifyItemRangeChanged(lastIndex, getItemCount() - lastIndex);
+                    notifyItemRemoved(lastIndex)
                 }
             }
         }, delay)

@@ -43,7 +43,6 @@ class HomeFragment : Fragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var navController: NavController
 
-    private var lastChallengeId: Int = 10000000  // 무한 로딩을 위한 Challenge Id
     private var page = 1 // 현재 페이지
     private var size = 10 // 한번에 불러 올 챌린지 리스트 수
 
@@ -109,48 +108,42 @@ class HomeFragment : Fragment() {
 
     private fun initOnGoingChallenge() {
         homeBinding!!.rvChallenge.apply {
+            // 어댑터 초기화
             adapter = challengeAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(VerticalItemDecorator(15))
             setHasFixedSize(true)
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            // 스크롤 리스너. 무한 로딩
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                    val lastVisibleItemPosition =
+                        (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
 
                     // 어댑터에 등록된 아이템의 총 개수 -1
                     val itemTotalCount = recyclerView.adapter!!.itemCount - 1
 
                     // 터치 종류 && 스크롤이 끝에 도달했는지 확인
-                    if (newState == 2 &&
-                            lastVisibleItemPosition == itemTotalCount &&
-                                !homeBinding!!.rvChallenge.canScrollVertically(1)) {
-                                    Log.d("onScrollStateChanged", "$newState")
-
-                                    // 데이터를 size 개수만큼 불러온 뒤 lastChallengeId(Int?) 저장 마지막까지 불러온 경우 -1
-                                    homeViewModel.loadData(lastChallengeId, size, categoryAdapter.getCurrentCategory()) ?: -1
+                    if (newState == 2 && lastVisibleItemPosition == itemTotalCount &&
+                        !homeBinding!!.rvChallenge.canScrollVertically(1)
+                    ) {
+                        Log.d("HomeFragment", "onScrollStateChanged / state : $newState")
+                        challengeAdapter.addLoading()
+                        challengeAdapter.deleteLoading(1000)
+                        homeViewModel.loadData(size, categoryAdapter.getCurrentCategory())
                     }
                 }
             })
         }
 
         homeViewModel.getOnGoingChallengeLiveData().observe(viewLifecycleOwner) { data ->
-            lastChallengeId = homeViewModel.getLastChallengeId()
-            Log.d("observe","lastChallengeId $lastChallengeId")
-
-            //update ui
-            Log.d("HomeFragment", "1getChallenges ${data.size} / $data")
-            challengeAdapter.addLoading()
             challengeAdapter.setList(data)
-
-            // 한 페이지당 게시물이 10개씩 들어있음.
-            // 새로운 게시물이 추가되었다는 것을 알려줌 (추가된 부분만 새로고침)
-            challengeAdapter.notifyItemRangeChanged((page-1)*size ,data.size)
-            challengeAdapter.deleteLoading(1000)
         }
 
-        homeViewModel.loadData(lastChallengeId, size, categoryAdapter.getCurrentCategory())
+        challengeAdapter.addLoading()
+        challengeAdapter.deleteLoading(1000)
+        homeViewModel.loadData(size, categoryAdapter.getCurrentCategory())
     }
 
     // 카테고리 선택 시 데이터를 다시 로드.
@@ -158,10 +151,11 @@ class HomeFragment : Fragment() {
         Log.d("HomeFragment", "CategoryItemClicked() position $position ")
         homeViewModel.clearLiveData()
         categoryAdapter.setCurrentCategory(position)
-//        challengeAdapter.deleteLoading(0)
         page = 0
-        lastChallengeId = 1000000
-        homeViewModel.loadData(lastChallengeId, size, categoryAdapter.getCurrentCategory())
+
+        challengeAdapter.addLoading()
+        challengeAdapter.deleteLoading(1000)
+        homeViewModel.loadData(size, categoryAdapter.getCurrentCategory())
     }
 
     private fun onChallengeItemClicked(position: Int) {
@@ -177,7 +171,6 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         Log.d("HomeFragment", "onDestroyView")
-        homeViewModel.clearOnGoingChallenges()
     }
 }
 

@@ -1,6 +1,5 @@
 package com.example.candy.home.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -26,12 +25,12 @@ class CategoryAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(categories[position], position)
+        holder.bind(categories[position])
 
         // recyclerview item 배경색 변경
-        if(selectedPosition == position){
+        if (selectedPosition == position) {
             holder.binding.tvCategoryName.setBackgroundResource(R.drawable.rect_item_selected)
-        }else{
+        } else {
             holder.binding.tvCategoryName.setBackgroundResource(R.drawable.rect_item_unselected)
         }
     }
@@ -43,18 +42,15 @@ class CategoryAdapter(
         notifyDataSetChanged()
     }
 
-    fun setCurrentCategory(selectedPosition: Int){
+    fun setCurrentCategory(selectedPosition: Int) {
         currentCategory = categories[selectedPosition]
     }
-    fun getCurrentCategory(): String{
+
+    fun getCurrentCategory(): String {
         return currentCategory
     }
 
-    fun getCategory(position: Int): String {
-        return categories[position]
-    }
-
-    fun updateItemColor(p: Int){
+    fun updateItemColor(p: Int) {
         this.notifyItemChanged(selectedPosition)
         selectedPosition = p
         this.notifyItemChanged(selectedPosition)
@@ -65,7 +61,7 @@ class CategoryAdapter(
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.tvCategoryName.setOnClickListener {
-                if(layoutPosition != selectedPosition) {
+                if (layoutPosition != selectedPosition) {
                     onItemClicked(layoutPosition)
                     updateItemColor(layoutPosition)
                 }
@@ -73,9 +69,8 @@ class CategoryAdapter(
         }
 
 
-        fun bind(category: String, position: Int) {
+        fun bind(category: String) {
             binding.tvCategoryName.text = category
-            // recyclerview item 배경색 초기화
         }
     }
 }

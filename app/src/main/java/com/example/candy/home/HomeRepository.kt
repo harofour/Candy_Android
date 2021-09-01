@@ -29,8 +29,27 @@ class HomeRepository() {
 
     private val allCategories = ArrayList<String>()
     private val allCategory = "전체"
-    var allChallenges = ArrayList<OnGoingChallenge>()
+    private var allChallenges = ArrayList<OnGoingChallenge>()
+    private val lastChallengeId: Int
+        get() {
+            return if (allChallenges.isEmpty()) {
+                100000
+            } else {
+                if (allChallenges.last().id < 0) {   // 마지막 Item 이 로딩 뷰 인 경우
+                    if (allChallenges.size == 1)
+                        100000
+                    else
+                        allChallenges[allChallenges.lastIndex - 1].id
+                } else {
+                    allChallenges.last().id
+                }
+            }
+        }
 
+
+    /**
+     * 카테고리 request
+     */
     fun getCategories(): LiveData<ArrayList<String>> {
         CoroutineScope(Dispatchers.IO).launch {
             val response = api.getCategory(CurrentUser.userToken!!)
@@ -43,9 +62,8 @@ class HomeRepository() {
 
             response.body()?.let {
                 it.forEach { category ->
-                    // 영어인 카테고리를 한글로 변경.
+                    // 영어인 카테고리를 한글로 변경하여 저장
                     allCategories.add(translateCategory(category))
-//                    allCategories.add(category)
                 }
             }
 
@@ -58,24 +76,39 @@ class HomeRepository() {
         return categories
     }
 
-    fun getOnGoingChallengeLiveData(): LiveData<ArrayList<OnGoingChallenge>>{
+    /**
+     * return LiveData
+     */
+    fun getOnGoingChallengeLiveData(): LiveData<ArrayList<OnGoingChallenge>> {
         return ongoingChallenges
     }
 
-    fun clearLiveData(){
+    /**
+     * 카테고리 클릭 시 데이터를 초기화 하고 다시 불러옴
+     */
+    fun clearLiveData() {
         allChallenges.clear()
         _ongoingChallenges.value = allChallenges
     }
 
-    fun loadData(lastChallengeId: Int, size: Int, category: String){
-        if(isLoading){
+    /**
+     * 서버에 진행중 챌린지 리스트 Request.
+     * 리스트를 받아와 카테고리 한글로 변경,
+     * 리스트 마지막에 로딩 뷰가 들어있다면 삭제 후 전체 리스트에 추가,
+     * 카테고리로 정렬하여 LiveData 에 업데이트
+     * 서버로부터 응답이 오기 전에 사용 불가
+     */
+    fun loadData(size: Int, category: String) {
+        if (isLoading) {
             return
         }
+        Log.d("Tag", "lastChallengeId / $lastChallengeId ")
         isLoading = true
         var newChallenges = arrayListOf<OnGoingChallenge>()
         CoroutineScope(Dispatchers.Main).launch {
             withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
-                val response = api.getOnGoingChallenges(CurrentUser.userToken!!, lastChallengeId, size)
+                val response =
+                    api.getOnGoingChallenges(CurrentUser.userToken!!, lastChallengeId, size)
                 if (response.isSuccessful) {
                     // 받아온 챌린지 리스트
                     newChallenges = response.body()!!.response
@@ -84,12 +117,12 @@ class HomeRepository() {
                     newChallenges.forEach {
                         it.category = translateCategory(it.category)
                     }
-                    Log.d(Tag, "newChallenges / ${newChallenges}")
                 }
             }
+
             // deleted loading view
-            if(allChallenges.isNotEmpty())
-                if(allChallenges.last().id < 0)
+            if (allChallenges.isNotEmpty() && newChallenges.isNotEmpty())
+                if (allChallenges.last().id < 0)
                     allChallenges.removeLast()
 
             // add response to all challenge list
@@ -98,31 +131,34 @@ class HomeRepository() {
             }
 
             // sort all challenge list and update LiveData
-            sortChallengeByCategory(category)
+            val reloadSize = sortChallengeByCategory(category, size)
+
+            // TODO : 정렬 후 개수가 적으면 데이터 더 요청
+//            if(reloadSize > 2){
+//                loadData(reloadSize, category)
+//            }
 
             isLoading = false
         }
     }
 
-    fun getLastChallengeId(): Int{
-        return allChallenges.run{
-            if(this.isNotEmpty())
-                allChallenges.last().id
-            else
-                -1
-        }
-    }
-
+    /**
+     * 카테고리 이름이 영어라 한글로 변경
+     */
     private fun translateCategory(str: String): String {
         return when (str) {
             "KOREAN" -> "한국어"
             "ENGLISH" -> "영어"
             "MATH" -> "수학"
-            else -> "임시"
+            else -> "??"
         }
     }
 
-    private fun sortChallengeByCategory(category: String) {
+    /**
+     * 카테고리별 정렬하여 업데이트
+     * return : 정렬 후의 리스트 개수가 작을 시 데이터를 더 요청하기 위한 Size
+     */
+    private fun sortChallengeByCategory(category: String, size: Int): Int {
         val sortedChallenges = ArrayList<OnGoingChallenge>()
 
         if (category == allCategory) {
@@ -137,22 +173,25 @@ class HomeRepository() {
             }
             _ongoingChallenges.value = sortedChallenges
         }
-        Log.d(Tag, "_ongoingChallenges ${_ongoingChallenges.value?.size}/ ${_ongoingChallenges.value?.size} ${_ongoingChallenges.value}")
+
+        if (allCategories.size < size && sortedChallenges.size < size) {
+            return size - sortedChallenges.size
+        }
+        return 0
     }
 
+    /**
+     * 챌린지 클릭 시 강의 페이지로 넘겨줄 챌린지 반환
+     */
     fun getChallenge(position: Int): OnGoingChallenge {
         return allChallenges[position]
     }
 
+    /**
+     * 챌린지 완료 시 리스트에서 제거
+     */
     fun removeOnGoingChallenge(onGoingChallenge: OnGoingChallenge) {
-        Log.d("removeOnGoingChallenge", "before ongoingChallenges / ${ongoingChallenges.value}")
         allChallenges.remove(onGoingChallenge)
-        _ongoingChallenges.value = allChallenges
-        Log.d("removeOnGoingChallenge", "after ongoingChallenges / ${ongoingChallenges.value}")
-    }
-
-    fun clearOnGoingChallenges() {
-        allChallenges.clear()
         _ongoingChallenges.value = allChallenges
     }
 }
