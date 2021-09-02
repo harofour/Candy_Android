@@ -12,6 +12,9 @@
 
     <string name="userInfoChange">정보 변경</string>
 
+    <!--  버튼  -->
+    <string name="ok">확인</string>
+
     <!--    마이페이지-->
     <string name="numberOfStudentCandy">보유 중인 캔디 : %s개</string>
     <string name="numberOfParentCandy">충전된 캔디 : %s개</string>
@@ -42,5 +45,11 @@
     <!-- challenge -->
     <string name="text1">챌린지에 배정할 캔디 개수를 입력하세요</string>
     <string name="recent20History">최근 20개의 내역만 조회 가능합니다.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--  캔디 획득  -->
+    <string name="candy_attain">캔디 획득</string>
+    <string name="verify_password">캔디 배정 취소를 위해 2차 비밀번호를 입력해 주세요</string>
 
 </resources>
