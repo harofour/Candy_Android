@@ -53,6 +53,5 @@ class LectureRepository {
     }
 
     fun getThombnailImage() {
-        TODO("썸네일 이미지 가져오기")
     }
 }

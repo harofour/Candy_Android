@@ -4,5 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class ProblemApiResponse(
     @SerializedName("success") val isSuccess: Boolean,
-    @SerializedName("response") val response: ArrayList<Problem>
+    @SerializedName("response") val response: ProblemList,
+    @SerializedName("error") val error: Error
 )

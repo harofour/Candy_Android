@@ -1,5 +1,6 @@
 package com.example.candy.challenge
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -8,10 +9,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.candy.R
+import com.example.candy.activity.ProblemActivity
 import com.example.candy.challenge.viewmodel.LectureViewModel
 import com.example.candy.databinding.ActivityChallengeLectureBinding
 import com.example.candy.home.HomeViewModel
 import com.example.candy.model.data.OnGoingChallenge
+import com.example.candy.model.data.Problem
 import com.example.candy.model.viewModel.SharedViewModel
 import com.example.candy.utils.Util
 
@@ -83,6 +86,12 @@ class ChallengeLectureActivity : AppCompatActivity() {
                 Util.toast(applicationContext, "점수를 확인해 주세요")
                 Log.d(Tag, "btnGetCandy.setOnClickListener / 점수가 낮음")
             }
+        }
+
+        binding.problemBtn.setOnClickListener {
+            val intent= Intent(this,ProblemActivity::class.java)
+            intent.putExtra("ChallengeId",challenge.id)
+            startActivity(intent)
         }
     }
 

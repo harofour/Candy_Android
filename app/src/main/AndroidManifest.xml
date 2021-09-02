@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Candy"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.ProblemActivity"></activity>
         <activity android:name=".challenge.ChallengeLectureActivity"></activity>
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
