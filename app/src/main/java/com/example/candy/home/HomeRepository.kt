@@ -3,6 +3,8 @@ package com.example.candy.home
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.candy.data.ApiAnyResponse
+import com.example.candy.model.api.CandyApi
 import com.example.candy.model.api.ChallengeApi
 import com.example.candy.model.api.RetrofitClient
 import com.example.candy.model.data.OnGoingChallenge
@@ -12,12 +14,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeRepository() {
     private var isLoading: Boolean = false
     private val Tag = "HomeRepository"
     private val retrofit = RetrofitClient.getClient(BASE_URL)
-    private val api = retrofit.create(ChallengeApi::class.java)
+    private val challengeApi = retrofit.create(ChallengeApi::class.java)
+    private val candyApi = retrofit.create(CandyApi::class.java)
 
     private val _categories: MutableLiveData<ArrayList<String>> =
         MutableLiveData<ArrayList<String>>()
@@ -52,7 +60,7 @@ class HomeRepository() {
      */
     fun getCategories(): LiveData<ArrayList<String>> {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = api.getCategory(CurrentUser.userToken!!)
+            val response = challengeApi.getCategory(CurrentUser.userToken!!)
 
             if (allCategories.size > 0) {
                 allCategories.clear()
@@ -108,7 +116,11 @@ class HomeRepository() {
         CoroutineScope(Dispatchers.Main).launch {
             withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
                 val response =
-                    api.getOnGoingChallenges(CurrentUser.userToken!!, lastChallengeId, size)
+                    challengeApi.getOnGoingChallenges(
+                        CurrentUser.userToken!!,
+                        lastChallengeId,
+                        size
+                    )
                 if (response.isSuccessful) {
                     // 받아온 챌린지 리스트
                     newChallenges = response.body()!!.response
@@ -188,10 +200,21 @@ class HomeRepository() {
     }
 
     /**
-     * 챌린지 완료 시 리스트에서 제거
+     * 챌린지 완료, 캔디 배정 취소 시 리스트에서 제거
      */
     fun removeOnGoingChallenge(onGoingChallenge: OnGoingChallenge) {
         allChallenges.remove(onGoingChallenge)
         _ongoingChallenges.value = allChallenges
+    }
+
+    /**
+     * 캔디 배정 취소
+     */
+    suspend fun cancelAssignedCandy(reqData: HashMap<String, Any>): Boolean = withContext(
+        CoroutineScope(Dispatchers.IO).coroutineContext
+    ) {
+        val response = candyApi.cancelCandy(CurrentUser.userToken!!, reqData)
+        Log.d("cancelAssignedCandy", "${response.body()}")
+        response.isSuccessful
     }
 }

@@ -3,6 +3,7 @@ package com.example.candy.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.candy.model.data.OnGoingChallenge
+import java.util.*
 
 class HomeViewModel() : ViewModel() {
     companion object {
@@ -36,5 +37,9 @@ class HomeViewModel() : ViewModel() {
 
     fun removeOnGoingChallenge(onGoingChallenge: OnGoingChallenge) {
         repository.removeOnGoingChallenge(onGoingChallenge)
+    }
+
+    suspend fun cancelAssignedCandy(reqData: HashMap<String, Any>): Boolean {
+        return repository.cancelAssignedCandy(reqData)
     }
 }

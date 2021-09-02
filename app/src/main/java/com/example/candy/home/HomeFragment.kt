@@ -88,6 +88,13 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d("HomeFragment", "onResume()")
+
+        homeViewModel.clearLiveData()
+        page = 0
+
+        challengeAdapter.addLoading()
+        challengeAdapter.deleteLoading(1000)
+        homeViewModel.loadData(size, categoryAdapter.getCurrentCategory())
     }
 
 
@@ -143,7 +150,6 @@ class HomeFragment : Fragment() {
 
         challengeAdapter.addLoading()
         challengeAdapter.deleteLoading(1000)
-        homeViewModel.loadData(size, categoryAdapter.getCurrentCategory())
     }
 
     // 카테고리 선택 시 데이터를 다시 로드.
@@ -158,9 +164,11 @@ class HomeFragment : Fragment() {
         homeViewModel.loadData(size, categoryAdapter.getCurrentCategory())
     }
 
+    /**
+     * 챌린지 리스트 아이템 클릭시 챌린지 강의 화면으로 이동
+     */
     private fun onChallengeItemClicked(position: Int) {
         Log.d("HomeFragment", "ChallengeItemClicked() position $position")
-        // 강의 화면으로 이동
         val challenge = homeViewModel.getChallenge(position)
         val intent =
             Intent(requireActivity().applicationContext, ChallengeLectureActivity::class.java)

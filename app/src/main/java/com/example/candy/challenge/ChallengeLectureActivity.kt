@@ -1,9 +1,13 @@
 package com.example.candy.challenge
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -11,14 +15,20 @@ import com.example.candy.R
 import com.example.candy.challenge.viewmodel.LectureViewModel
 import com.example.candy.databinding.ActivityChallengeLectureBinding
 import com.example.candy.home.HomeViewModel
+import com.example.candy.home.ParentPasswordCheckDialogFragment
 import com.example.candy.model.data.OnGoingChallenge
 import com.example.candy.model.viewModel.SharedViewModel
+import com.example.candy.utils.DIALOG_REQUEST_KEY
 import com.example.candy.utils.Util
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ChallengeLectureActivity : AppCompatActivity() {
     private val Tag = "ChallengeLectureActivity"
     private var _binding: ActivityChallengeLectureBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var challenge: OnGoingChallenge
     private val lectureViewModel: LectureViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by lazy {
@@ -70,18 +80,58 @@ class ChallengeLectureActivity : AppCompatActivity() {
         binding.btnGetCandy.setOnClickListener {
             if (challenge.requiredScore <= challenge.totalScore) {    // 점수 확인
                 lectureViewModel.completeLecture(challenge = challenge).let {
-                    if (it) {
-                        sharedViewModel.assignCandyToStudent(challenge.assignedCandy)   // 캔디 획득
-                        homeViewModel.removeOnGoingChallenge(challenge)                 // 진행중인 챌린지 리스트 수정
-                        Util.toast(applicationContext, "챌린지 완료")
-                        finish()
-                    } else {
-                        Util.toast(applicationContext, "챌린지 실패")
-                    }
+                    sharedViewModel.assignCandyToStudent(challenge.assignedCandy)   // 캔디 획득
+                    finish()
                 }
+
             } else {
                 Util.toast(applicationContext, "점수를 확인해 주세요")
                 Log.d(Tag, "btnGetCandy.setOnClickListener / 점수가 낮음")
+            }
+        }
+        binding.btnCancelAssignCandy.setOnClickListener {
+                getParentPassword()
+        }
+
+    }
+
+    private fun getParentPassword() {
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        val prev: Fragment? = supportFragmentManager.findFragmentByTag("dialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+
+        // Create and show the dialog.
+        val dialog = ParentPasswordCheckDialogFragment()
+        dialog.show(supportFragmentManager, "dialog")
+
+        dialog.setFragmentResultListener(DIALOG_REQUEST_KEY) { reqKey, bundle ->
+            if (DIALOG_REQUEST_KEY == reqKey) {
+                val parentPassword = bundle.getString("ParentPassword")
+
+                parentPassword?.let{
+                    val reqData = HashMap<String, Any>()
+                    reqData.put("challengeId", challenge.id)
+                    reqData.put("parentPassword", parentPassword!!)
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if(homeViewModel.cancelAssignedCandy(reqData)){
+                            Util.toast(applicationContext, "캔디 배정이 취소되었습니다")
+                            finish()
+                        }else{
+                            Util.toast(applicationContext, "캔디 배정 취소를 실패했습니다")
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -103,5 +153,9 @@ class ChallengeLectureActivity : AppCompatActivity() {
         // 임시 좋아요 아이콘
         Glide.with(binding.root).load(R.drawable.icon_challenge_like_empty)
             .into(binding.titleBar.favoriteIv)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
     }
 }

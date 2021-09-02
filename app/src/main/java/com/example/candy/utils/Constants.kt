@@ -30,6 +30,8 @@ enum class RESPONSE_STATE{
     FAILURE
 }
 
+const val DIALOG_REQUEST_KEY = "ParentPassword"
+
 object API {
     const val BASE_URL: String = "http://221.159.102.58/"
 }

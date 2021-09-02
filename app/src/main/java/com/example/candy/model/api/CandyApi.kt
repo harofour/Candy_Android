@@ -5,6 +5,7 @@ import com.example.candy.model.data.CandyResponse
 import com.example.candy.model.data.ChargeCandyResponse
 import com.example.candy.model.data.HistoryResponse
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface CandyApi {
@@ -44,10 +45,18 @@ interface CandyApi {
         @Path("lastCandyHistoryId")lastCandyHistoryId: String,
         @Path("size")size: String
     ) : Call<HistoryResponse>
+
     // 캔디 획득
     @POST("candy/attain")
     fun attainCandy(
         @Header("api_key")userToken: String,
         @Body attainCandy: HashMap<String,Int>
     ) : Call<ApiAnyResponse>
+
+    // 캔디 배정 취소
+    @POST("candy/attain")
+    suspend fun cancelCandy(
+        @Header("api_key")userToken: String,
+        @Body cancelCandy: HashMap<String,Any>
+    ) : Response<ApiAnyResponse>
 }

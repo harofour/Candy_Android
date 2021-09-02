@@ -250,8 +250,24 @@
         android:text="캔디 흭득"
         android:textColor="#F874AB"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/problem_btn"
+        app:layout_constraintEnd_toStartOf="@id/btn_cancel_assign_candy"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_2"
+        app:strokeColor="#FDB1D8" />
+
+    <Button
+        android:id="@+id/btn_cancel_assign_candy"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
+        android:text="배정 취소"
+        android:textColor="#F874AB"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/btn_get_candy"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/problem_btn"
         app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_2"
         app:strokeColor="#FDB1D8" />
 
@@ -265,7 +281,7 @@
         android:textColor="#F874AB"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_get_candy"
+        app:layout_constraintStart_toEndOf="@id/btn_cancel_assign_candy"
         app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_2"
         app:strokeColor="#FDB1D8" />
 
