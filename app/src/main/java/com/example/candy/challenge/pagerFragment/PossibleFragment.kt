@@ -88,7 +88,7 @@ class PossibleFragment: Fragment() {
 
                         }
                     )
-        possibleChallengeBinding!!.recyclerPossibleChallenge.addItemDecoration(VerticalItemDecorator(10))
+        //possibleChallengeBinding!!.recyclerPossibleChallenge.addItemDecoration(VerticalItemDecorator(10))
 
 
         viewModel = ViewModelProvider(viewModelStore, object: ViewModelProvider.Factory{

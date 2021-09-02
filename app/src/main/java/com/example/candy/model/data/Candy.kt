@@ -61,6 +61,8 @@ data class CandyAssignBody(
     @SerializedName("candyAmount")
     val candyAmount: Int,
     @SerializedName("challengeId")
-    val challengeId: Int
+    val challengeId: Int,
+    @SerializedName("parentPassword")
+    val parrentPasword: String
 )
 

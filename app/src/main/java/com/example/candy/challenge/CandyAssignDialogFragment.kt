@@ -26,7 +26,7 @@ class CandyAssignDialogFragment: DialogFragment() {
     private var Challenge_Id: Int = -1000
 
     private var CurrentCandy = 0
-    private var isAssign = false
+    private var isAssigned = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_dialog_candy_assign, container, false)
@@ -40,6 +40,8 @@ class CandyAssignDialogFragment: DialogFragment() {
             }
         }) */
 
+
+        // 현재 챌린지 id 전달받기
         var bundle = arguments
          Challenge_Id = bundle!!.getInt("challengeId", Challenge_Id)
 
@@ -87,8 +89,11 @@ class CandyAssignDialogFragment: DialogFragment() {
             CurrentCandy = it
         })
 
-        // 현재 학부모 보유 캔디 조회
+        // 다이얼로그 생성되면서 현재 학부모 보유 캔디 조회
         viewModel.getParentCandy()
+        // 챌린지 정보 요청
+        viewModel.getChallengeDetailInfo(Challenge_Id)
+
 
         // progressbar observe
         var progressbar = view.findViewById<ProgressBar>(R.id.dialog_progressbar)
@@ -101,11 +106,36 @@ class CandyAssignDialogFragment: DialogFragment() {
             }
         })
 
+        viewModel.challengeDetailProgressbar.observe(viewLifecycleOwner,{
+            if(it){
+                progressbar.visibility = View.VISIBLE
+            }
+            else{
+                progressbar.visibility = View.GONE
+            }
+        })
+
+        // 배정 성공 시
         viewModel.assignSuccess.observe(viewLifecycleOwner, {
             if(it){
                 closeDialog()
                 Toast.makeText(context,"캔디 배정에 성공했습니다", Toast.LENGTH_SHORT).show()
-                isAssign = true
+                //isAssigned = true
+            }
+        })
+
+        // 배정 성공이라면 할당 캔디 개수가 0보다 크게된다 / 이미 배정된 챌린지 추가 중복 배정 방지
+        viewModel.assignedCandyCount.observe(viewLifecycleOwner,{
+            if(it > 0){
+                isAssigned = true
+            }
+        })
+
+        // 2차 비밀번호 오류 시 알림
+        viewModel.pw2Error.observe(viewLifecycleOwner,{ it ->
+            it?.let{
+                    Toast.makeText(context,"2차 비빌먼호가 틀렸습니다", Toast.LENGTH_SHORT).show()
+                    viewModel.pw2Error.postValue(null)
             }
         })
 
@@ -113,23 +143,30 @@ class CandyAssignDialogFragment: DialogFragment() {
 
         //var assignBtnTv = view.findViewById<TextView>(R.id.tv_candy_assign)
         var assignBtnLinear = view.findViewById<LinearLayout>(R.id.linearlayout_candy_assign)
-        var et_candy_put = view.findViewById<EditText>(R.id.et_assign_candy)
+        var et_candy_input = view.findViewById<EditText>(R.id.et_assign_candy)
+        var et_pw2_input = view.findViewById<EditText>(R.id.et_pw2_input)
 
         assignBtnLinear.setOnClickListener {
-            if (isAssign) {
+            if (isAssigned) {
                 Toast.makeText(context, "이미 캔디가 배정된 챌린지입니다", Toast.LENGTH_SHORT).show()
             } else {
-                var et_candy = et_candy_put.text.toString()
+                var et_candy = et_candy_input.text.toString()  // 입력한 캔디 개수
+                var et_pw2 = et_pw2_input.text.toString() // 입력한 2차 비밀번호
+
                 if (et_candy.length == 0) {
                     Toast.makeText(context, "배정할 캔디 개수를 입력하세요", Toast.LENGTH_SHORT).show()
-                } else {
+                }
+                else if(et_pw2.length == 0){
+                    Toast.makeText(context, "2차 비밀번호를 입력하세요", Toast.LENGTH_SHORT).show()
+                }
+                else {
                     var putCandy = et_candy.toInt()
                     if (putCandy > CurrentCandy)
                         Toast.makeText(context, "입력 캔디 개수가 현재 보유 캔디보다 많습니다", Toast.LENGTH_SHORT)
                             .show()
-                    else {
-                       viewModel.assignCandy(Challenge_Id, putCandy)
-                        Log.d("api test", "candy cnt ${putCandy}")
+                    else { // 배정 가능 캔디 개수 입력 && 2차 비밀번호 입력
+                       viewModel.assignCandy(Challenge_Id, putCandy, et_pw2 )
+                        Log.d("api test", "candy cnt : ${putCandy} / parent password : ${et_pw2}")
                     }
                 }
             }
@@ -139,10 +176,13 @@ class CandyAssignDialogFragment: DialogFragment() {
 
     //다이얼로그 닫기
     fun closeDialog(){
+
         val fragmentManager = (activity as AppCompatActivity).supportFragmentManager
         fragmentManager.beginTransaction().remove(this).commit();
         fragmentManager.popBackStack();
     }
+
+
 
 
 

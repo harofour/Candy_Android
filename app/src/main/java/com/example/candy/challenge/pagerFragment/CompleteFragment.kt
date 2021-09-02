@@ -1,6 +1,7 @@
 package com.example.candy.challenge.pagerFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,10 @@ class CompleteFragment: Fragment() {
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        Log.d("fragment check", "CompleteFragment onResume")
+    }
 
     override fun onDestroyView() {
         completeChallengeBinding = null

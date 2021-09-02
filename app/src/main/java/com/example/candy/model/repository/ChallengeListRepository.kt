@@ -15,5 +15,5 @@ interface ChallengeListRepository {
 
     fun getParentCandyAmount(apiKey: String): Single<CandyResponse2>
 
-    fun assignCandy(apiKey: String, challengeId: Int, candyCnt: Int): Single<CandyAssignResponse>
+    fun assignCandy(apiKey: String, challengeId: Int, candyCnt: Int, parrentPassword: String): Single<CandyAssignResponse>
 }
