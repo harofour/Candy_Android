@@ -92,9 +92,10 @@ class ChallengeListRepositoryImpl(
     override fun assignCandy(
         apiKey: String,
         challengeId: Int,
-        candyCnt: Int
+        candyCnt: Int,
+        parrentPassword: String
     ): Single<CandyAssignResponse> =
-        challengeApi.assignCandy(apiKey, CandyAssignBody(candyCnt, challengeId))
+        challengeApi.assignCandy(apiKey, CandyAssignBody(candyCnt, challengeId, parrentPassword))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 

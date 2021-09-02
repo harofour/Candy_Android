@@ -87,7 +87,7 @@ class LikeFragment: Fragment() {
                             startActivity(intent)
                         }
                         )
-        likeChallengeBinding!!.recyclerLikeChallenge.addItemDecoration(VerticalItemDecorator(10))
+       // likeChallengeBinding!!.recyclerLikeChallenge.addItemDecoration(VerticalItemDecorator(10))
 
         viewModel = ViewModelProvider(viewModelStore, object: ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -107,6 +107,7 @@ class LikeFragment: Fragment() {
             // 마지막 목록이면 더 이상 데이터가 없으므로 progressbar 제거해주기!!
             if(it.size == 0){
                 (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).deleteLoading()
+                Log.d("test","더 이상 데이터 없음")
                 No_More_Data = true
             }
         })

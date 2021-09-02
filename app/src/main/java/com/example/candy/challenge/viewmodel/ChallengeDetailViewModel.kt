@@ -2,15 +2,12 @@ package com.example.candy.challenge.viewmodel
 
 import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.candy.model.data.ChallengeDetail
 import com.example.candy.model.repository.ChallengeListRepository
 import com.example.candy.utils.CurrentUser
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.launch
 
 class ChallengeDetailViewModel(
@@ -25,7 +22,7 @@ class ChallengeDetailViewModel(
      val likeDone = MutableLiveData<Boolean>()
      val requiredScore = MutableLiveData<Int>()
      val totalScore =  MutableLiveData<Int>()
-     val assignedCandy = MutableLiveData<Int>()
+     val assignedCandyCount = MutableLiveData<Int>()
 
     private var challengeDetail: ChallengeDetail? = null
 
@@ -35,6 +32,8 @@ class ChallengeDetailViewModel(
     val dialogProgressBarVisible = MutableLiveData<Boolean>()
 
     val assignSuccess = MutableLiveData<Boolean>()
+
+    val pw2Error = MutableLiveData<Boolean>() // 2차 비번 틀리는 경우 메시지 알림용
 
 
 
@@ -54,7 +53,7 @@ class ChallengeDetailViewModel(
                 likeDone.postValue(challengeDetail!!.likeDone)
                 requiredScore.postValue(challengeDetail!!.requiredScore)
                 totalScore.postValue(challengeDetail!!.totalScore)
-                assignedCandy.postValue(challengeDetail!!.assignedCandy)
+                assignedCandyCount.postValue(challengeDetail!!.assignedCandy)
             }
             challengeDetailProgressbar.postValue(false)
         }
@@ -77,15 +76,18 @@ class ChallengeDetailViewModel(
     }
 
     @SuppressLint("CheckResult")
-    fun assignCandy(challengeId: Int, candyCnt: Int){
+    fun assignCandy(challengeId: Int, candyCnt: Int, parrentPassword: String){
         dialogProgressBarVisible.postValue(true)
-        challengeRepository.assignCandy(CurrentUser.userToken!!, challengeId, candyCnt).subscribe(
+        challengeRepository.assignCandy(CurrentUser.userToken!!, challengeId, candyCnt, parrentPassword).subscribe(
             {
                 Log.d("api test", "candy assign success!")
                 assignSuccess.postValue(it.isAssignSuccess)
+                dialogProgressBarVisible.postValue(false)
             }
             , {
-                throwable -> Log.d("api test", "candy assign error!")
+                throwable -> Log.d("api test", "candy assign error! : " + throwable.message)
+                dialogProgressBarVisible.postValue(false)
+                pw2Error.postValue(true)
             }
         )
 
