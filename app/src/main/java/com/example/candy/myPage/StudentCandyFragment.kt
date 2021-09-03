@@ -75,7 +75,7 @@ class StudentCandyFragment : Fragment() {
             }
             val dialog =
                 CustomDialog(binding.root.context, sharedViewModel.getCandyStudent().value!!.toInt())
-            dialog.myDialog(binding.root.context)
+            dialog.myDialog(binding.root.context,"인출","인출할 캔디 개수를 선택해 주세요.")
 
             dialog.setOnClickedListener(object : CustomDialog.ButtonClickListener {
                 override fun onClicked(candy: Int) {

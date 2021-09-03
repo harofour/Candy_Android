@@ -73,7 +73,7 @@ class ParentCandyFragment : Fragment() {
         // 캔디 충전 버튼
         binding.chargeCandy.setOnClickListener {
             val dialog = CustomDialog(binding.root.context, 100)
-            dialog.myDialog(binding.root.context)
+            dialog.myDialog(binding.root.context,"충전","충전할 캔디 개수를 선택해 주세요.")
 
             dialog.setOnClickedListener(object : CustomDialog.ButtonClickListener {
                 override fun onClicked(candy: Int) {

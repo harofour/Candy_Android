@@ -16,16 +16,19 @@ class CustomDialog(context: Context,maxCandy: Int?) {
         it
     }?: 0
 
-    fun myDialog(context : Context){
+    fun myDialog(context : Context,str: String,strInfo: String){
         binding = InputLayoutBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
 
-        val label = binding.labelEdit
+        val info = binding.infoTv
         val okBtn = binding.okBtn
         val cancelBtn = binding.cancelBtn
         val candyNumber = binding.numberPicker
         candyNumber.minValue = 0
         candyNumber.maxValue = maxCandy
+
+        info.text = strInfo
+        okBtn.text = str
 
         // Set Size of Dialog
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
