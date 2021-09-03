@@ -15,4 +15,8 @@ class LectureViewModel : ViewModel() {
         //return smoething
     }
 
+    suspend fun loadVideo(challengeId: Int, lectureId: Int): String? {
+        return repository.loadVideo(challengeId, lectureId)
+    }
+
 }

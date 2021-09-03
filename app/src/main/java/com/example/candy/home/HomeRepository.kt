@@ -3,7 +3,6 @@ package com.example.candy.home
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.candy.data.ApiAnyResponse
 import com.example.candy.model.api.CandyApi
 import com.example.candy.model.api.ChallengeApi
 import com.example.candy.model.api.RetrofitClient
@@ -14,9 +13,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -43,13 +39,13 @@ class HomeRepository() {
             return if (allChallenges.isEmpty()) {
                 100000
             } else {
-                if (allChallenges.last().id < 0) {   // 마지막 Item 이 로딩 뷰 인 경우
+                if (allChallenges.last().challengeId < 0) {   // 마지막 Item 이 로딩 뷰 인 경우
                     if (allChallenges.size == 1)
                         100000
                     else
-                        allChallenges[allChallenges.lastIndex - 1].id
+                        allChallenges[allChallenges.lastIndex - 1].challengeId
                 } else {
-                    allChallenges.last().id
+                    allChallenges.last().challengeId
                 }
             }
         }
@@ -134,7 +130,7 @@ class HomeRepository() {
 
             // deleted loading view
             if (allChallenges.isNotEmpty() && newChallenges.isNotEmpty())
-                if (allChallenges.last().id < 0)
+                if (allChallenges.last().challengeId < 0)
                     allChallenges.removeLast()
 
             // add response to all challenge list
@@ -179,7 +175,7 @@ class HomeRepository() {
         } else {
             // 개별 카테고리를 클릭 한 경우
             allChallenges.forEach {
-                if (it.category == category || it.id < 0) {
+                if (it.category == category || it.challengeId < 0) {
                     sortedChallenges.add(it)
                 }
             }
