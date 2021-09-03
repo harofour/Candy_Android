@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.adapter.HorizontalItemDecorator
 import com.example.candy.adapter.VerticalItemDecorator
 import com.example.candy.challenge.ChallengeDetailActivity
+import com.example.candy.challenge.adapter.LikeChallengeRecyclerAdapter
 import com.example.candy.challenge.adapter.PossibleChallengeRecyclerAdapter
 import com.example.candy.challenge.adapter.categoryRecyclerAdapter.ChallengeCategoryRecyclerAdapter
 import com.example.candy.challenge.viewmodel.PossibleChallengeViewModel
@@ -103,6 +104,7 @@ class PossibleFragment: Fragment() {
         viewModel.possibleChallengeLiveData.observe(viewLifecycleOwner,{
             (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).updateList(it)
 
+            /*
             (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).
                     notifyItemRangeChanged((page-1) * it.size, it.size)
 
@@ -111,6 +113,8 @@ class PossibleFragment: Fragment() {
                 (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).deleteLoading()
                 No_More_Data = true
             }
+            */
+
         })
 
         // progressbar observe
@@ -125,6 +129,39 @@ class PossibleFragment: Fragment() {
 
         // 리사클러뷰 무한스크롤 구현
         possibleChallengeBinding!!.recyclerPossibleChallenge.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                Log.d("api test check", "possibleRecycler onScrollStateChanged called")
+
+                val lastVisibleItemPosition =
+                        (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                val totalItemViewCount = recyclerView.adapter!!.itemCount-1
+
+                if(newState == 2 && !recyclerView.canScrollVertically(1)
+                        && lastVisibleItemPosition == totalItemViewCount){
+                    Log.d("api test check", "possible recycler 스크롤 마지막 도달로 인한 호출")
+
+                    // 마지막 챌린지 아이디 받아오기
+                    var lastChallengeId = (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter)
+                            .getLastChallengeId(totalItemViewCount)
+
+                    // 로딩 아이템 뷰 추가
+                    (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).addLoading()
+
+                    // 요청
+                    page++
+
+                    Log.d("api test check", "possible recycler 스크롤 마지막 호출 : lastChallengeId : ${lastChallengeId}")
+                    viewModel.getAllPossibleChallengeList(lastChallengeId, 10, false)
+
+
+
+                }
+            }
+
+            /*
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
@@ -148,6 +185,7 @@ class PossibleFragment: Fragment() {
                 }
 
             }
+            */
         })
 
     }
@@ -156,7 +194,9 @@ class PossibleFragment: Fragment() {
         super.onResume()
         Log.d("fragment check","PossibleFragment onResume")
 
+        page = 1
         No_More_Data = false
+
         (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).dataSetClear()
         viewModel.getAllPossibleChallengeList(100000000, 10, true)
     }

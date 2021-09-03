@@ -34,18 +34,19 @@ class LikeChallengeViewModel(
             }
             likeChallengeDataList = challengeRepository.searchLikeChallenge(
                     CurrentUser.userToken!!, lastChallengeId, size)
-            Log.d("api test", "getAllLikeChallengeList 호출")
-            Log.d("api test","찜 리스트 response list 수 : ${likeChallengeDataList?.size}")
+            Log.d("api test check", "호출 시 사용한 챌린지 id : ${lastChallengeId}")
+            Log.d("api test check", "getAllLikeChallengeList 호출")
+            Log.d("api test check","찜 리스트 response list 수 : ${likeChallengeDataList?.size}")
             if(likeChallengeDataList != null){
                 likeChallengeLiveData.value = likeChallengeDataList!!
                 progressVisible.postValue(false)
 
                 totalLikeList += likeChallengeDataList!!.size
                 totalLikeListLiveData.postValue(totalLikeList)
-                Log.d("api test", "현재 찜 개수 : ${totalLikeList}")
+                Log.d("api test check", "현재 찜 개수 : ${totalLikeList}")
             }
             else{
-                Log.d("api test","reponse 빈 리스트 반환됨")
+                Log.d("api test check","reponse 빈 리스트 반환됨")
             }
 
         }
@@ -61,7 +62,7 @@ class LikeChallengeViewModel(
 
             totalLikeList -= 1
             totalLikeListLiveData.postValue(totalLikeList)
-            Log.d("api test", "현재 찜 개수 : ${totalLikeList}")
+            Log.d("api test check", "현재 찜 개수 : ${totalLikeList}")
         }
     }
 

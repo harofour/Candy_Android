@@ -1,5 +1,6 @@
 package com.example.candy.challenge.pagerFragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -100,16 +101,18 @@ class LikeFragment: Fragment() {
         // 찜 챌린지 리스트 observe
         viewModel.likeChallengeLiveData.observe(viewLifecycleOwner,{
             (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).updateList(it)
+            Log.d("api test check", "updateList called : update recycler list")
 
-            (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).
+          /*  (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).
             notifyItemRangeChanged((page-1) * it.size, it.size)
+            Log.d("api test check", "notifyItemRangeChanged page : ${page}  it.size: ${it.size}") */
 
             // 마지막 목록이면 더 이상 데이터가 없으므로 progressbar 제거해주기!!
-            if(it.size == 0){
+            /*if(it.size == 0){
                 (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).deleteLoading()
-                Log.d("test","더 이상 데이터 없음")
+                Log.d("api test check","더 이상 데이터 없음")
                 No_More_Data = true
-            }
+            }*/
         })
 
         // progressbar observe
@@ -131,14 +134,58 @@ class LikeFragment: Fragment() {
         })
 
 
+
+
+
         // 리사클러뷰 무한스크롤 구현
         likeChallengeBinding!!.recyclerLikeChallenge.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                Log.d("api test check", "likeRecycler onScrollStateChanged called")
+
+                val lastVisibleItemPosition =
+                        (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
+                val totalItemViewCount = recyclerView.adapter!!.itemCount-1
+
+                if(newState == 2 && !recyclerView.canScrollVertically(1)
+                        && lastVisibleItemPosition == totalItemViewCount){
+                    Log.d("api test check", "like recycler 스크롤 마지막 도달로 인한 호출")
+
+                    // 마지막 챌린지 아이디 받아오기
+                    var lastChallengeId = (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter)
+                            .getLastChallengeId(totalItemViewCount)
+
+                    // 로딩 아이템 뷰 추가
+                    (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).addLoading()
+
+                    // 요청
+                    page++
+
+                    Log.d("api test check", "lieke recycler 스크롤 마지막 호출 : lastChallengeId : ${lastChallengeId}")
+                    viewModel.getAllLikeChallengeList(lastChallengeId, 10, false)
+
+
+
+                }
+            }
+
+            /*
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                Log.d("api test check before super.onScrolled", "dy : ${dy}")
                 super.onScrolled(recyclerView, dx, dy)
+
+                Log.d("api test check ", "dy : ${dy}")
+
+                Log.d("api test check", "likeRecycler onScroll")
 
                 val lastVisibleItemViewPosition =
                         (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastCompletelyVisibleItemPosition()
                 val totalItemViewCount = recyclerView.adapter!!.itemCount-1
+
+                Log.d("api test check", "LikeRecycler lastVisibleItemViewPosition : ${lastVisibleItemViewPosition}")
+                Log.d("api test check", "LikeRecycler totalItemViewCount : ${totalItemViewCount}")
 
                 // 스크롤 마지막에 도달 시
                 if(lastVisibleItemViewPosition == totalItemViewCount && !No_More_Data){
@@ -150,24 +197,40 @@ class LikeFragment: Fragment() {
                     // 페이지 증가
                     page++
 
+                    //Log.d("api test check", "스크롤 마지막 도달로 인한 호출")
 
                     viewModel.getAllLikeChallengeList(lastChallengeId, 10, false)
 
                 }
 
             }
+
+            */
+
         })
+
+
 
 
 
 
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.d("fragment check", "LikeFragment onActivityCreated")
+    }
+
+
     override fun onResume() {
         super.onResume()
+        Log.d("api test check", "page : ${page}")
         Log.d("fragment check","LikeFragment onResume")
 
+        page = 1
         No_More_Data = false
+
+
         (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).dataSetClear()
         viewModel.getAllLikeChallengeList(100000000, 10, true)
     }

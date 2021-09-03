@@ -103,14 +103,29 @@ class PossibleChallengeRecyclerAdapter(
 
 
     fun updateList(newList: ArrayList<Challenge>){
-        dataSet.addAll(newList)
+        /*dataSet.addAll(newList)
         dataSet.add(Challenge(-9999," ",false,0,0," "," "))
+
+        notifyDataSetChanged()*/
+        if(!dataSet.isEmpty()) // 최초 호출 시 인덱스 범위 에러 방지
+            deleteLoading()
+
+        dataSet.addAll(newList)
 
         notifyDataSetChanged()
     }
 
+    fun addLoading(){
+        dataSet.add(Challenge(-9999," ",false,0,0," "," "))
+
+        notifyItemInserted(dataSet.lastIndex)
+        //notifyDataSetChanged()
+    }
+
     fun deleteLoading(){
+        val lastIndex = dataSet.lastIndex
         dataSet.removeAt(dataSet.lastIndex)
+        notifyItemRemoved(lastIndex)
     }
 
     fun getLastChallengeId(index: Int): Int{

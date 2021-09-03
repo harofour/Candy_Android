@@ -103,20 +103,35 @@ class LikeChallengeRecyclerAdapter(
 
 
     fun updateList(newList: ArrayList<Challenge>){
+       // dataSet.add(Challenge(-9999," ",false,0,0," "," "))
+
+        if(!dataSet.isEmpty()) // 최초 호출 시 인덱스 범위 에러 방지
+            deleteLoading()
+
         dataSet.addAll(newList)
-        dataSet.add(Challenge(-9999," ",false,0,0," "," "))
 
         notifyDataSetChanged()
     }
 
+    fun addLoading(){
+        dataSet.add(Challenge(-9999," ",false,0,0," "," "))
+
+        notifyItemInserted(dataSet.lastIndex)
+        //notifyDataSetChanged()
+    }
+
     fun deleteLoading(){
+        val lastIndex = dataSet.lastIndex
         dataSet.removeAt(dataSet.lastIndex)
+        notifyItemRemoved(lastIndex)
     }
 
     fun deleteUnlikeList(index: Int){
         dataSet.removeAt(index)
         notifyDataSetChanged()
     }
+
+
 
     fun getLastChallengeId(index: Int): Int{
         return dataSet[index].challengeId
