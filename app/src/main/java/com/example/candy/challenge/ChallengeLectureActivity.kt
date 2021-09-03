@@ -1,8 +1,8 @@
 ﻿package com.example.candy.challenge
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -19,18 +19,26 @@ import com.example.candy.databinding.ActivityChallengeLectureBinding
 import com.example.candy.home.HomeViewModel
 import com.example.candy.home.ParentPasswordCheckDialogFragment
 import com.example.candy.model.data.OnGoingChallenge
-import com.example.candy.model.data.Problem
 import com.example.candy.model.viewModel.SharedViewModel
+import com.example.candy.utils.API.BASE_URL
 import com.example.candy.utils.DIALOG_REQUEST_KEY
 import com.example.candy.utils.Util
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.audio.AudioAttributes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 class ChallengeLectureActivity : AppCompatActivity() {
     private val Tag = "ChallengeLectureActivity"
     private var _binding: ActivityChallengeLectureBinding? = null
     private val binding get() = _binding!!
+
+    private var uri: Uri = Uri.parse("${BASE_URL}/challenge/video/lecture/view?video_url=")
+    private lateinit var lecturePlayer: SimpleExoPlayer
 
     private lateinit var challenge: OnGoingChallenge
     private val lectureViewModel: LectureViewModel by viewModels()
@@ -73,7 +81,10 @@ class ChallengeLectureActivity : AppCompatActivity() {
         challenge = intent.getParcelableExtra("Challenge")!!
 
         // for test
-        Util.toast(this, "test / challengeId : ${challenge.id}")
+//        Util.toast(
+//            this,
+//            "test / challengeId: ${challenge.challengeId}\n lectureId : ${challenge.lecturesId}"
+//        )
 
         initviews()
         initListeners()
@@ -94,14 +105,13 @@ class ChallengeLectureActivity : AppCompatActivity() {
         }
 
         binding.problemBtn.setOnClickListener {
-            val intent= Intent(this,ProblemActivity::class.java)
-            intent.putExtra("ChallengeId",challenge.id)
+            val intent = Intent(this, ProblemActivity::class.java)
+            intent.putExtra("ChallengeId", challenge.challengeId)
             startActivity(intent)
         }
         binding.btnCancelAssignCandy.setOnClickListener {
-                getParentPassword()
+            getParentPassword()
         }
-
     }
 
     private fun getParentPassword() {
@@ -123,26 +133,48 @@ class ChallengeLectureActivity : AppCompatActivity() {
             if (DIALOG_REQUEST_KEY == reqKey) {
                 val parentPassword = bundle.getString("ParentPassword")
 
-                parentPassword?.let{
+                parentPassword?.let {
                     val reqData = HashMap<String, Any>()
-                    reqData.put("challengeId", challenge.id)
-                    reqData.put("parentPassword", parentPassword!!)
+                    reqData.put("challengeId", challenge.challengeId)
+                    reqData.put("parentPassword", parentPassword)
 
                     CoroutineScope(Dispatchers.IO).launch {
-                        if(homeViewModel.cancelAssignedCandy(reqData)){
+                        if (homeViewModel.cancelAssignedCandy(reqData)) {
                             Util.toast(applicationContext, "캔디 배정이 취소되었습니다")
                             finish()
-                        }else{
+                        } else {
                             Util.toast(applicationContext, "캔디 배정 취소를 실패했습니다")
                         }
                     }
                 }
-
             }
         }
     }
 
     private fun initviews() {
+        // 강의 동영상
+        // audio focus
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(C.USAGE_MEDIA)
+            .setContentType(C.CONTENT_TYPE_MOVIE)
+            .build()
+        // init player
+        lecturePlayer = SimpleExoPlayer.Builder(this).build()
+        lecturePlayer.setAudioAttributes(audioAttributes, true)
+        binding.playerView.player = lecturePlayer
+        // get uri and set player
+        CoroutineScope(Dispatchers.IO).launch {
+            lectureViewModel.loadVideo(challenge.challengeId, challenge.lecturesId!![0])
+                ?.also { response ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val mediaItem = MediaItem.fromUri("$uri$response")
+                        lecturePlayer.setMediaItem(mediaItem)
+                        lecturePlayer.prepare()
+                        lecturePlayer.play()
+                    }
+                }
+        }
+
         // 챌린지 관련
         with(challenge) {
             binding.tvCategory.text = category
@@ -161,7 +193,10 @@ class ChallengeLectureActivity : AppCompatActivity() {
             .into(binding.titleBar.favoriteIv)
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    override fun onPause() {
+        super.onPause()
+
+        // 앱 포커스를 잃을 때 pause
+        lecturePlayer.pause()
     }
 }

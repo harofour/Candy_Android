@@ -43,7 +43,7 @@ class MyChallengeAdapter(
     // 뷰의 타입을 정해주는 곳이다.
     override fun getItemViewType(position: Int): Int {
         // 게시물과 프로그레스바 아이템뷰를 구분할 기준이 필요. 프로그레스바 : id < 0
-        return when (challenges[position].id < 0) {
+        return when (challenges[position].challengeId < 0) {
             true -> VIEW_TYPE_LOADING
             false -> VIEW_TYPE_CHALLENGE
         }
@@ -79,16 +79,16 @@ class MyChallengeAdapter(
     }
 
     fun addLoading() {
-        if (challenges.isEmpty() || challenges.last().id >= 0) {
+        if (challenges.isEmpty() || challenges.last().challengeId >= 0) {
             Log.d("addLoading()", "called")
-            challenges.add(OnGoingChallenge(-1, "", "", "", 1, 1, 1, false))
+            challenges.add(OnGoingChallenge(-1, arrayListOf(-1), "", "", "", 1, 1, 1, false))
             notifyItemInserted(challenges.lastIndex)
         }
     }
 
     fun deleteLoading(delay: Long) {
         android.os.Handler(Looper.getMainLooper()).postDelayed({
-            if (challenges.isNotEmpty() && challenges.last().id < 0) {
+            if (challenges.isNotEmpty() && challenges.last().challengeId < 0) {
                 challenges.apply {
                     val lastIndex = lastIndex
                     removeAt(lastIndex)
