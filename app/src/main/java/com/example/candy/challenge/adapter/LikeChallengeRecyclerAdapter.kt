@@ -45,9 +45,6 @@ class LikeChallengeRecyclerAdapter(
                 val view =LayoutInflater.from(parent.context)
                         .inflate(R.layout.item_challenge_recyclerview_possiblechallenge, parent, false)
 
-                var parmas =view.layoutParams
-                parmas.height = parent.measuredHeight / 8
-
                 ItemViewHolder(ItemChallengeRecyclerviewPossiblechallengeBinding.bind(view))
             }
             else -> {
