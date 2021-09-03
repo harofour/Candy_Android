@@ -41,6 +41,6 @@ data class SettingProblem(
     val no : String,
     val question : String,
     val content : String,
-    val answer : String,
-    val choiceList : List<ChoiceDTO>
+    val choiceList : List<ChoiceDTO>,
+    var userAnswer : String? = null
 )
