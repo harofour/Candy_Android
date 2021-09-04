@@ -37,6 +37,11 @@ data class ProblemList(
     val problem: List<Problem>
 )
 
+data class ScoredScore(
+    @SerializedName("highestScoreOfAllTime")
+    val score: Int
+)
+
 data class SettingProblem(
     val no : String,
     val question : String,

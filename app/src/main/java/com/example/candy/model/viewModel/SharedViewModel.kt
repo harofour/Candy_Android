@@ -60,4 +60,12 @@ class SharedViewModel : ViewModel() {
     fun getUserPw(): String {
         return this.userPw ?: ""
     }
+
+    fun getAPIScoredScore(apiKey: String,challengeId : Int){
+        repository.getAPIScoredScore(apiKey,challengeId)
+    }
+
+    fun getScoredScore() : LiveData<Int>{
+        return repository.scoredScore
+    }
 }

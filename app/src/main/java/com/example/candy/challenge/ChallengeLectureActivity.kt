@@ -21,6 +21,7 @@ import com.example.candy.home.ParentPasswordCheckDialogFragment
 import com.example.candy.model.data.OnGoingChallenge
 import com.example.candy.model.viewModel.SharedViewModel
 import com.example.candy.utils.API.BASE_URL
+import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.DIALOG_REQUEST_KEY
 import com.example.candy.utils.Util
 import com.google.android.exoplayer2.C
@@ -30,6 +31,7 @@ import com.google.android.exoplayer2.audio.AudioAttributes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 
 class ChallengeLectureActivity : AppCompatActivity() {
@@ -40,6 +42,7 @@ class ChallengeLectureActivity : AppCompatActivity() {
     private var uri: Uri = Uri.parse("${BASE_URL}/challenge/video/lecture/view?video_url=")
     private lateinit var lecturePlayer: SimpleExoPlayer
 
+    private var scoredScore by Delegates.notNull<Int>()
     private lateinit var challenge: OnGoingChallenge
     private val lectureViewModel: LectureViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by lazy {
@@ -88,11 +91,24 @@ class ChallengeLectureActivity : AppCompatActivity() {
 
         initviews()
         initListeners()
+        initScoreData()
+    }
+
+    private fun initScoreData() {
+        sharedViewModel.getScoredScore().observe(this,{
+            scoredScore = it
+            binding.tvCurrentScore.text = it.toString()
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sharedViewModel.getAPIScoredScore(CurrentUser.userToken!!,challenge.challengeId)
     }
 
     private fun initListeners() {
         binding.btnGetCandy.setOnClickListener {
-            if (challenge.requiredScore <= challenge.totalScore) {    // 점수 확인
+            if (challenge.requiredScore <= scoredScore) {    // 점수 확인
                 lectureViewModel.completeLecture(challenge = challenge).let {
                     sharedViewModel.assignCandyToStudent(challenge.assignedCandy)   // 캔디 획득
                     finish()

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.candy.model.api.CandyApi
+import com.example.candy.model.api.ProblemApi
 import com.example.candy.model.api.RetrofitClient
 import com.example.candy.model.api.UserInfoApi
 import com.example.candy.model.data.*
@@ -19,11 +20,14 @@ class MyPageRepository() {
     private val retrofit = RetrofitClient.getClient(BASE_URL)
     private val apiCandy = retrofit.create(CandyApi::class.java)
     private val apiUserInfo = retrofit.create(UserInfoApi::class.java)
+    private val apiProblem = retrofit.create(ProblemApi::class.java)
 
     var parentCandy = MutableLiveData<String>()
     var studentCandy = MutableLiveData<String>()
     var historyParentData = MutableLiveData<List<History>>()
     var historyStudentData = MutableLiveData<List<History>>()
+
+    var scoredScore = MutableLiveData<Int>()
 
 
     /**
@@ -254,5 +258,24 @@ class MyPageRepository() {
         Log.d("updateCandyStudent", "before studentCandy / ${studentCandy.value}")
         studentCandy.value = (studentCandy.value!!.toInt() + assignedCandy).toString()
         Log.d("updateCandyStudent", "after studentCandy / ${studentCandy.value}")
+    }
+
+    /**
+     * 챌린지 관련 함수
+     */
+    fun getAPIScoredScore(apiKey : String, challengeId : Int){
+        apiProblem.getScoredScore(apiKey,challengeId).enqueue(object : Callback<ScoredScoreResponse>{
+            override fun onResponse(
+                call: Call<ScoredScoreResponse>,
+                response: Response<ScoredScoreResponse>
+            ) {
+                if(response.code() == 200){
+                    scoredScore.value = response.body()!!.response.score
+                }
+            }
+
+            override fun onFailure(call: Call<ScoredScoreResponse>, t: Throwable) {
+            }
+        })
     }
 }
