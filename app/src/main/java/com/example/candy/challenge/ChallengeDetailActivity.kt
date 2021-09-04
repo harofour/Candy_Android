@@ -2,6 +2,7 @@ package com.example.candy.challenge
 
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -14,8 +15,7 @@ import com.example.candy.challenge.viewmodel.ChallengeDetailViewModel
 import com.example.candy.databinding.ActivityChallengeDetailBinding
 import com.example.candy.model.injection.Injection
 import com.example.candy.utils.API
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 
@@ -30,6 +30,7 @@ class ChallengeDetailActivity: AppCompatActivity() {
 
     private var baseUrl ="${API.BASE_URL}challenge/video/lecture/view?video_url="
     private var player: SimpleExoPlayer? = null
+    private val listener = PlayerStateListener()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +38,7 @@ class ChallengeDetailActivity: AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_challenge_detail)
 
-        viewModel = ViewModelProvider(this, object: ViewModelProvider.Factory{
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return ChallengeDetailViewModel(
                         Injection.provideRepoRepositoryRx(applicationContext)
@@ -60,28 +61,28 @@ class ChallengeDetailActivity: AppCompatActivity() {
 
 
 
-        Toast.makeText(this,"challengeId = ${challengeId}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "challengeId = ${challengeId}", Toast.LENGTH_SHORT).show()
 
-        viewModel.category.observe(this,{
+        viewModel.category.observe(this, {
             binding.tvCategory.text = it
         })
-        viewModel.title.observe(this,{
+        viewModel.title.observe(this, {
             binding.tvTitle.text = it
         })
-        viewModel.subTitle.observe(this,{
+        viewModel.subTitle.observe(this, {
             binding.tvSubTitle.text = it
         })
-        viewModel.level.observe(this,{
+        viewModel.level.observe(this, {
             binding.tvLevel.text = it.toString()
         })
-        viewModel.requiredScore.observe(this,{
+        viewModel.requiredScore.observe(this, {
             binding.tvRequiredScore.text = it.toString()
         })
-        viewModel.description.observe(this,{
+        viewModel.description.observe(this, {
             binding.tvDescription.text = it
         })
-        viewModel.challengeDetailProgressbar.observe(this,{
-            if(it)
+        viewModel.challengeDetailProgressbar.observe(this, {
+            if (it)
                 binding.challengeDetailProgressbar.visibility = View.VISIBLE
             else
                 binding.challengeDetailProgressbar.visibility = View.GONE
@@ -94,7 +95,7 @@ class ChallengeDetailActivity: AppCompatActivity() {
 
         // 강의 영상 로딩하는 동안 progressbar
         viewModel.challengeDetailVideoLoadProgressbar.observe(this, {
-            if(it)
+            if (it)
                 binding.challengeDetailProgressbarVideo.visibility = View.VISIBLE
             else
                 binding.challengeDetailProgressbarVideo.visibility = View.GONE
@@ -125,7 +126,7 @@ class ChallengeDetailActivity: AppCompatActivity() {
 
         Log.d("api test check", "video duration2 : ${player!!.duration}")
 
-        
+
 
     }
 
@@ -135,24 +136,34 @@ class ChallengeDetailActivity: AppCompatActivity() {
 
         // 비디오 로드
         viewModel.videoUrl.observe(this, {
-          it?.let{
-             var responseUrl = it  // 반환 받은 url
+            it?.let {
+                var responseUrl = it  // 반환 받은 url
 
-             var finalVideoUrl = baseUrl + responseUrl
+                var finalVideoUrl = baseUrl + responseUrl
 
-              val dataSourceFactory = DefaultDataSourceFactory(this)
-              val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-                      .createMediaSource(MediaItem.fromUri(Uri.parse(finalVideoUrl)))
+                val dataSourceFactory = DefaultDataSourceFactory(this)
+                val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
+                        .createMediaSource(MediaItem.fromUri(Uri.parse(finalVideoUrl)))
 
-              player!!.setMediaSource(mediaSource)
-              player!!.prepare()
-              player!!.play()
+                player!!.setMediaSource(mediaSource)
+                player!!.addListener(listener)
+                player!!.prepare()
+                player!!.createMessage ( {messageType: Int, payload: Any? ->
 
-              Log.d("api test check", "video duration : ${player!!.duration}")
-              Log.d("api test check", "video content duration : ${player!!.contentDuration}")
-              Log.d("api test check", "video content currentTimeline : ${player!!.currentTimeline}")
+                        Log.d("api test check", "time check 5000")
+                    player!!.pause()
 
-          }
+                }).setLooper(Looper.getMainLooper())
+                        .setPosition(5000)  // 5초 = 5000   // 우선 5초되면 자동으로 정지된다
+                        .setDeleteAfterDelivery(false)
+                        .send()
+                //player!!.play()
+
+                Log.d("api test check", "video duration : ${player!!.duration}")
+                Log.d("api test check", "video content duration : ${player!!.contentDuration}")
+                Log.d("api test check", "video content currentTimeline : ${player!!.currentTimeline}")
+
+            }
         })
 
         // 영상 url 가져오기 호출
@@ -171,8 +182,46 @@ class ChallengeDetailActivity: AppCompatActivity() {
         super.onDestroy()
 
         player?.release()
+
     }
 
+
+    inner class PlayerStateListener : Player.EventListener {
+        override fun onPlaybackStateChanged(state: Int) {
+            when (state) {
+                ExoPlayer.STATE_IDLE -> Log.d("exo check", "STATE_IDLE")
+                ExoPlayer.STATE_BUFFERING -> Log.d("exo check", "STATE_BUFFERING")
+                ExoPlayer.STATE_READY -> {
+                    Log.d("exo check", "STATE_READY")
+                    Log.d("api test check", "video duration : ${player!!.duration}")
+                }
+
+                ExoPlayer.STATE_ENDED -> Log.d("exo check", "STATE_ENDED")
+
+            }
+        }
+
+        override fun onIsPlayingChanged(isPlaying: Boolean) {
+            super.onIsPlayingChanged(isPlaying)
+
+
+            // 상태가 변할 시 호출  정지->재생 or 재생 -> 정지 일때 현재 위치가 5초 이상이면 처음으로 되돌아 간다
+            if(isPlaying){
+                Log.d("video check", "playing")
+                if(player!!.currentPosition >= 5000){
+                    player!!.seekTo(0)
+                }
+            }
+            else{
+                Log.d("video check", "not playing / current position ${player!!.currentPosition}")
+                if(player!!.currentPosition >= 5000){
+                    player!!.seekTo(0)
+                }
+            }
+        }
+
+
+    }
 
 
 }
