@@ -33,3 +33,8 @@ data class OnGoingChallengeResponse(
         @SerializedName("error")val error: Error
 )
 
+data class LectureCheckRequestBody(
+        @SerializedName("challengeId") val challengeId : Int,
+        @SerializedName("lectureId") val lectureId : Int
+)
+

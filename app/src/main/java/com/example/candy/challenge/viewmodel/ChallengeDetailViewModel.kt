@@ -27,9 +27,13 @@ class ChallengeDetailViewModel(
     private var challengeDetail: ChallengeDetail? = null
 
     val challengeDetailProgressbar = MutableLiveData<Boolean>()
+    val challengeDetailVideoLoadProgressbar = MutableLiveData<Boolean>()
 
     val candyAmount = MutableLiveData<Int>()
     val dialogProgressBarVisible = MutableLiveData<Boolean>()
+
+    val loadVideoSuccess = MutableLiveData<Boolean>()
+    val videoUrl = MutableLiveData<String>()
 
     val assignSuccess = MutableLiveData<Boolean>()
 
@@ -80,12 +84,12 @@ class ChallengeDetailViewModel(
         dialogProgressBarVisible.postValue(true)
         challengeRepository.assignCandy(CurrentUser.userToken!!, challengeId, candyCnt, parrentPassword).subscribe(
             {
-                Log.d("api test", "candy assign success!")
+                Log.d("api test check", "candy assign success!")
                 assignSuccess.postValue(it.isAssignSuccess)
                 dialogProgressBarVisible.postValue(false)
             }
             , {
-                throwable -> Log.d("api test", "candy assign error! : " + throwable.message)
+                throwable -> Log.d("api test check", "candy assign error! : " + throwable.message)
                 dialogProgressBarVisible.postValue(false)
                 pw2Error.postValue(true)
             }
@@ -94,7 +98,24 @@ class ChallengeDetailViewModel(
     }
 
 
+    // 영상 url 가져오기
+    @SuppressLint("CheckResult")
+    fun getVideoUrl(challengeId: Int, lectureId: Int){
+        challengeDetailVideoLoadProgressbar.postValue(true)
+        challengeRepository.loadVideo(CurrentUser.userToken!!, challengeId, lectureId).subscribe(
+                {
+                  Log.d("api test check", "load video success!!")
+                    videoUrl.postValue(it.lecturesUrl.get(0))
+                    challengeDetailVideoLoadProgressbar.postValue(false)
+                    Log.d("api test check", "video url : ${it.lecturesUrl.get(0)}")
+                }
+                ,{
+                    throwable -> Log.d("api test check", "load video fail!! : " + throwable.message)
+                    challengeDetailVideoLoadProgressbar.postValue(false)
+                }
+        )
 
+    }
 
 
 

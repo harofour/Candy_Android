@@ -74,4 +74,11 @@ interface ChallengeApi {
         @Header("api_key") userToken: String,
         @Body loadVideo: HashMap<String, Int>
     ): Response<Lecture>
+
+    // 동영상 조회2
+    @POST("challenge/video/lecture/check")
+    fun loadVideoRx(
+            @Header("api_key") userToken: String,
+            @Body lectureCheckData: LectureCheckRequestBody
+    ) : Single<Lecture>
 }

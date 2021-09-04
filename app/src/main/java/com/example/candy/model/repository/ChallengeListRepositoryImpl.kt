@@ -99,4 +99,8 @@ class ChallengeListRepositoryImpl(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    override fun loadVideo(apiKey: String, challengeId: Int, lectrueId: Int): Single<Lecture> =
+            challengeApi.loadVideoRx(apiKey, LectureCheckRequestBody(challengeId, lectrueId))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
 }

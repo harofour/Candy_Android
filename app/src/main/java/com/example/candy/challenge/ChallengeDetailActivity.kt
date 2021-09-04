@@ -1,5 +1,6 @@
 package com.example.candy.challenge
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +13,11 @@ import com.example.candy.R
 import com.example.candy.challenge.viewmodel.ChallengeDetailViewModel
 import com.example.candy.databinding.ActivityChallengeDetailBinding
 import com.example.candy.model.injection.Injection
+import com.example.candy.utils.API
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 
 
 class ChallengeDetailActivity: AppCompatActivity() {
@@ -19,7 +25,11 @@ class ChallengeDetailActivity: AppCompatActivity() {
     private lateinit var binding: ActivityChallengeDetailBinding
     private lateinit var viewModel: ChallengeDetailViewModel
     private var challengeId = -1
+    private var lectureId = -100
     private var isAssigned = false
+
+    private var baseUrl ="${API.BASE_URL}challenge/video/lecture/view?video_url="
+    private var player: SimpleExoPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +40,7 @@ class ChallengeDetailActivity: AppCompatActivity() {
         viewModel = ViewModelProvider(this, object: ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return ChallengeDetailViewModel(
-                        Injection.provideRepoRepository(applicationContext)
+                        Injection.provideRepoRepositoryRx(applicationContext)
                 ) as T
             }
         }).get(ChallengeDetailViewModel::class.java)
@@ -41,7 +51,13 @@ class ChallengeDetailActivity: AppCompatActivity() {
         // title bar
         binding.titleBar.title.text = "챌린지 소개"
 
+        // 리스트에서 선택한 챌린지 아이디 전달 받기
         challengeId = intent.getIntExtra("challengeId", -1)
+
+        // lectureId 전달받기 / api 수정되면 작업 이어서 하기
+        lectureId = 1
+
+        //
 
         Toast.makeText(this,"challengeId = ${challengeId}", Toast.LENGTH_SHORT).show()
 
@@ -75,6 +91,14 @@ class ChallengeDetailActivity: AppCompatActivity() {
             }
         }) */
 
+        // 강의 영상 로딩하는 동안 progressbar
+        viewModel.challengeDetailVideoLoadProgressbar.observe(this, {
+            if(it)
+                binding.challengeDetailProgressbarVideo.visibility = View.VISIBLE
+            else
+                binding.challengeDetailProgressbarVideo.visibility = View.GONE
+        })
+
 
         // 뒤로가기
         binding.titleBar.backBtn.setOnClickListener {
@@ -82,16 +106,13 @@ class ChallengeDetailActivity: AppCompatActivity() {
         }
 
 
+        // 강의 영상 미리보기 로드
+        initVideoPlayer(binding)
+
         // 정보 요청
        viewModel.getChallengeDetailInfo(challengeId)
 
-
         binding.tvCandyBtn.setOnClickListener {
-
-            // viewModel.getChallengeDetailInfo(challengeId)
-
-            // 캔디배정 후 소개화면에서 캔디 배정 다시 누르면 다이얼로그 뜨지 않게 하기
-            // 처음 다시 누르는 경우는 다이얼로그가 나타난다 -> 이 부분 해결하기
 
             var dialogView = CandyAssignDialogFragment()
             var bundle = Bundle()
@@ -99,18 +120,56 @@ class ChallengeDetailActivity: AppCompatActivity() {
             dialogView.arguments = bundle
             dialogView.show(supportFragmentManager, "candy assign dialog open")
 
-           /* if(isAssigned == false){
-                var dialogView = CandyAssignDialogFragment()
-                var bundle = Bundle()
-                bundle.putInt("challengeId", challengeId)
-                dialogView.arguments = bundle
-                dialogView.show(supportFragmentManager, "candy assign dialog open")
-            }
-            else{
-                Toast.makeText(this,"이미 캔디가 배정되었습니다", Toast.LENGTH_SHORT).show()
-            } */
         }
 
+        Log.d("api test check", "video duration2 : ${player!!.duration}")
+
+        
+
+    }
+
+    private fun initVideoPlayer(binding: ActivityChallengeDetailBinding){
+        player = SimpleExoPlayer.Builder(this).build()
+        binding.playerView.player = player
+
+        // 비디오 로드
+        viewModel.videoUrl.observe(this, {
+          it?.let{
+             var responseUrl = it  // 반환 받은 url
+
+             var finalVideoUrl = baseUrl + responseUrl
+
+              val dataSourceFactory = DefaultDataSourceFactory(this)
+              val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
+                      .createMediaSource(MediaItem.fromUri(Uri.parse(finalVideoUrl)))
+
+              player!!.setMediaSource(mediaSource)
+              player!!.prepare()
+              player!!.play()
+
+              Log.d("api test check", "video duration : ${player!!.duration}")
+              Log.d("api test check", "video content duration : ${player!!.contentDuration}")
+              Log.d("api test check", "video content currentTimeline : ${player!!.currentTimeline}")
+
+          }
+        })
+
+        // 영상 url 가져오기 호출
+        viewModel.getVideoUrl(challengeId, lectureId)
+
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        player?.pause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        player?.release()
     }
 
 
