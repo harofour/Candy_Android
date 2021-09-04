@@ -1,17 +1,23 @@
 ﻿package com.example.candy.challenge
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowInsets
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.example.candy.R
 import com.example.candy.activity.ProblemActivity
 import com.example.candy.challenge.viewmodel.LectureViewModel
@@ -39,6 +45,9 @@ class ChallengeLectureActivity : AppCompatActivity() {
 
     private var uri: Uri = Uri.parse("${BASE_URL}/challenge/video/lecture/view?video_url=")
     private lateinit var lecturePlayer: SimpleExoPlayer
+    private var isFullScreen = false        // play screen size flag
+
+    private val fullScreenBtn by lazy { findViewById<ImageView>(R.id.exo_fullscreen_icon) } // player fullscreen button
 
     private lateinit var challenge: OnGoingChallenge
     private val lectureViewModel: LectureViewModel by viewModels()
@@ -55,11 +64,9 @@ class ChallengeLectureActivity : AppCompatActivity() {
     private val homeViewModel: HomeViewModel by lazy {
         ViewModelProvider(viewModelStore, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return with(modelClass) {
-                    when {
-                        isAssignableFrom(HomeViewModel::class.java) -> HomeViewModel.getInstance()
-                        else -> throw IllegalArgumentException("Unknown viewModel class $modelClass")
-                    }
+                return when {
+                    modelClass.isAssignableFrom(HomeViewModel::class.java) -> HomeViewModel.getInstance()
+                    else -> throw IllegalArgumentException("Unknown viewModel class $modelClass")
                 } as T
             }
         }).get(HomeViewModel::class.java)
@@ -80,17 +87,54 @@ class ChallengeLectureActivity : AppCompatActivity() {
         // intent를 통해 진행중인 챌린지의 정보 전달받음
         challenge = intent.getParcelableExtra("Challenge")!!
 
-        // for test
-//        Util.toast(
-//            this,
-//            "test / challengeId: ${challenge.challengeId}\n lectureId : ${challenge.lecturesId}"
-//        )
-
-        initviews()
+        initViews()
         initListeners()
     }
 
+    private fun initViews() {
+        // 강의 동영상
+        // audio focus
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(C.USAGE_MEDIA)
+            .setContentType(C.CONTENT_TYPE_MOVIE)
+            .build()
+        // init player
+        lecturePlayer = SimpleExoPlayer.Builder(this).build()
+        lecturePlayer.setAudioAttributes(audioAttributes, true)
+        binding.playerView.player = lecturePlayer
+        // get uri and set player
+        CoroutineScope(Dispatchers.IO).launch {
+            lectureViewModel.loadVideo(challenge.challengeId, challenge.lecturesId)
+                ?.also { response ->
+                    response.takeIf {
+                        it.contains(".")    // 동영상이 맞는지 확인하는 조건. .mp4 등을 포함하므로 우선 '.'이 있으면 플레이어 초기화
+                    }?.apply {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            val mediaItem = MediaItem.fromUri("$uri$response")
+                            lecturePlayer.setMediaItem(mediaItem)
+                            lecturePlayer.prepare()
+                            lecturePlayer.play()
+                        }
+                    }
+                }
+        }
+
+        // 챌린지 관련
+        with(challenge) {
+            binding.tvCategory.text = category
+            binding.tvLevel.text = "2"      // ?
+            binding.tvCandy.text = assignedCandy.toString()
+            binding.tvRequiredScore.text = requiredScore.toString()
+            binding.tvCurrentScore.text = totalScore.toString()
+            binding.tvSubtitle.text = subTitle
+        }
+
+        // 썸네일 이미지
+        lectureViewModel.getThombnailImage()
+    }
+
     private fun initListeners() {
+        // 캔디 획득
         binding.btnGetCandy.setOnClickListener {
             if (challenge.requiredScore <= challenge.totalScore) {    // 점수 확인
                 lectureViewModel.completeLecture(challenge = challenge).let {
@@ -104,16 +148,27 @@ class ChallengeLectureActivity : AppCompatActivity() {
             }
         }
 
+        // 캔디 배정 취소
+        binding.btnCancelAssignCandy.setOnClickListener {
+            getParentPassword()
+        }
+
+        // 문제 풀기로 이동
         binding.problemBtn.setOnClickListener {
             val intent = Intent(this, ProblemActivity::class.java)
             intent.putExtra("ChallengeId", challenge.challengeId)
             startActivity(intent)
         }
-        binding.btnCancelAssignCandy.setOnClickListener {
-            getParentPassword()
+
+        // player fullscreen button
+        fullScreenBtn.setOnClickListener {
+            playerSizeChanger()
         }
     }
 
+    /**
+     * 배정 취소를 위해 다이얼로그를 띄어 학부모 비밀번호를 확인 후 처리
+     */
     private fun getParentPassword() {
         // DialogFragment.show() will take care of adding the fragment
         // in a transaction.  We also want to remove any currently showing
@@ -126,11 +181,13 @@ class ChallengeLectureActivity : AppCompatActivity() {
         ft.addToBackStack(null)
 
         // Create and show the dialog.
+        // dialog를 통해 패스워드를 입력받음
         val dialog = ParentPasswordCheckDialogFragment()
         dialog.show(supportFragmentManager, "dialog")
 
         dialog.setFragmentResultListener(DIALOG_REQUEST_KEY) { reqKey, bundle ->
             if (DIALOG_REQUEST_KEY == reqKey) {
+                // 입력받은 학부모 비밀번호
                 val parentPassword = bundle.getString("ParentPassword")
 
                 parentPassword?.let {
@@ -151,52 +208,78 @@ class ChallengeLectureActivity : AppCompatActivity() {
         }
     }
 
-    private fun initviews() {
-        // 강의 동영상
-        // audio focus
-        val audioAttributes = AudioAttributes.Builder()
-            .setUsage(C.USAGE_MEDIA)
-            .setContentType(C.CONTENT_TYPE_MOVIE)
-            .build()
-        // init player
-        lecturePlayer = SimpleExoPlayer.Builder(this).build()
-        lecturePlayer.setAudioAttributes(audioAttributes, true)
-        binding.playerView.player = lecturePlayer
-        // get uri and set player
-        CoroutineScope(Dispatchers.IO).launch {
-            lectureViewModel.loadVideo(challenge.challengeId, challenge.lecturesId!![0])
-                ?.also { response ->
-                    CoroutineScope(Dispatchers.Main).launch {
-                        val mediaItem = MediaItem.fromUri("$uri$response")
-                        lecturePlayer.setMediaItem(mediaItem)
-                        lecturePlayer.prepare()
-                        lecturePlayer.play()
-                    }
-                }
+    /**
+     * change exoplayer screen size to Full or Origin size
+     */
+    private fun playerSizeChanger() {
+        if (isFullScreen) {
+            fullScreenBtn.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_open)
+            )
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+            } else {
+                window.setDecorFitsSystemWindows(true)
+                window.insetsController?.show(
+                    WindowInsets.Type.navigationBars()
+                            or WindowInsets.Type.statusBars()
+                )
+            }
+
+            if (supportActionBar != null) {
+                supportActionBar!!.show()
+            }
+
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            val params = binding.playerView.layoutParams
+            params.width = 0
+            params.height = 0
+            binding.playerView.layoutParams = params
+            isFullScreen = false
+        } else {
+            fullScreenBtn.setImageDrawable(
+                ContextCompat.getDrawable(this, R.drawable.ic_fullscreen_close)
+            )
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+            } else {
+                window.setDecorFitsSystemWindows(false)
+                window.insetsController?.hide(
+                    WindowInsets.Type.navigationBars()
+                            or WindowInsets.Type.statusBars()
+                )
+            }
+
+            if (supportActionBar != null) {
+                supportActionBar!!.hide()
+            }
+
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            val params = binding.playerView.layoutParams
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT
+            binding.playerView.layoutParams = params
+            isFullScreen = true
         }
+    }
 
-        // 챌린지 관련
-        with(challenge) {
-            binding.tvCategory.text = category
-            binding.tvLevel.text = "2"      // ?
-            binding.tvCandy.text = assignedCandy.toString()
-            binding.tvRequiredScore.text = requiredScore.toString()
-            binding.tvCurrentScore.text = totalScore.toString()
-            binding.tvSubtitle.text = subTitle
+    override fun onBackPressed() {
+        // back 버튼 눌렀을 때 player가 fullscreen 이면 원래 사이즈로 돌아오도록 함
+        if (isFullScreen) {
+            playerSizeChanger()
+        } else {
+            super.onBackPressed()
         }
-
-        // 썸네일 이미지
-        lectureViewModel.getThombnailImage()
-
-        // 임시 좋아요 아이콘
-        Glide.with(binding.root).load(R.drawable.icon_challenge_like_empty)
-            .into(binding.titleBar.favoriteIv)
     }
 
     override fun onPause() {
         super.onPause()
 
-        // 앱 포커스를 잃을 때 pause
+        // 앱 포커스를 잃을 때 player pause
         lecturePlayer.pause()
     }
 }
