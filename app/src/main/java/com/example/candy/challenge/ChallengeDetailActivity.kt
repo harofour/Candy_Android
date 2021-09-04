@@ -55,9 +55,10 @@ class ChallengeDetailActivity: AppCompatActivity() {
         challengeId = intent.getIntExtra("challengeId", -1)
 
         // lectureId 전달받기 / api 수정되면 작업 이어서 하기
-        lectureId = 1
+        lectureId = intent.getIntExtra("lectureId", -1)
+        Log.d("api test check", "lectureId : ${lectureId}")
 
-        //
+
 
         Toast.makeText(this,"challengeId = ${challengeId}", Toast.LENGTH_SHORT).show()
 

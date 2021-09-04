@@ -12,5 +12,6 @@ data class Challenge(
     @SerializedName("requiredScore") val requiredScore: Int,
     @SerializedName("totalScore") val totalScore: Int,
     @SerializedName("title") val title: String,
-    @SerializedName("subTitle") val subTitle: String
+    @SerializedName("subTitle") val subTitle: String,
+    @SerializedName("lectureId") val lectureId: Int
 ): Parcelable

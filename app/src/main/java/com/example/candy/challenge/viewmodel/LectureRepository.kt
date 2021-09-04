@@ -66,7 +66,7 @@ class LectureRepository {
             val response = challengeApi.loadVideo(CurrentUser.userToken!!, reqData)
             if (response.isSuccessful) {
                 Log.d(Tag, "loadVideo() success/ ${response.body()}")
-                response.body()!!.lecturesUrl[0]
+                response.body()!!.lectureUrl
             } else {
                 Log.d(Tag, "loadVideo() fail/ ${response.message()}")
                 null

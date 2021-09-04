@@ -111,7 +111,7 @@ class LikeChallengeRecyclerAdapter(
     }
 
     fun addLoading(){
-        dataSet.add(Challenge(-9999," ",false,0,0," "," "))
+        dataSet.add(Challenge(-9999," ",false,0,0," "," ", -1))
 
         notifyItemInserted(dataSet.lastIndex)
         //notifyDataSetChanged()
