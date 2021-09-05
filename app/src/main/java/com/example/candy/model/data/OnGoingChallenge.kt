@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class OnGoingChallenge(
     @SerializedName("challengeId") val challengeId: Int,
-    @SerializedName("lecturesId") val lecturesId: ArrayList<Int>?,
+    @SerializedName("lecturesId") val lecturesId: Int,
     @SerializedName("category") var category: String,
     @SerializedName("title") val title: String,
     @SerializedName("subTitle") val subTitle: String,

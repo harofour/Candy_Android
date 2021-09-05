@@ -85,6 +85,7 @@ class PossibleFragment: Fragment() {
                             // 챌린지 선택 시 해당 챌린지 소개 화면으로 이동
                             val intent = Intent(activity, ChallengeDetailActivity::class.java)
                             intent.putExtra("challengeId", it.challengeId)
+                            intent.putExtra("lectureId", it.lectureId)
                             startActivity(intent)
 
                         }

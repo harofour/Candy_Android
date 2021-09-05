@@ -12,8 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Candy"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.ProblemActivity"></activity>
-        <activity android:name=".challenge.ChallengeLectureActivity"></activity>
+        <activity
+            android:name=".challenge.ChallengeLectureActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,10 +29,10 @@
         <activity android:name=".activity.FindPasswordActivity" />
         <activity android:name=".activity.ResetPasswordActivity" />
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.SolvingProblemActivity" >
-        </activity>
-        <activity android:name=".activity.MarkingProblemActivity"/>
-        <activity android:name=".challenge.ChallengeDetailActivity"/>
+        <activity android:name=".activity.ProblemActivity" />
+        <activity android:name=".activity.SolvingProblemActivity" />
+        <activity android:name=".activity.MarkingProblemActivity" />
+        <activity android:name=".challenge.ChallengeDetailActivity" />
     </application>
 
 </manifest>

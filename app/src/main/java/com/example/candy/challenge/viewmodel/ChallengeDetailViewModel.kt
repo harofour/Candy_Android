@@ -105,9 +105,9 @@ class ChallengeDetailViewModel(
         challengeRepository.loadVideo(CurrentUser.userToken!!, challengeId, lectureId).subscribe(
                 {
                   Log.d("api test check", "load video success!!")
-                    videoUrl.postValue(it.lecturesUrl.get(0))
+                    videoUrl.postValue(it.lectureUrl)
                     challengeDetailVideoLoadProgressbar.postValue(false)
-                    Log.d("api test check", "video url : ${it.lecturesUrl.get(0)}")
+                    Log.d("api test check", "video url : ${it.lectureUrl}")
                 }
                 ,{
                     throwable -> Log.d("api test check", "load video fail!! : " + throwable.message)
