@@ -140,8 +140,8 @@ class SolvingProblemFragment : Fragment(), IOnItemClickInterface {
         it?.problem?.forEach {
             this.settingProblemList.add(
                 SettingProblem(
-                    it.ProblemNumber.toString(),
-                    "Q${it.ProblemNumber}.  ${it.question}",
+                    it.problemNumber.toString(),
+                    "Q${it.problemNumber}.  ${it.question}",
                     it.content,
                     it.problemId,
                     it.choiceList,

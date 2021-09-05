@@ -54,5 +54,6 @@
 
     <!--    문제 풀이-->
     <string name="challengeScore">%d점</string>
+    <string name="problemNumber">%d번</string>
 
 </resources>

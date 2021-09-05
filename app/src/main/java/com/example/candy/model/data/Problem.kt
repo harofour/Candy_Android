@@ -24,7 +24,7 @@ data class Problem(
     @SerializedName("score")
     val score: Int,
     @SerializedName("seq")
-    val ProblemNumber: Int
+    val problemNumber: Int
 )
 
 data class ChoiceDTO(
