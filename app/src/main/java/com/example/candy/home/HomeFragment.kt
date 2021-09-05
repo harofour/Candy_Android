@@ -16,8 +16,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.R
-import com.example.candy.adapter.HorizontalItemDecorator
-import com.example.candy.adapter.VerticalItemDecorator
+import com.example.candy.utils.HorizontalItemDecorator
+import com.example.candy.utils.VerticalItemDecorator
 import com.example.candy.challenge.ChallengeLectureActivity
 import com.example.candy.databinding.FragmentHomeBinding
 import com.example.candy.home.adapter.CategoryAdapter

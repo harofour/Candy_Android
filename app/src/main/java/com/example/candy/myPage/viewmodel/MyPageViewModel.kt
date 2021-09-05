@@ -1,12 +1,12 @@
-package com.example.candy.myPage
+package com.example.candy.myPage.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.candy.model.data.Candy
 import com.example.candy.model.data.History
 import com.example.candy.model.data.User
 import com.example.candy.model.data.UserInfo
+import com.example.candy.myPage.repository.MyPageRepository
 import com.example.candy.utils.RESPONSE_STATE
 
 class MyPageViewModel(application: Application) : AndroidViewModel(application) {

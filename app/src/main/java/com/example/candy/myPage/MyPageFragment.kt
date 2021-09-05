@@ -16,6 +16,7 @@ import com.example.candy.activity.LogInActivity
 import com.example.candy.databinding.FragmentMypageBinding
 import com.example.candy.model.data.Candy
 import com.example.candy.model.viewModel.SharedViewModel
+import com.example.candy.myPage.viewmodel.MyPageViewModel
 import com.example.candy.utils.CurrentUser
 
 class MyPageFragment: Fragment() {

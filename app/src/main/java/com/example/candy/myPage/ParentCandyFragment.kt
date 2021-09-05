@@ -16,10 +16,9 @@ import com.example.candy.databinding.FragmentParentCandyBinding
 import com.example.candy.model.data.Candy
 import com.example.candy.model.viewModel.SharedViewModel
 import com.example.candy.myPage.adapter.HistoryAdapter
+import com.example.candy.myPage.viewmodel.MyPageViewModel
 import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.CustomDialog
-import com.example.candy.utils.RESPONSE_STATE
-import com.example.candy.utils.Util
 
 class ParentCandyFragment : Fragment() {
     private lateinit var binding: FragmentParentCandyBinding

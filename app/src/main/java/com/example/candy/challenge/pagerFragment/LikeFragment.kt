@@ -1,6 +1,5 @@
 package com.example.candy.challenge.pagerFragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,20 +9,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.candy.adapter.HorizontalItemDecorator
-import com.example.candy.adapter.VerticalItemDecorator
+import com.example.candy.utils.HorizontalItemDecorator
 import com.example.candy.challenge.ChallengeDetailActivity
 import com.example.candy.challenge.adapter.LikeChallengeRecyclerAdapter
-import com.example.candy.challenge.adapter.PossibleChallengeRecyclerAdapter
-import com.example.candy.challenge.adapter.categoryRecyclerAdapter.ChallengeCategoryRecyclerAdapter
 import com.example.candy.challenge.adapter.categoryRecyclerAdapter.LikeChallengeCategoryRecyclerAdapter
 import com.example.candy.challenge.viewmodel.LikeChallengeViewModel
-import com.example.candy.challenge.viewmodel.PossibleChallengeViewModel
-import com.example.candy.databinding.FragmentCompleteChallengeBinding
 import com.example.candy.databinding.FragmentLikeChallengeBinding
 import com.example.candy.model.data.Challenge
 import com.example.candy.model.injection.Injection
@@ -66,7 +58,9 @@ class LikeFragment: Fragment() {
 
         likeChallengeBinding!!.recyclerLikeChallengeCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         likeChallengeBinding!!.recyclerLikeChallengeCategory.adapter = LikeChallengeCategoryRecyclerAdapter(categoryList)
-        likeChallengeBinding!!.recyclerLikeChallengeCategory.addItemDecoration(HorizontalItemDecorator(20))
+        likeChallengeBinding!!.recyclerLikeChallengeCategory.addItemDecoration(
+            HorizontalItemDecorator(20)
+        )
 
 
         // 찜 목록 리스트 recycler

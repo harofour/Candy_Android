@@ -1,10 +1,8 @@
 ﻿package com.example.candy.model.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.candy.myPage.MyPageRepository
-import kotlinx.coroutines.withTimeout
+import com.example.candy.myPage.repository.MyPageRepository
 
 class SharedViewModel : ViewModel() {
     companion object {

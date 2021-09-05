@@ -1,7 +1,6 @@
 package com.example.candy.myPage
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +12,8 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.candy.R
 import com.example.candy.databinding.FragmentUserChangeBinding
-import com.example.candy.model.data.UserInfo
 import com.example.candy.model.viewModel.SharedViewModel
-import com.example.candy.myPage.MyPageFragment.Companion.TAG
+import com.example.candy.myPage.viewmodel.MyPageViewModel
 import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.RESPONSE_STATE
 import com.example.candy.utils.Util

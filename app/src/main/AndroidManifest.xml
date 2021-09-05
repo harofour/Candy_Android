@@ -30,8 +30,6 @@
         <activity android:name=".activity.ResetPasswordActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.ProblemActivity" />
-        <activity android:name=".activity.SolvingProblemActivity" />
-        <activity android:name=".activity.MarkingProblemActivity" />
         <activity android:name=".challenge.ChallengeDetailActivity" />
     </application>
 

@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.candy.R
 import com.example.candy.databinding.FragmentPwChangeBinding
+import com.example.candy.myPage.viewmodel.MyPageViewModel
 import com.example.candy.utils.CurrentUser
 import com.example.candy.utils.RESPONSE_STATE
 import com.example.candy.utils.Util

@@ -1,4 +1,4 @@
-package com.example.candy.adapter
+package com.example.candy.utils
 
 import android.graphics.Rect
 import android.view.View

@@ -9,15 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.candy.adapter.HorizontalItemDecorator
-import com.example.candy.adapter.VerticalItemDecorator
+import com.example.candy.utils.HorizontalItemDecorator
 import com.example.candy.challenge.ChallengeDetailActivity
-import com.example.candy.challenge.adapter.LikeChallengeRecyclerAdapter
 import com.example.candy.challenge.adapter.PossibleChallengeRecyclerAdapter
 import com.example.candy.challenge.adapter.categoryRecyclerAdapter.ChallengeCategoryRecyclerAdapter
 import com.example.candy.challenge.viewmodel.PossibleChallengeViewModel
@@ -66,7 +61,9 @@ class PossibleFragment: Fragment() {
 
         possibleChallengeBinding!!.recyclerPossibleChallengeCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         possibleChallengeBinding!!.recyclerPossibleChallengeCategory.adapter = ChallengeCategoryRecyclerAdapter(categoryList)
-        possibleChallengeBinding!!.recyclerPossibleChallengeCategory.addItemDecoration(HorizontalItemDecorator(20))
+        possibleChallengeBinding!!.recyclerPossibleChallengeCategory.addItemDecoration(
+            HorizontalItemDecorator(20)
+        )
 
 
 

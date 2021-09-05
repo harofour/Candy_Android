@@ -1,4 +1,4 @@
-﻿package com.example.candy.myPage
+﻿package com.example.candy.myPage.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
