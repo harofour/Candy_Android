@@ -117,8 +117,6 @@ class UserChangeFragment : Fragment() {
 
     }
 
-    // 비밀번호 확인 - API 완성 되기 전까지 임시
-    // TODO:: API 완성되면 수정 MainActivity 함께 수정
     private fun verifyPassword(): Boolean {
         return binding.labelEditPw.text.toString() == sharedViewModel.getUserPw()
     }

@@ -13,3 +13,9 @@ data class ScoredScoreResponse(
     @SerializedName("response") val response: ScoredScore,
     @SerializedName("error") val error: Error
 )
+
+data class ProblemSolveResponse(
+    @SerializedName("success") val isSuccess: Boolean,
+    @SerializedName("response") val response: TotalScore,
+    @SerializedName("error") val error: Error
+)
