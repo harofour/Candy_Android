@@ -15,7 +15,7 @@ class ChallengeListRepositoryImpl(
     private val context: Context
 ): ChallengeListRepository {
 
-
+    // 도전 가능 챌린지 리스트 조회
     override suspend fun searchPossibleChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<Challenge>? {
         // 통신코드 작성
         val request = challengeApi.getPossibleChallengeList(apiKey, lastChallengeId, size)
@@ -32,6 +32,7 @@ class ChallengeListRepositoryImpl(
         }
    }
 
+    // 챌린지 찜하기
     override suspend fun touchLikeBtn(apiKey: String, challengeId: Int, previousState: Boolean): Boolean {
         val request = challengeApi.touchLikeBtn(apiKey, challengeId)
 
@@ -51,6 +52,7 @@ class ChallengeListRepositoryImpl(
         }
     }
 
+    // 찜한 챌린지 조회
     override suspend fun searchLikeChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<Challenge>? {
         // 통신코드 작성
         val request = challengeApi.getLikeChallengeList(apiKey, lastChallengeId, size)
@@ -67,6 +69,24 @@ class ChallengeListRepositoryImpl(
         }
     }
 
+    // 완료 챌린지 조회
+    override suspend fun searchCompleteChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<ChallengeComplete>?{
+        // 통신코드 작성
+        val request = challengeApi.getCompletedList(apiKey, lastChallengeId, size)
+
+        if(request.isSuccessful){
+            Log.d("api test check", "like result" +  request.body().toString())
+
+            return request.body()!!.response
+        }
+        else {
+            // 실패 시
+            Toast.makeText(context, "완료 리스트 조회 오류", Toast.LENGTH_SHORT).show()
+            return null
+        }
+    }
+
+    // 챌린지 세부 정보 가져오기
     override suspend fun searchChallengeDetail(apiKey: String, challengeId: Int): ChallengeDetail? {
 
         val request = challengeApi.getChallengeDetail(apiKey, challengeId)
@@ -84,11 +104,13 @@ class ChallengeListRepositoryImpl(
         }
     }
 
+    // 학부모 캔디 개수 조회
     override fun getParentCandyAmount(apiKey: String): Single<CandyResponse2> =
         challengeApi.getParentCandyAmount(apiKey)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    // 챌린지에 캔디 할당
     override fun assignCandy(
         apiKey: String,
         challengeId: Int,
@@ -99,8 +121,12 @@ class ChallengeListRepositoryImpl(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+    // 강의 영상 url 조회
     override fun loadVideo(apiKey: String, challengeId: Int, lectrueId: Int): Single<Lecture> =
             challengeApi.loadVideoRx(apiKey, LectureCheckRequestBody(challengeId, lectrueId))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+
+
+
 }

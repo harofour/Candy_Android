@@ -7,9 +7,11 @@ interface ChallengeListRepository {
 
     suspend fun searchPossibleChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<Challenge>?
 
-    suspend fun touchLikeBtn(apiKey: String, challengeId: Int, previousState: Boolean): Boolean
+    suspend fun searchCompleteChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<ChallengeComplete>?
 
     suspend fun searchLikeChallenge(apiKey: String, lastChallengeId: Int, size: Int): ArrayList<Challenge>?
+
+    suspend fun touchLikeBtn(apiKey: String, challengeId: Int, previousState: Boolean): Boolean
 
     suspend fun searchChallengeDetail(apiKey: String, challengeId: Int): ChallengeDetail?
 

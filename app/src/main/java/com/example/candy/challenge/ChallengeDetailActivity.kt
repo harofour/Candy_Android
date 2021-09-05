@@ -28,6 +28,8 @@ class ChallengeDetailActivity: AppCompatActivity() {
     private var lectureId = -100
     private var isAssigned = false
 
+    private var IS_COMPLETE : Boolean = false
+
     private var baseUrl ="${API.BASE_URL}challenge/video/lecture/view?video_url="
     private var player: SimpleExoPlayer? = null
     private val listener = PlayerStateListener()
@@ -58,8 +60,12 @@ class ChallengeDetailActivity: AppCompatActivity() {
         // lectureId 전달받기 / api 수정되면 작업 이어서 하기
         lectureId = intent.getIntExtra("lectureId", -1)
 
+        // 완료된 챌린지 여부 전달 받기
+        IS_COMPLETE = intent.getBooleanExtra("isCompleted", false)
+
         Log.d("api test check", "challengeDetail onCreate challengeId : ${challengeId}")
         Log.d("api test check", "challengeDetail onCreate lectureId : ${lectureId}")
+        Log.d("api test check", "challengeDetail onCreate isCompleted : ${IS_COMPLETE}")
 
 
 
@@ -119,12 +125,15 @@ class ChallengeDetailActivity: AppCompatActivity() {
 
         binding.tvCandyBtn.setOnClickListener {
 
-            var dialogView = CandyAssignDialogFragment()
-            var bundle = Bundle()
-            bundle.putInt("challengeId", challengeId)
-            dialogView.arguments = bundle
-            dialogView.show(supportFragmentManager, "candy assign dialog open")
-
+            if(IS_COMPLETE == false) {
+                var dialogView = CandyAssignDialogFragment()
+                var bundle = Bundle()
+                bundle.putInt("challengeId", challengeId)
+                dialogView.arguments = bundle
+                dialogView.show(supportFragmentManager, "candy assign dialog open")
+            }
+            else
+                Toast.makeText(applicationContext, "완료된 챌린지 입니다", Toast.LENGTH_SHORT).show()
         }
 
         Log.d("api test check", "video duration2 : ${player!!.duration}")
@@ -149,17 +158,23 @@ class ChallengeDetailActivity: AppCompatActivity() {
                         .createMediaSource(MediaItem.fromUri(Uri.parse(finalVideoUrl)))
 
                 player!!.setMediaSource(mediaSource)
-                player!!.addListener(listener)
-                player!!.prepare()
-                player!!.createMessage ( {messageType: Int, payload: Any? ->
+
+                if(IS_COMPLETE == false){  // 미완료 챌린지인 경우
+                    player!!.addListener(listener)
+
+                    player!!.createMessage ( {messageType: Int, payload: Any? ->
 
                         Log.d("api test check", "time check 60000")
-                    player!!.pause()
+                        player!!.pause()
 
-                }).setLooper(Looper.getMainLooper())
-                        .setPosition(60000)  // 5초 = 5000   // 우선 5초되면 자동으로 정지된다
-                        .setDeleteAfterDelivery(false)
-                        .send()
+                    }).setLooper(Looper.getMainLooper())
+                            .setPosition(60000)  // 5초 = 5000   // 우선 5초되면 자동으로 정지된다
+                            .setDeleteAfterDelivery(false)
+                            .send()
+                }
+
+                player!!.prepare()
+
                 //player!!.play()
 
                 Log.d("api test check", "video duration : ${player!!.duration}")

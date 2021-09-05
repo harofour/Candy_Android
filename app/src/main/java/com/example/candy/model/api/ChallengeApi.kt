@@ -22,13 +22,21 @@ interface ChallengeApi {
         @Path("challengeId") challengeId: Int
     ): Response<ChallengeLike>
 
-    // 찜한 리스트 조회
+    // 찜한 챌린지 리스트 조회
     @GET("challenge/likeList")
     suspend fun getLikeChallengeList(
         @Header("api_key") userToken: String,
         @Query("lastChallengeId") lastChallengeId: Int,
         @Query("size") size: Int
     ): Response<ChallengeList>
+
+    // 완료 챌린지 리스트 조회
+    @GET("challenge/completedList")
+    suspend fun getCompletedList(
+            @Header("api_key") userToken: String,
+            @Query("lastChallengeId") lastChallengeId: Int,
+            @Query("size") size: Int
+    ): Response<ChallengeCompleteList>
 
     // 소개 정보 받아오기
     @GET("challenge/{challengeId}/detail")
@@ -67,6 +75,7 @@ interface ChallengeApi {
         @Query("lastChallengeId") lastChallengeId: Int,
         @Query("size") size: Int
     ): Response<OnGoingChallengeResponse>
+
 
     // 동영상 조회
     @POST("challenge/video/lecture/check")

@@ -45,7 +45,8 @@ class CandyAssignDialogFragment: DialogFragment() {
         var bundle = arguments
          Challenge_Id = bundle!!.getInt("challengeId", Challenge_Id)
 
-        Toast.makeText(context,"challengeId when dialog open : ${Challenge_Id}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context,"challengeId when dialog open : ${Challenge_Id}", Toast.LENGTH_SHORT).show()
+        Log.d("api test check", "challengeId when dialog open ${Challenge_Id}")
 
         return view
     }

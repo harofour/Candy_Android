@@ -38,3 +38,19 @@ data class LectureCheckRequestBody(
         @SerializedName("lectureId") val lectureId : Int
 )
 
+data class ChallengeComplete(
+        @SerializedName("challengeId") val challengeId: Int,
+        @SerializedName("category") val category: String,
+        @SerializedName("requiredScore") val requiredScore: Int,
+        @SerializedName("totalScore") val totalScore: Int,
+        @SerializedName("title") val title: String,
+        @SerializedName("subTitle") val subTitle: String,
+        @SerializedName("lectureId") val lectureId: Int,
+        @SerializedName("assignedCandy") val assignedCandy: Int
+)
+
+data class ChallengeCompleteList(
+        @SerializedName("success") val isSuccess: Boolean,
+        @SerializedName("response") val response: ArrayList<ChallengeComplete>
+)
+

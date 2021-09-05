@@ -87,6 +87,7 @@ class PossibleFragment: Fragment() {
                             val intent = Intent(activity, ChallengeDetailActivity::class.java)
                             intent.putExtra("challengeId", it.challengeId)
                             intent.putExtra("lectureId", it.lectureId)
+                            intent.putExtra("isCompleted", false)
                             startActivity(intent)
 
                         }
@@ -125,6 +126,9 @@ class PossibleFragment: Fragment() {
                 possibleChallengeBinding!!.progressbar.visibility = View.GONE
             }
         })
+
+
+
 
         // 리사클러뷰 무한스크롤 구현
         possibleChallengeBinding!!.recyclerPossibleChallenge.addOnScrollListener(object: RecyclerView.OnScrollListener(){

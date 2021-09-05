@@ -86,6 +86,7 @@ class LikeFragment: Fragment() {
                             val intent = Intent(activity, ChallengeDetailActivity::class.java)
                             intent.putExtra("challengeId", it.challengeId)
                             intent.putExtra("lectureId", it.lectureId)
+                            intent.putExtra("isCompleted", false)
                             startActivity(intent)
                         }
                         )
