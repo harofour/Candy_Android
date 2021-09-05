@@ -24,12 +24,26 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="16">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_horizontal_20"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.2"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2_horizontal_80"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.8"/>
+
         <TextView
             android:id="@+id/tv_category_name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="10dp"
             android:autoSizeMinTextSize="2sp"
             android:autoSizeTextType="uniform"
             android:background="@drawable/main_category_rounded_1"
@@ -37,20 +51,23 @@
             android:maxLines="1"
             android:padding="10dp"
             android:text="영어"
-
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guideline2_horizontal_80"
+            app:layout_constraintTop_toBottomOf="@id/guideline2_horizontal_20"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
            />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"/>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="34"
+            android:layout_weight="32"
             android:orientation="vertical"
             android:gravity="center_vertical">
             <View
@@ -64,17 +81,22 @@
                 android:layout_weight="1.2"
                 tools:text="챌린지명"
                 android:textStyle="bold"
-                android:autoSizeMinTextSize="2sp"
-                android:autoSizeTextType="uniform"/>
+                android:autoSizeMinTextSize="10sp"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"/>
             <TextView
                 android:id="@+id/tv_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 tools:text="부제목"
-                android:autoSizeMinTextSize="2sp"
+                android:autoSizeMinTextSize="8sp"
                 android:autoSizeTextType="uniform"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -105,6 +127,7 @@
                android:layout_height="0dp"
                android:layout_weight="2"
                android:src="@drawable/icon_challenge_like_empty"
+               android:scaleType="fitCenter"
                />
             <View
                 android:layout_width="match_parent"
@@ -129,7 +152,8 @@
                 android:text="커트 라인"
                 android:gravity="center"
                 android:autoSizeMinTextSize="2sp"
-                android:autoSizeTextType="uniform"/>
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"/>
 
             <TextView
                 android:id="@+id/tv_required_score"
@@ -141,6 +165,7 @@
                 android:gravity="center"
                 android:textColor="#FBCFCF"
                 android:textStyle="bold"
+                android:maxLines="1"
                 tools:text="80" />
 
             <View
