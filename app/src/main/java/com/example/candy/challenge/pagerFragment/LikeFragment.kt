@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.candy.utils.HorizontalItemDecorator
 import com.example.candy.challenge.ChallengeDetailActivity
 import com.example.candy.challenge.adapter.LikeChallengeRecyclerAdapter
+import com.example.candy.challenge.adapter.PossibleChallengeRecyclerAdapter
+import com.example.candy.challenge.adapter.categoryRecyclerAdapter.ChallengeCategoryRecyclerAdapter
 import com.example.candy.challenge.adapter.categoryRecyclerAdapter.LikeChallengeCategoryRecyclerAdapter
 import com.example.candy.challenge.viewmodel.LikeChallengeViewModel
 import com.example.candy.databinding.FragmentLikeChallengeBinding
@@ -26,6 +28,9 @@ class LikeFragment: Fragment() {
     private val categoryList = arrayListOf<String>()  // 카테고리
 
     private lateinit var viewModel: LikeChallengeViewModel
+
+    // 카테고리
+    private var CurrentCategory = "전체"
 
   //  private lateinit var navController: NavController // 챌린지 선택 시 챌린지 소개 화면으로 넘어가기 위함
 
@@ -49,15 +54,16 @@ class LikeFragment: Fragment() {
        // navController = Navigation.findNavController(view)
 
         // 카테고리 recycler
-        categoryList.add("ALL")
+        /*categoryList.add("ALL")
         categoryList.add("영어")
         categoryList.add("수학")
         categoryList.add("국어")
         categoryList.add("과학")
-        categoryList.add("한국사")
+        categoryList.add("한국사")*/
 
         likeChallengeBinding!!.recyclerLikeChallengeCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        likeChallengeBinding!!.recyclerLikeChallengeCategory.adapter = LikeChallengeCategoryRecyclerAdapter(categoryList)
+        likeChallengeBinding!!.recyclerLikeChallengeCategory.adapter = LikeChallengeCategoryRecyclerAdapter(categoryList,
+                { category -> onCategoryItemClicked(category) })
         likeChallengeBinding!!.recyclerLikeChallengeCategory.addItemDecoration(
             HorizontalItemDecorator(20)
         )
@@ -93,21 +99,18 @@ class LikeFragment: Fragment() {
             }
         }).get(LikeChallengeViewModel::class.java)
 
+        // 카테고리 가져오기
+        viewModel.getCategories().observe(viewLifecycleOwner){ data ->
+            //update ui
+            Log.d("api test check", "like getCategories / $data")
+            (likeChallengeBinding!!.recyclerLikeChallengeCategory.adapter as LikeChallengeCategoryRecyclerAdapter).setCategories(data)
+        }
+
         // 찜 챌린지 리스트 observe
         viewModel.likeChallengeLiveData.observe(viewLifecycleOwner,{
             (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).updateList(it)
             Log.d("api test check", "updateList called : update recycler list")
 
-          /*  (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).
-            notifyItemRangeChanged((page-1) * it.size, it.size)
-            Log.d("api test check", "notifyItemRangeChanged page : ${page}  it.size: ${it.size}") */
-
-            // 마지막 목록이면 더 이상 데이터가 없으므로 progressbar 제거해주기!!
-            /*if(it.size == 0){
-                (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).deleteLoading()
-                Log.d("api test check","더 이상 데이터 없음")
-                No_More_Data = true
-            }*/
         })
 
         // progressbar observe
@@ -159,7 +162,7 @@ class LikeFragment: Fragment() {
                     page++
 
                     Log.d("api test check", "lieke recycler 스크롤 마지막 호출 : lastChallengeId : ${lastChallengeId}")
-                    viewModel.getAllLikeChallengeList(lastChallengeId, 10, false)
+                    viewModel.getAllLikeChallengeList(lastChallengeId, 10, false, CurrentCategory)
 
 
 
@@ -216,18 +219,29 @@ class LikeFragment: Fragment() {
         Log.d("fragment check", "LikeFragment onActivityCreated")
     }
 
+    // 카테고리 선택 시 데이터를 다시 로드.
+    private fun onCategoryItemClicked(category: String) {
+        Log.d("api test check", "CategoryItemClicked() category : $category ")
+        CurrentCategory = category
+
+        page = 1
+
+        (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).dataSetClear()
+        viewModel.getAllLikeChallengeList(100000000, 10, true, CurrentCategory)
+
+    }
 
     override fun onResume() {
         super.onResume()
-        Log.d("api test check", "page : ${page}")
         Log.d("fragment check","LikeFragment onResume")
+        Log.d("api test check", "LikeFragment Current Category $CurrentCategory")
 
         page = 1
         No_More_Data = false
 
 
         (likeChallengeBinding!!.recyclerLikeChallenge.adapter as LikeChallengeRecyclerAdapter).dataSetClear()
-        viewModel.getAllLikeChallengeList(100000000, 10, true)
+        viewModel.getAllLikeChallengeList(100000000, 10, true, CurrentCategory)
     }
 
 

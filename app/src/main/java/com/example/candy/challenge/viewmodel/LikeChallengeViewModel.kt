@@ -1,9 +1,11 @@
 package com.example.candy.challenge.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.candy.home.HomeRepository
 import com.example.candy.model.data.Challenge
 import com.example.candy.model.repository.ChallengeListRepository
 import com.example.candy.utils.CurrentUser
@@ -12,6 +14,8 @@ import kotlinx.coroutines.launch
 class LikeChallengeViewModel(
     private val challengeRepository: ChallengeListRepository
 ): ViewModel() {
+
+    private val homeRepository = HomeRepository()
 
     val likeChallengeLiveData = MutableLiveData<ArrayList<Challenge>>()
     private var likeChallengeDataList : ArrayList<Challenge>? = null// 외부에서 수정 불가
@@ -24,7 +28,7 @@ class LikeChallengeViewModel(
     var emptyTextVisible = MutableLiveData<Boolean>()  // 찜 목록 0개 인 경우 텍스트 뷰 visible
 
 
-    fun getAllLikeChallengeList(lastChallengeId: Int, size: Int, initial: Boolean){
+    fun getAllLikeChallengeList(lastChallengeId: Int, size: Int, initial: Boolean, category: String){
         viewModelScope.launch {
 
             if(initial == true){
@@ -38,7 +42,24 @@ class LikeChallengeViewModel(
             Log.d("api test check", "getAllLikeChallengeList 호출")
             Log.d("api test check","찜 리스트 response list 수 : ${likeChallengeDataList?.size}")
             if(likeChallengeDataList != null){
-                likeChallengeLiveData.value = likeChallengeDataList!!
+
+                if(likeChallengeDataList!!.size > 0){
+                    if(category == "전체")
+                        likeChallengeLiveData.value = likeChallengeDataList!!
+                    else{
+                        var likeChallengeDataListbyCategory : ArrayList<Challenge> = ArrayList()
+                        likeChallengeDataList!!.forEach{ it ->
+                            var transCategory =  translateCategory(it.category)
+                            if(transCategory == category)
+                                likeChallengeDataListbyCategory.add(it)
+                        }
+                        likeChallengeLiveData.value = likeChallengeDataListbyCategory
+                    }
+                }
+                else {
+                    likeChallengeLiveData.value = likeChallengeDataList!!
+                }
+
                 progressVisible.postValue(false)
 
                 totalLikeList += likeChallengeDataList!!.size
@@ -63,6 +84,21 @@ class LikeChallengeViewModel(
             totalLikeList -= 1
             totalLikeListLiveData.postValue(totalLikeList)
             Log.d("api test check", "현재 찜 개수 : ${totalLikeList}")
+        }
+    }
+
+
+    fun getCategories(): LiveData<ArrayList<String>> {
+        return homeRepository.getCategories()
+    }
+
+
+    private fun translateCategory(str: String): String {
+        return when (str) {
+            "KOREAN" -> "한국어"
+            "ENGLISH" -> "영어"
+            "MATH" -> "수학"
+            else -> "??"
         }
     }
 

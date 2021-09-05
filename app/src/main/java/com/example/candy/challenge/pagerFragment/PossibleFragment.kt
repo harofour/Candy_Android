@@ -30,6 +30,9 @@ class PossibleFragment: Fragment() {
     //private lateinit var possibleChallengeList : List<Challenge>
     private lateinit var viewModel: PossibleChallengeViewModel
 
+    // 카테고리
+    private var CurrentCategory = "전체"
+
     //private lateinit var navController: NavController // 챌린지 선택 시 챌린지 소개 화면으로 넘어가기 위함
 
     private var page = 1 // 리스트 10개가 1page
@@ -52,15 +55,16 @@ class PossibleFragment: Fragment() {
        // navController = Navigation.findNavController(view)
 
         // 카테고리 recycler
-        categoryList.add("ALL")
+       /* categoryList.add("ALL")
         categoryList.add("영어")
         categoryList.add("수학")
         categoryList.add("국어")
         categoryList.add("과학")
-        categoryList.add("한국사")
+        categoryList.add("한국사") */
 
         possibleChallengeBinding!!.recyclerPossibleChallengeCategory.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        possibleChallengeBinding!!.recyclerPossibleChallengeCategory.adapter = ChallengeCategoryRecyclerAdapter(categoryList)
+        possibleChallengeBinding!!.recyclerPossibleChallengeCategory.adapter = ChallengeCategoryRecyclerAdapter(categoryList,
+                { category -> onCategoryItemClicked(category) })
         possibleChallengeBinding!!.recyclerPossibleChallengeCategory.addItemDecoration(
             HorizontalItemDecorator(20)
         )
@@ -98,20 +102,17 @@ class PossibleFragment: Fragment() {
             }
         }).get(PossibleChallengeViewModel::class.java)
 
+
+        // 카테고리 가져오기
+        viewModel.getCategories().observe(viewLifecycleOwner){ data ->
+            //update ui
+            Log.d("api test check", "possible getCategories / $data")
+            (possibleChallengeBinding!!.recyclerPossibleChallengeCategory.adapter as ChallengeCategoryRecyclerAdapter).setCategories(data)
+        }
+
         // 도전 가능 챌린지 리스트 observe
         viewModel.possibleChallengeLiveData.observe(viewLifecycleOwner,{
             (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).updateList(it)
-
-            /*
-            (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).
-                    notifyItemRangeChanged((page-1) * it.size, it.size)
-
-            // 마지막 목록이면 더 이상 데이터가 없으므로 progressbar 제거해주기!!
-            if(it.size == 0){
-                (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).deleteLoading()
-                No_More_Data = true
-            }
-            */
 
         })
 
@@ -152,7 +153,7 @@ class PossibleFragment: Fragment() {
                     page++
 
                     Log.d("api test check", "possible recycler 스크롤 마지막 호출 : lastChallengeId : ${lastChallengeId}")
-                    viewModel.getAllPossibleChallengeList(lastChallengeId, 10, false)
+                    viewModel.getAllPossibleChallengeList(lastChallengeId, 10, false, CurrentCategory)
 
 
 
@@ -188,15 +189,28 @@ class PossibleFragment: Fragment() {
 
     }
 
+    // 카테고리 선택 시 데이터를 다시 로드.
+    private fun onCategoryItemClicked(category: String) {
+        Log.d("api test check", "CategoryItemClicked() category : $category ")
+        CurrentCategory = category
+
+        page = 1
+
+        (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).dataSetClear()
+        viewModel.getAllPossibleChallengeList(100000000, 10, true, CurrentCategory)
+
+    }
+
     override fun onResume() {
         super.onResume()
         Log.d("fragment check","PossibleFragment onResume")
+        Log.d("api test check", "PossibleFragment Current Category $CurrentCategory")
 
         page = 1
         No_More_Data = false
 
         (possibleChallengeBinding!!.recyclerPossibleChallenge.adapter as PossibleChallengeRecyclerAdapter).dataSetClear()
-        viewModel.getAllPossibleChallengeList(100000000, 10, true)
+        viewModel.getAllPossibleChallengeList(100000000, 10, true, CurrentCategory)
     }
 
     override fun onDestroyView() {

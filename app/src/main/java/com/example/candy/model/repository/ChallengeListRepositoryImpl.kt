@@ -72,12 +72,12 @@ class ChallengeListRepositoryImpl(
         val request = challengeApi.getChallengeDetail(apiKey, challengeId)
 
         if(request.isSuccessful){
-            Log.d("api test", "get challenge detail success")
-            Toast.makeText(context, "챌린지 세부 정보 가져오기 성공", Toast.LENGTH_SHORT).show()
+            Log.d("api test check", "챌린지 세부 정보 성공 get challenge detail success")
+            //Toast.makeText(context, "챌린지 세부 정보 가져오기 성공", Toast.LENGTH_SHORT).show()
             return  request.body()!!.response
         }
         else{
-            Log.d("api test", "get challenge detail fail")
+            Log.d("api test check", "get challenge detail fail")
             // 실패 시
             Toast.makeText(context, "챌린지 세부 정보 오류", Toast.LENGTH_SHORT).show()
             return null

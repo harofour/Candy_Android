@@ -10,9 +10,10 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/challenge_category_recyler_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/challenge_cateogry_layout_style">
+        android:background="@drawable/rect_item_unselected">
 
 
     <androidx.constraintlayout.widget.Guideline

@@ -8,8 +8,11 @@ import com.example.candy.databinding.ItemChallengeRecyclerviewCategoryBinding
 import com.example.candy.databinding.ItemHomeRecyclerviewCategoryBinding
 
 class LikeChallengeCategoryRecyclerAdapter(
-    private var dataSet: List<String>
+    private var dataSet: List<String>,
+    private val onItemClicked: (category: String) -> Unit
 ): RecyclerView.Adapter<LikeChallengeCategoryRecyclerAdapter.MyViewHolder>(){
+
+    private var selectedPosition = 0
 
     class MyViewHolder(val binding: ItemChallengeRecyclerviewCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {  // 어떤 view 에서 생성된 바인딩 인지 root에 담고 있다
@@ -36,9 +39,18 @@ class LikeChallengeCategoryRecyclerAdapter(
         val categoryName = dataSet[position]
         myViewHolder.binding.tvCategoryChallenge.text = categoryName
 
+        // recyclerview item 배경색 변경
+        if (selectedPosition == position) {
+            myViewHolder.binding.challengeCategoryRecylerLayout.setBackgroundResource(R.drawable.rect_item_selected)
+        } else {
+            myViewHolder.binding.challengeCategoryRecylerLayout.setBackgroundResource(R.drawable.rect_item_unselected)
+        }
+
         // 카테고리 클릭 시
         myViewHolder.binding.root.setOnClickListener {
+            updateItemColor(position)
 
+            onItemClicked(dataSet[position])
         }
     }
 
@@ -46,6 +58,18 @@ class LikeChallengeCategoryRecyclerAdapter(
         return dataSet.size
     }
 
+    fun updateItemColor(pos: Int){
+        var previousPos = selectedPosition
+        selectedPosition = pos
+
+        notifyItemChanged(previousPos)
+        notifyItemChanged(selectedPosition)
+    }
+
+    fun setCategories(categories: List<String>) {
+        this.dataSet = categories
+        notifyDataSetChanged()
+    }
     
 
 

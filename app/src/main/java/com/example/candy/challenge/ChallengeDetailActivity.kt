@@ -57,11 +57,14 @@ class ChallengeDetailActivity: AppCompatActivity() {
 
         // lectureId 전달받기 / api 수정되면 작업 이어서 하기
         lectureId = intent.getIntExtra("lectureId", -1)
-        Log.d("api test check", "lectureId : ${lectureId}")
+
+        Log.d("api test check", "challengeDetail onCreate challengeId : ${challengeId}")
+        Log.d("api test check", "challengeDetail onCreate lectureId : ${lectureId}")
 
 
 
-        Toast.makeText(this, "challengeId = ${challengeId}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, "challengeId = ${challengeId}", Toast.LENGTH_SHORT).show()
+
 
         viewModel.category.observe(this, {
             binding.tvCategory.text = it
@@ -150,11 +153,11 @@ class ChallengeDetailActivity: AppCompatActivity() {
                 player!!.prepare()
                 player!!.createMessage ( {messageType: Int, payload: Any? ->
 
-                        Log.d("api test check", "time check 5000")
+                        Log.d("api test check", "time check 60000")
                     player!!.pause()
 
                 }).setLooper(Looper.getMainLooper())
-                        .setPosition(5000)  // 5초 = 5000   // 우선 5초되면 자동으로 정지된다
+                        .setPosition(60000)  // 5초 = 5000   // 우선 5초되면 자동으로 정지된다
                         .setDeleteAfterDelivery(false)
                         .send()
                 //player!!.play()
@@ -208,14 +211,16 @@ class ChallengeDetailActivity: AppCompatActivity() {
             // 상태가 변할 시 호출  정지->재생 or 재생 -> 정지 일때 현재 위치가 5초 이상이면 처음으로 되돌아 간다
             if(isPlaying){
                 Log.d("video check", "playing")
-                if(player!!.currentPosition >= 5000){
+                if(player!!.currentPosition >= 60000){
                     player!!.seekTo(0)
+                    Toast.makeText(applicationContext,"미리보기 강의는 1분까지 시청 가능합니다", Toast.LENGTH_SHORT).show()
                 }
             }
             else{
                 Log.d("video check", "not playing / current position ${player!!.currentPosition}")
-                if(player!!.currentPosition >= 5000){
+                if(player!!.currentPosition >= 60000){
                     player!!.seekTo(0)
+                    Toast.makeText(applicationContext,"미리보기 강의는 1분까지 시청 가능합니다", Toast.LENGTH_SHORT).show()
                 }
             }
         }
