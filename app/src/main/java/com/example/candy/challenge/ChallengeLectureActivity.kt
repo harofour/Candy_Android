@@ -138,7 +138,7 @@ class ChallengeLectureActivity : AppCompatActivity() {
         // 챌린지 관련
         with(challenge) {
             binding.tvCategory.text = category
-            binding.tvLevel.text = "2"      // ?
+            binding.tvLevel.text = level.toString()
             binding.tvCandy.text = assignedCandy.toString()
             binding.tvRequiredScore.text = requiredScore.toString()
             binding.tvCurrentScore.text = totalScore.toString()

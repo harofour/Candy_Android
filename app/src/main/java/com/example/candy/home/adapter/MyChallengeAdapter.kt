@@ -81,7 +81,7 @@ class MyChallengeAdapter(
     fun addLoading() {
         if (challenges.isEmpty() || challenges.last().challengeId >= 0) {
             Log.d("addLoading()", "called")
-            challenges.add(OnGoingChallenge(-1, -1, "", "", "", 1, 1, 1, false))
+            challenges.add(OnGoingChallenge(-1, -1, "", "", "", -1, -1, -1,-1, false))
             notifyItemInserted(challenges.lastIndex)
         }
     }

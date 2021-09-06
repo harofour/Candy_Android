@@ -14,6 +14,7 @@ data class OnGoingChallenge(
     @SerializedName("totalScore") val totalScore: Int,
     @SerializedName("requiredScore") val requiredScore: Int,
     @SerializedName("assignedCandy") val assignedCandy: Int,
+    @SerializedName("level") val level: Int,
     @SerializedName("complete") val complete: Boolean = false
 ) : Parcelable
 
