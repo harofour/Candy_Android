@@ -54,7 +54,7 @@ interface CandyApi {
     ) : Call<ApiAnyResponse>
 
     // 캔디 배정 취소
-    @POST("candy/attain")
+    @POST("candy/cancel")
     suspend fun cancelCandy(
         @Header("api_key")userToken: String,
         @Body cancelCandy: HashMap<String,Any>
