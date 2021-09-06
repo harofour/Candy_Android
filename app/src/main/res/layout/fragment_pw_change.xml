@@ -15,7 +15,6 @@
             layout="@layout/view_titlebar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_constraintBottom_toTopOf="@+id/top_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/top_layout"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
             android:paddingHorizontal="30dp"
@@ -35,7 +34,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textFieldCurrentPw"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:hint="@string/currentPw"
                 app:boxBackgroundColor="@color/white"
                 app:endIconMode="password_toggle"
@@ -57,14 +56,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textFieldNewPw"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:hint="@string/newPw"
                 app:boxBackgroundColor="@color/white"
                 app:endIconMode="password_toggle"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/textFieldVerifyPw"
-                app:layout_constraintEnd_toEndOf="@+id/textFieldCurrentPw"
-                app:layout_constraintStart_toStartOf="@+id/textFieldCurrentPw"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textFieldCurrentPw">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -79,15 +78,15 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textFieldVerifyPw"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:hint="@string/verifyNewPw"
                 app:boxBackgroundColor="@color/white"
                 app:endIconMode="password_toggle"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/change_pw_btn"
-                app:layout_constraintEnd_toEndOf="@+id/textFieldNewPw"
-                app:layout_constraintStart_toStartOf="@+id/textFieldNewPw"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textFieldNewPw">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -103,12 +102,13 @@
                 android:id="@+id/change_pw_btn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
                 android:text="@string/changePw"
                 android:textColor="#F874AB"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textFieldVerifyPw"
-                app:layout_constraintStart_toStartOf="@+id/textFieldVerifyPw"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textFieldVerifyPw"
                 app:strokeColor="#FDB1D8" />
 
@@ -118,7 +118,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/bottom_layout"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="30dp"
             android:paddingHorizontal="30dp"
@@ -130,7 +130,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textFieldParentPw"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:hint="@string/_2"
                 app:boxBackgroundColor="@color/white"
@@ -153,15 +153,15 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textFieldNewParentPw"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:hint="@string/_new2"
                 app:boxBackgroundColor="@color/white"
                 app:endIconMode="password_toggle"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/textFieldVerifyParentPw"
-                app:layout_constraintEnd_toEndOf="@+id/textFieldParentPw"
-                app:layout_constraintStart_toStartOf="@+id/textFieldParentPw"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textFieldParentPw">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -176,15 +176,15 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textFieldVerifyParentPw"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginVertical="5dp"
                 android:hint="@string/_verifyNew2"
                 app:boxBackgroundColor="@color/white"
                 app:endIconMode="password_toggle"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toTopOf="@+id/change_parent_pw_btn"
-                app:layout_constraintEnd_toEndOf="@+id/textFieldNewParentPw"
-                app:layout_constraintStart_toStartOf="@+id/textFieldNewParentPw"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textFieldNewParentPw">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -200,12 +200,13 @@
                 android:id="@+id/change_parent_pw_btn"
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
                 android:text="@string/_change2"
                 android:textColor="#F874AB"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/textFieldVerifyParentPw"
-                app:layout_constraintStart_toStartOf="@+id/textFieldVerifyParentPw"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textFieldVerifyParentPw"
                 app:strokeColor="#FDB1D8" />
         </androidx.constraintlayout.widget.ConstraintLayout>
