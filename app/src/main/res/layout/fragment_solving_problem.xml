@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="problem"
             type="com.example.candy.model.data.SettingProblem" />
@@ -95,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:hint="@{problem.question}"
+                android:textSize="20sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -104,6 +106,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="40dp"
                 android:text="@{problem.content}"
+                android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@+id/problemTitleTV" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -117,6 +120,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="답 : "
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -126,6 +130,7 @@
                     android:id="@+id/problemAnswerET"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

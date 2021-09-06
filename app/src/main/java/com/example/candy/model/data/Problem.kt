@@ -4,23 +4,23 @@ import com.google.gson.annotations.SerializedName
 
 data class Problem(
     @SerializedName("answer")
-    val answer: String,
+    val answer: String?,
     @SerializedName("choiceDtoList")
-    val choiceList: List<ChoiceDTO>,
+    val choiceList: List<ChoiceDTO>?,
     @SerializedName("content")
-    val content: String,
+    val content: String?,
     @SerializedName("modifiedDate")
-    val modifiedDate: String,
+    val modifiedDate: String?,
     @SerializedName("multiple")
-    val isMultipleChoice: Boolean,
+    val isMultipleChoice: Boolean?,
     @SerializedName("multipleAnswer")
-    val multipleAnswer: Int,
+    val multipleAnswer: Int?,
     @SerializedName("multipleCount")
-    val multipleCount: Int,
+    val multipleCount: Int?,
     @SerializedName("problemId")
     val problemId: Int,
     @SerializedName("question")
-    val question: String,
+    val question: String?,
     @SerializedName("score")
     val score: Int,
     @SerializedName("seq")
@@ -46,11 +46,11 @@ data class ScoredScore(
 
 data class SettingProblem(
     val no: String,
-    val question: String,
-    val content: String,
+    val question: String?,
+    val content: String?,
     val problemId: Int,
-    val choiceList: List<ChoiceDTO>,
-    val problemAnswer: String,
+    val choiceList: List<ChoiceDTO>?,
+    val problemAnswer: String?,
     val problemScore: Int,
     var userAnswer: String? = null
 )

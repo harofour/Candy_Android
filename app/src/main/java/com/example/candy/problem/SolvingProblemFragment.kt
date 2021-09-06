@@ -199,7 +199,7 @@ class SolvingProblemFragment : Fragment(), IOnItemClickInterface {
             settingProblemList.forEachIndexed { index, settingProblem ->
                 if (settingProblem.userAnswer == settingProblem.problemAnswer) {
                     // 정답
-                    problemViewModel.addScore(settingProblem.problemScore)
+                    problemViewModel.addScore(settingProblem.problemScore ?: 0)
                     problemSolve.add(
                         SolveProblem(
                             settingProblem.problemId,
