@@ -23,7 +23,12 @@ class ChallengeListRepositoryImpl(
         if(request.isSuccessful){
             Log.d("possibleChallengeList", request.body().toString())
 
-            return request.body()!!.response
+            val challengeList: ArrayList<Challenge> = request.body()!!.response
+            challengeList.forEach { challenge ->
+                challenge.category = translateCategory(challenge.category)
+            }
+
+            return challengeList
         }
         else {
             // 실패 시
@@ -60,6 +65,11 @@ class ChallengeListRepositoryImpl(
         if(request.isSuccessful){
             Log.d("likeChallengeList", request.body().toString())
 
+            val challengeList: ArrayList<Challenge> = request.body()!!.response
+            challengeList.forEach { challenge ->
+                challenge.category = translateCategory(challenge.category)
+            }
+
             return request.body()!!.response
         }
         else {
@@ -76,6 +86,11 @@ class ChallengeListRepositoryImpl(
 
         if(request.isSuccessful){
             Log.d("api test check", "like result" +  request.body().toString())
+
+            val challengeList: ArrayList<ChallengeComplete> = request.body()!!.response
+            challengeList.forEach { challenge ->
+                challenge.category = translateCategory(challenge.category)
+            }
 
             return request.body()!!.response
         }
@@ -94,7 +109,11 @@ class ChallengeListRepositoryImpl(
         if(request.isSuccessful){
             Log.d("api test check", "챌린지 세부 정보 성공 get challenge detail success")
             //Toast.makeText(context, "챌린지 세부 정보 가져오기 성공", Toast.LENGTH_SHORT).show()
-            return  request.body()!!.response
+
+            val challengeDetail = request.body()!!.response
+            challengeDetail.category = translateCategory(challengeDetail.category)
+
+            return  challengeDetail
         }
         else{
             Log.d("api test check", "get challenge detail fail")
@@ -128,5 +147,13 @@ class ChallengeListRepositoryImpl(
                     .observeOn(AndroidSchedulers.mainThread())
 
 
+    private fun translateCategory(str: String): String {
+        return when (str) {
+            "KOREAN" -> "한국어"
+            "ENGLISH" -> "영어"
+            "MATH" -> "수학"
+            else -> "??"
+        }
+    }
 
 }
