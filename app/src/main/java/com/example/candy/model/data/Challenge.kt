@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Challenge(
     @SerializedName("id") val challengeId: Int,
-    @SerializedName("category") val category: String,
+    @SerializedName("category") var category: String,
     @SerializedName("likeDone") var likeDone: Boolean,
     @SerializedName("requiredScore") val requiredScore: Int,
     @SerializedName("totalScore") val totalScore: Int,

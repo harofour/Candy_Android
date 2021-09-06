@@ -14,7 +14,7 @@ data class ChallengeDetailResponse(
 
 data class ChallengeDetail(
         @SerializedName("assignedCandy")val assignedCandy: Int,
-        @SerializedName("category")val category: String,
+        @SerializedName("category")var category: String,
         @SerializedName("challengeId")val challengeId: Int,
         @SerializedName("description")val description: String,
         @SerializedName("level")val level: Int,
@@ -40,7 +40,7 @@ data class LectureCheckRequestBody(
 
 data class ChallengeComplete(
         @SerializedName("challengeId") val challengeId: Int,
-        @SerializedName("category") val category: String,
+        @SerializedName("category") var category: String,
         @SerializedName("requiredScore") val requiredScore: Int,
         @SerializedName("totalScore") val totalScore: Int,
         @SerializedName("title") val title: String,
