@@ -30,4 +30,11 @@ interface UserInfoApi {
         @Header("api_key")userToken: String,
         @Body UserData: HashMap<String,Any>
     ) : Call<UserChangePwResponse>
+
+    // 마이페이지에서 2차 비밀번호 변경
+    @POST("user/parent/password/change")
+    fun changeParentPw(
+        @Header("api_key")userToken: String,
+        @Body UserData: HashMap<String,Any>
+    ) : Call<UserChangePwResponse>
 }

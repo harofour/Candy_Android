@@ -248,6 +248,25 @@ class MyPageRepository() {
         })
     }
 
+    fun changeParentPw(apiKey: String, data: HashMap<String, Any>, completion: (RESPONSE_STATE) -> Unit) {
+        apiUserInfo.changeParentPw(apiKey, data).enqueue(object : Callback<UserChangePwResponse> {
+            override fun onResponse(
+                call: Call<UserChangePwResponse>,
+                response: Response<UserChangePwResponse>
+            ) {
+                if (response.code() == 200) {
+                    completion(RESPONSE_STATE.SUCCESS)
+                } else {
+                    completion(RESPONSE_STATE.FAILURE)
+                }
+            }
+
+            override fun onFailure(call: Call<UserChangePwResponse>, t: Throwable) {
+                completion(RESPONSE_STATE.FAILURE)
+            }
+        })
+    }
+
     private fun changeDateFormat(str : String) : String {
         val oldFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
         val newFormat = SimpleDateFormat("yyyy.MM.dd (E)")

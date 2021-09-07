@@ -48,4 +48,12 @@ class MyPageViewModel(application: Application) : AndroidViewModel(application) 
     ) {
         return repository.changePw(apiKey, userData, completion)
     }
+
+    fun changeParentPw(
+        apiKey: String,
+        userData: HashMap<String, Any>,
+        completion: (RESPONSE_STATE) -> Unit
+    ) {
+        return repository.changeParentPw(apiKey, userData, completion)
+    }
 }

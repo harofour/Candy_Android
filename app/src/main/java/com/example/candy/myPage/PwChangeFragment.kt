@@ -44,6 +44,48 @@ class PwChangeFragment : Fragment() {
             navController.popBackStack()
         }
 
+        changeStudentPW()
+        changeParentPW()
+
+
+    }
+
+    private fun changeParentPW() {
+        binding.changeParentPwBtn.setOnClickListener {
+            val currentPw = binding.labelEditParentPw.text.toString()
+            val newPw: String = binding.labelEditNewParentPw.text.toString()
+            val verifyPw = binding.labelEditVerifyParentPw.text.toString()
+            val data = HashMap<String, Any>()
+            data["newParentPassword"] = newPw
+            data["originParentPassword"] = currentPw
+            if (newPw == verifyPw) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.changeParentPw(CurrentUser.userToken!!, data) { responseState ->
+                        when (responseState) {
+                            RESPONSE_STATE.SUCCESS -> {
+                                try {
+                                    navController.popBackStack()
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                            }
+                            RESPONSE_STATE.FAILURE -> {
+                                Util.showErrorAlertDialog(
+                                    binding.root.context,
+                                    "비밀번호 변경 실패",
+                                    "현재 비밀번호를 확인해주세요."
+                                )
+                            }
+                        }
+                    }
+                }
+            } else {
+                binding.labelEditVerifyParentPw.error = "비밀번호가 일치하지 않습니다!"
+            }
+        }
+    }
+
+    private fun changeStudentPW() {
         // 비밀번효 변경 버튼 클릭 시
         binding.changePwBtn.setOnClickListener {
             val currentPw = binding.labelEditCurrentPw.text.toString()
@@ -77,6 +119,5 @@ class PwChangeFragment : Fragment() {
                 binding.textFieldVerifyPw.error = "비밀번호가 일치하지 않습니다!"
             }
         }
-
     }
 }
